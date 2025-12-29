@@ -1,13 +1,13 @@
 "use client";
 
 // SERVICES //
-import { createIdentity } from "@/services/queries/identity.query";
+import { createIdentityRequest } from "@/services/queries/identity.query";
 import {
-  addTournamentLead,
-  getOrganizerDetails,
-  getTournamentContactDetails,
-  getTournamentDetails,
-  getTournaments,
+  addTournamentLeadRequest,
+  getOrganizerDetailsRequest,
+  getTournamentContactDetailsRequest,
+  getTournamentDetailsRequest,
+  getTournamentsRequest,
 } from "@/services/queries/tournaments.query";
 
 /** Tournaments Page */
@@ -22,7 +22,7 @@ export default function Tournaments() {
 
   // Helper Functions
   const createAIIdentity = async () => {
-    const { data, error } = await createIdentity();
+    const { data, error } = await createIdentityRequest();
 
     if (error) {
       console.error("Error creating identity:", error);
@@ -31,7 +31,7 @@ export default function Tournaments() {
     }
   };
   const getAllTournaments = async () => {
-    const { data, error } = await getTournaments({
+    const { data, error } = await getTournamentsRequest({
       city: "",
       area: "",
       age_category: "",
@@ -57,7 +57,7 @@ export default function Tournaments() {
   };
 
   const getSingleTournament = async () => {
-    const { data, error } = await getTournamentDetails(
+    const { data, error } = await getTournamentDetailsRequest(
       "037ffc40-3240-41f3-ab1c-4066daf8567d"
     );
 
@@ -69,7 +69,7 @@ export default function Tournaments() {
   };
 
   const addLeadToTournament = async () => {
-    const { data, error } = await addTournamentLead(
+    const { data, error } = await addTournamentLeadRequest(
       "037ffc40-3240-41f3-ab1c-4066daf8567d",
       {
         identity_id: "5a2c4226-27f3-4a14-8384-9fffcb4ff426",
@@ -86,7 +86,7 @@ export default function Tournaments() {
   };
 
   const getContactDetails = async () => {
-    const { data, error } = await getTournamentContactDetails(
+    const { data, error } = await getTournamentContactDetailsRequest(
       "037ffc40-3240-41f3-ab1c-4066daf8567d"
     );
 
@@ -98,7 +98,7 @@ export default function Tournaments() {
   };
 
   const getTheOrganizerDetails = async () => {
-    const { data, error } = await getOrganizerDetails(
+    const { data, error } = await getOrganizerDetailsRequest(
       "9638deb6-2eaa-403c-a649-8d6415123c20"
     );
 

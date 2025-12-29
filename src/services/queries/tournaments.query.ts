@@ -15,7 +15,7 @@ import { supabase } from "@/services/supabase";
 /**
  * Get a list of tournaments (with filters)
  */
-export const getTournaments = async (
+export const getTournamentsRequest = async (
   filters: TournamentFiltersData
 ): Promise<QueryResponseData<TournamentListingItemData[]>> => {
   try {
@@ -171,7 +171,7 @@ export const getTournaments = async (
 /**
  * Get the full details about a tournament
  */
-export const getTournamentDetails = async (
+export const getTournamentDetailsRequest = async (
   tournamentId: string
 ): Promise<QueryResponseData<TournamentDetailsData>> => {
   try {
@@ -329,7 +329,7 @@ export const getTournamentDetails = async (
 /**
  * Add lead for a tournament
  */
-export const addTournamentLead = async (
+export const addTournamentLeadRequest = async (
   tournamentId: string,
   leadData: LeadData
 ): Promise<QueryResponseData<boolean>> => {
@@ -380,7 +380,7 @@ export const addTournamentLead = async (
 /**
  * Get the contact details for a tournament
  */
-export const getTournamentContactDetails = async (
+export const getTournamentContactDetailsRequest = async (
   tournamentId: string
 ): Promise<QueryResponseData<TournamentContactData>> => {
   try {
@@ -408,7 +408,7 @@ export const getTournamentContactDetails = async (
 /**
  * Get the full details about a Organizer
  */
-export const getOrganizerDetails = async (
+export const getOrganizerDetailsRequest = async (
   organizerId: string
 ): Promise<QueryResponseData<OrganizerDetailsData>> => {
   try {

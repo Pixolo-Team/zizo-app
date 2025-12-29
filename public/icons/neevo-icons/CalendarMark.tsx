@@ -23,7 +23,7 @@ const CalendarMark = (props: IconProps) => (
         strokeWidth={2}
       />
       <path
-        id="Line 3"
+        id="Line3"
         stroke={props.primaryColor}
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -31,7 +31,7 @@ const CalendarMark = (props: IconProps) => (
         strokeWidth={2}
       />
       <path
-        id="Line 4"
+        id="Line4"
         stroke={props.primaryColor}
         strokeLinecap="round"
         strokeLinejoin="round"

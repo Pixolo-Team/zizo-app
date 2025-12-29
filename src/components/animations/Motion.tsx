@@ -1,7 +1,7 @@
 "use client";
 
 // REACT //
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import type { ReactNode, ElementType } from "react";
 
 // OTHERS //

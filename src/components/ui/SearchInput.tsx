@@ -33,10 +33,6 @@ export default function SearchInput({
   // Define Refs
 
   // Helper Functions
-  const handleClear = () => {
-    onClear?.();
-    onChange && onChange("");
-  };
 
   // Use Effects
 

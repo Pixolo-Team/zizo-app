@@ -23,7 +23,7 @@ import ShareDialog from "@/components/ShareDialog";
 import TournamentCardSkeleton from "@/components/tournaments/TournamentCardSkeleton";
 
 // SERVICES //
-import { getTournaments } from "@/services/queries/tournaments.query";
+import { getTournamentsRequest } from "@/services/queries/tournaments.query";
 
 // OTHERS //
 import { useDebounce } from "@/hooks/useDebounce";
@@ -75,7 +75,7 @@ export default function Tournaments() {
     // Set loading state
     setIsTournamentsLoading(true);
 
-    const { data, error } = await getTournaments({
+    const { data, error } = await getTournamentsRequest({
       ...filters,
       // age_category: filters.age_category?.toLowerCase() || "",
       gender: filters.gender?.toLowerCase() || "",

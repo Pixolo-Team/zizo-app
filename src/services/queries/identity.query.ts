@@ -7,7 +7,9 @@ import { supabase } from "@/services/supabase";
 /**
  * Create a new identity
  */
-export const createIdentity = async (): Promise<QueryResponseData<string>> => {
+export const createIdentityRequest = async (): Promise<
+  QueryResponseData<string>
+> => {
   try {
     const { data, error } = await supabase
       .from("identities")
