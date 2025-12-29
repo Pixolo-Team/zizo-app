@@ -107,6 +107,7 @@ export default function OrganizerProfile() {
                 className="text-sm text-green-500"
                 variant={"ghost"}
                 size={"sm"}
+                onClick={() => router.push("/")}
               >
                 See all
               </Button>
