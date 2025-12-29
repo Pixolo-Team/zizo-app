@@ -6,6 +6,9 @@ import { TournamentListingItemData } from "@/types/tournament";
 // COMPONENTS //
 import Image from "next/image";
 
+// UTILS //
+import { formatCurrency } from "@/utils/currency";
+
 // OTHERS //
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
@@ -94,7 +97,7 @@ export default function TournamentCard({
 
             {/* Price */}
             <p className="justify-start text-green-500 text-lg font-bold leading-6">
-              ₹{tournamentListingItem.entry_fee}
+              ₹{formatCurrency(tournamentListingItem.entry_fee)}
             </p>
           </div>
 
@@ -146,7 +149,7 @@ export default function TournamentCard({
             <div className="flex justify-start items-end gap-0.5">
               {/* Total Cash Prize */}
               <p className="text-n-900 text-xl font-bold leading-6">
-                ₹{tournamentListingItem.cash_prize_total}
+                ₹{formatCurrency(tournamentListingItem.cash_prize_total)}
               </p>
 
               {/* Extra text */}

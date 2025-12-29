@@ -151,29 +151,31 @@ export default function Tournaments() {
           <PageHeader title="Find local football tournaments near you." />
         </Motion>
 
-        {/* Search Input */}
-        <Motion as="div" variants={shrinkIn} delay={0.2}>
-          <SearchInput
-            className="rounded-3xl bg-n-50"
-            value={searchInput}
-            onChange={(value) => {
-              setSearchInput(value);
-            }}
-            rightIcon
-            onRightIconClick={() => {
-              setIsMoreFiltersDrawerOpen(true);
-            }}
-          />
-        </Motion>
+        <div className="flex flex-col gap-2.5">
+          {/* Search Input */}
+          <Motion as="div" variants={shrinkIn} delay={0.2}>
+            <SearchInput
+              className="rounded-3xl bg-n-50"
+              value={searchInput}
+              onChange={(value) => {
+                setSearchInput(value);
+              }}
+              rightIcon
+              onRightIconClick={() => {
+                setIsMoreFiltersDrawerOpen(true);
+              }}
+            />
+          </Motion>
 
-        {/* FILTER BAR */}
-        <Motion as="div" variants={shrinkIn} delay={0.3}>
-          <PrimaryFilters
-            filters={filters}
-            updateFilter={updateFilter}
-            resetFilters={() => resetFilters(true)}
-          />
-        </Motion>
+          {/* FILTER BAR */}
+          <Motion as="div" variants={shrinkIn} delay={0.3}>
+            <PrimaryFilters
+              filters={filters}
+              updateFilter={updateFilter}
+              resetFilters={() => resetFilters(true)}
+            />
+          </Motion>
+        </div>
 
         {/* Tournaments Listing */}
         <Motion as="div" variants={shrinkIn} delay={0.4}>
