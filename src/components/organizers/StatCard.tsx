@@ -4,7 +4,7 @@ interface StatCardProps {
   number: string;
 }
 
-// StatCard Component
+/** StatCard Component */
 export default function StatCard({ title, number }: StatCardProps) {
   return (
     <div className="flex w-full flex-col items-center justify-center gap-1.5 rounded-xl bg-n-100 px-2.5 py-3 text-center">

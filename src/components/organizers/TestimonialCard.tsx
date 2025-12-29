@@ -8,7 +8,7 @@ interface TestimonialCardProps {
   avatarUrl: string;
 }
 
-// TestimonialCard Component
+/** TestimonialCard Component */
 export default function TestimonialCard({
   name,
   organization,
@@ -27,6 +27,7 @@ export default function TestimonialCard({
             width={40}
             height={40}
             className="w-full h-full object-cover"
+            role="presentation"
           />
         </div>
 
