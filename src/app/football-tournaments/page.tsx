@@ -13,7 +13,7 @@ import {
 // COMPONENTS //
 import Motion from "@/components/animations/Motion";
 import TournamentCard from "@/components/tournaments/TournamentCard";
-import PageHeader from "@/components/ui/PageHeader";
+import PageHeader from "@/components/PageHeader";
 import BrandLogo from "@/components/brand-logo/BrandLogo";
 import SearchInput from "@/components/ui/SearchInput";
 import Image from "next/image";
