@@ -117,7 +117,7 @@ export default function OrganizerProfile() {
               name="George Haakip"
               organization="Skorost United FC"
               testimonial="A formal written description or statement about the abilities, character and qualities of a person, often given by a previous employer; a formal written statement about the quality of a product, service, etc."
-              avatarUrl="/images/organizer-profile.jpg"
+              avatarUrl="/images/organizer-cover.jpg"
             />
           </div>
 

@@ -20,13 +20,13 @@ export default function TestimonialCard({
       {/* Profile Row */}
       <div className="flex items-center gap-2">
         {/* Avatar */}
-        <div className="rounded-xl">
+        <div className="size-10 rounded-xl overflow-hidden">
           <Image
             src={avatarUrl}
             alt={name}
             width={40}
             height={40}
-            className="object-cover"
+            className="w-full h-full object-cover"
           />
         </div>
 
