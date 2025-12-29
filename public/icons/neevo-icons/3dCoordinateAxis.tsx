@@ -1,0 +1,16 @@
+// REACT //
+import React from "react";
+
+// TYPES //
+import { IconComponent } from "@/types/icon";
+
+const 3dCoordinateAxis: IconComponent = ({
+  primary_color,
+  secondary_color,
+  tertiary_color,
+  ...props
+}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-1 -1 28 28" height={28} width={28}  {...props}><g><path id="Vector 843" stroke={primary_color} strokeLinecap="round" strokeLinejoin="round" d="M9.171462857142858 18.00394142857143V13.218622857142858l3.828258571428572 -1.91412 3.828258571428572 1.91412v4.785318571428571L12.99972142857143 19.918042857142858 9.171462857142858 18.00394142857143Z" strokeWidth={2} /><path id="Vector 7" stroke={primary_color} strokeLinecap="round" strokeLinejoin="round" d="M12.999981428571429 11.304298571428571 13 1.8571428571428572" strokeWidth={2} /><path id="Vector" stroke={primary_color} strokeLinecap="round" strokeLinejoin="round" d="M9.663921428571427 4.8770428571428575C10.485354285714285 3.637567142857143 11.742472857142857 2.485692857142857 12.999647142857144 1.8571428571428572c1.2570628571428573 0.6285499999999999 2.5141628571428574 1.7804242857142858 3.335595714285714 3.0199000000000003" strokeWidth={2} /><path id="Vector 837" stroke={primary_color} strokeLinecap="round" strokeLinejoin="round" d="m16.827794285714287 18.012354285714284 8.231005714285715 4.7521314285714285" strokeWidth={2} /><path id="Vector_2" stroke={primary_color} strokeLinecap="round" strokeLinejoin="round" d="M24.1124 18.36536c0.6628142857142857 1.3311257142857142 1.031642857142857 2.995682857142857 0.9475142857142858 4.398754285714286 -1.1729714285714288 0.7744285714285715 -2.7989 1.2871857142857144 -4.283128571428572 1.378742857142857" strokeWidth={2} /><path id="Vector 839" stroke={primary_color} strokeLinecap="round" strokeLinejoin="round" d="M9.172205714285715 18.012354285714284 0.9412668571428571 22.764485714285716" strokeWidth={2} /><path id="Vector_3" stroke={primary_color} strokeLinecap="round" strokeLinejoin="round" d="M1.8878971428571427 18.36536C1.2251905714285716 19.696485714285714 0.8562097142857144 21.36104285714286 0.9404441428571428 22.764114285714285c1.172873 0.7744285714285715 2.7989687142857145 1.2871857142857144 4.283123 1.378742857142857" strokeWidth={2} /></g></svg>
+);
+
+export default 3dCoordinateAxis;
