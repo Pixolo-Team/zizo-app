@@ -3,9 +3,7 @@
 // COMPONENTS //
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
-// OTHERS //
-import NewFilterSlide from "../../../public/icons/neevo-icons/NewFilterSlide";
+import NewFilterSlide from "@/components/icons/neevo-icons/NewFilterSlide";
 
 type Props = {
   value: string;

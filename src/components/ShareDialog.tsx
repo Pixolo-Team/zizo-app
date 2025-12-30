@@ -3,12 +3,12 @@
 // COMPONENTS //
 import DialogBox from "@/components/ui/DialogBox";
 import { Button } from "@/components/ui/button";
+import Copy1 from "@/components/icons/neevo-icons/Copy1";
+import InstagramLogo from "@/components/icons/neevo-icons/InstagramLogo";
+import WhatsappLogo from "@/components/icons/neevo-icons/WhatsappLogo";
 
 // OTHERS //
 import { toast } from "sonner";
-import Copy1 from "../../public/icons/neevo-icons/Copy1";
-import InstagramLogo from "../../public/icons/neevo-icons/InstagramLogo";
-import WhatsappLogo from "../../public/icons/neevo-icons/WhatsappLogo";
 
 interface ShareDialogProps {
   isOpen: boolean;
