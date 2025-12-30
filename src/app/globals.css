@@ -223,3 +223,23 @@ button {
 :root {
   color-scheme: light;
 }
+
+@media (prefers-color-scheme: dark) {
+  .dark-mode-hidden {
+    display: none;
+  }
+
+  .dark-mode-block {
+    display: block;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .dark-mode-hidden {
+    display: block;
+  }
+
+  .dark-mode-block {
+    display: none;
+  }
+}

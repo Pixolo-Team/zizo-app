@@ -11,10 +11,16 @@ interface AwardItem {
 }
 
 const mockAwards: AwardItem[] = [
-  { icon: <RunIcon className="text-n-600 size-5" />, label: "Best Player" },
-  { icon: <SoccerIcon className="text-n-600 size-5" />, label: "Best Player" },
   {
-    icon: <Shirt className="text-n-600 size-5" />,
+    icon: <RunIcon className=" size-5" primaryColor="var(--color-n-600)" />,
+    label: "Best Player",
+  },
+  {
+    icon: <SoccerIcon className=" size-5" primaryColor="var(--color-n-600)" />,
+    label: "Best Player",
+  },
+  {
+    icon: <Shirt className=" size-5" primaryColor="var(--color-n-600)" />,
     label: "Best Goalkeeper",
   },
 ];

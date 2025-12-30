@@ -113,7 +113,7 @@ export default function TournamentDetails() {
           <TournamentCardImage
             posterUrl={
               tournamentDetails.series?.poster_url ??
-              "/images/defaults/tournament-card-dummy.jpg"
+              "/images/default/tournament-card-thumbnail.png"
             }
             onShareBtnClick={() => setIsShareDialogOpen(true)}
           />

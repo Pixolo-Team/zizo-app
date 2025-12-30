@@ -19,7 +19,7 @@ export default function TournamentCardImage({
   posterUrl,
   onShareBtnClick,
 }: TournamentCardImageProps) {
-  const defaultImage = "/images/defaults/tournament-card-dummy.jpg";
+  const defaultImage = "/images/default/tournament-card-thumbnail.png";
 
   // Define States
   const [imageSrc, setImageSrc] = useState<string>(defaultImage);

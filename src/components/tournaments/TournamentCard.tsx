@@ -9,13 +9,15 @@ import LocationPin from "@/components/icons/neevo-icons/LocationPin";
 import CalendarMark from "@/components/icons/neevo-icons/CalendarMark";
 import UserFullBody from "@/components/icons/neevo-icons/UserFullBody";
 import CalendarUser from "@/components/icons/neevo-icons/CalendarUser";
-import LineArrowRight1 from "@/components/icons/neevo-icons/LineArrowRight1";
 import UploadBox2 from "@/components/icons/neevo-icons/UploadBox2";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 // UTILS //
 import { formatLongDate } from "@/utils/date";
+
+// OTHERS //
+import ChevronRight from "../icons/neevo-icons/ChevronRight";
 
 // Interface Props
 interface TournamentCardProps {
@@ -48,7 +50,7 @@ export default function TournamentCard({
         <Image
           src={
             tournamentListingItem.poster_url ??
-            "/images/tournament-card-dummy.jpg"
+            "/images/default/tournament-card-thumbnail.png"
           }
           alt="Brand Logo"
           width={200}
@@ -169,7 +171,10 @@ export default function TournamentCard({
             aria-label="View tournament details"
             onClick={onRightArrowClick}
           >
-            <LineArrowRight1 primaryColor="var(--color-n-700)" />
+            <ChevronRight
+              primaryColor="var(--color-n-700)"
+              className="size-2.5"
+            />
           </Button>
         </div>
       </div>

@@ -186,16 +186,29 @@ export default function Tournaments() {
 
         {/* Empty State */}
         {!isTournamentsLoading && tournamentItems.length === 0 && (
-          <div className="flex flex-col gap-6 h-full items-center justify-center">
+          <div className="flex flex-col gap-6 h-full pt-16 items-center justify-center">
             {/* Empty State Image */}
-            <Image
-              src="/images/field-image.png"
-              alt="Field Image"
-              width={1200}
-              height={120}
-              priority
-              className="w-[220px] h-[120px] object-contain"
-            />
+            <div className="hidden dark-mode-block">
+              <Image
+                src="/images/empty-tournament-darkmode.png"
+                alt="No tournaments (light)"
+                width={1200}
+                height={120}
+                priority
+                className="w-[220px] h-[120px] object-contain"
+              />
+            </div>
+
+            <div className=" block dark-mode-hidden">
+              <Image
+                src="/images/empty-tournament-lightmode.png"
+                alt="No tournaments (dark)"
+                width={1200}
+                height={120}
+                priority
+                className="w-[220px] h-[120px] object-contain"
+              />
+            </div>
 
             <div className="flex flex-col gap-2.5 items-center w-[78%]">
               {/* Empty State Title */}
