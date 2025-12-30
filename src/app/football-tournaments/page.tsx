@@ -17,7 +17,7 @@ import SearchInput from "@/components/ui/SearchInput";
 import Image from "next/image";
 import PrimaryFilters from "@/components/tournaments/PrimaryFilters";
 import TournamentsFilterDrawer from "@/components/tournaments/TournamentsFilterDrawer";
-import ShareDialog from "@/components/ShareDialog";
+import ShareDialog from "@/components/ShareDrawer";
 import TournamentCardSkeleton from "@/components/tournaments/TournamentCardSkeleton";
 
 // SERVICES //
@@ -69,6 +69,14 @@ export default function Tournaments() {
     // API Call to get all tournaments
     const { data, error } = await getTournamentsRequest({
       ...currentFilters,
+      area:
+        currentFilters.area?.toLowerCase() === "any"
+          ? ""
+          : currentFilters.area?.toLowerCase() || "",
+      city:
+        currentFilters.city?.toLowerCase() === "any"
+          ? ""
+          : currentFilters.city?.toLowerCase() || "",
       // age_category: currentFilters.age_category?.toLowerCase() || "",
       gender: currentFilters.gender?.toLowerCase() || "",
       // TODO: Need to make all filters dynamic
@@ -228,10 +236,13 @@ export default function Tournaments() {
       {/* MORE FILTERS DRAWER */}
       <TournamentsFilterDrawer
         filters={filters}
-        defaultFilters={DEFAULT_FILTERS}
         onSearch={(newFilters) => {
           setFilters(newFilters);
           getAllTournaments(newFilters);
+          setIsMoreFiltersDrawerOpen(false);
+        }}
+        onReset={() => {
+          resetFilters(true);
           setIsMoreFiltersDrawerOpen(false);
         }}
         isOpen={isMoreFiltersDrawerOpen}

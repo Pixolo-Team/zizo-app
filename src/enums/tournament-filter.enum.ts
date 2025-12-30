@@ -12,12 +12,14 @@ export enum TournamentFilter {
 }
 
 export enum CityFilter {
+  ANY = "Any",
   MUMBAI = "Mumbai",
   PUNE = "Pune",
   NAVI_MUMBAI = "Navi Mumbai",
 }
 
 export enum AreaFilter {
+  ANY = "Any",
   GHATKOPAR_EAST = "Ghatkopar East",
   ANDHERI_WEST = "Andheri West",
   BANER = "Baner",

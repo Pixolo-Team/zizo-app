@@ -17,7 +17,6 @@ import {
 } from "@/enums/tournament-filter.enum";
 
 // COMPONENTS //
-import FilterDrawer from "@/components/FilterDrawer";
 import FilterDropdown from "@/components/ui/FilterDropdown";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { Button } from "@/components/ui/button";
@@ -26,22 +25,23 @@ import { Button } from "@/components/ui/button";
 import Motion from "../animations/Motion";
 import { shrinkIn, slideInUp } from "@/lib/animations";
 import { format } from "date-fns";
+import { Drawer, DrawerClose, DrawerContent, DrawerHeader } from "../ui/drawer";
 
 interface TournamentsFilterDrawerProps {
   filters: TournamentFiltersData;
-  defaultFilters: TournamentFiltersData;
   onSearch: (filters: TournamentFiltersData) => void;
+  onReset: () => void;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
 export default function TournamentsFilterDrawer({
   filters,
-  defaultFilters,
   onSearch,
+  onReset,
   isOpen,
   onOpenChange,
-}: TournamentsFilterDrawerProps) {
+}: Readonly<TournamentsFilterDrawerProps>) {
   const [localFilters, setLocalFilters] =
     useState<TournamentFiltersData>(filters);
 
@@ -63,145 +63,147 @@ export default function TournamentsFilterDrawer({
     }));
   };
 
-  const resetLocalFilters = () => {
-    setLocalFilters(defaultFilters);
-  };
-
   return (
-    <FilterDrawer
-      title="Matchday Starts here"
-      description="Find tournaments made for you"
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-    >
-      <div className="flex flex-col gap-7">
-        {/* Location */}
-        <Motion variants={slideInUp} delay={0.1}>
-          <div className="flex flex-col gap-2">
-            <p className="text-n-700 ml-2 leading-tight">Location</p>
-            <div className="flex flex-wrap gap-3 gap-y-2">
-              {/* City */}
-              <FilterDropdown
-                title="City"
-                options={Object.values(CityFilter)}
-                selectedOption={localFilters.city || ""}
-                onChange={(value) => updateLocalFilter("city", value)}
-                className="border border-n-200"
-              />
+    <Drawer open={isOpen} onOpenChange={onOpenChange}>
+      {/* Drawer Content  */}
+      <DrawerContent>
+        {/* Drawer Header */}
+        <DrawerHeader
+          title="Tournament Filter"
+          subTitle="Select your preferences"
+        />
 
-              {/* Area */}
-              <FilterDropdown
-                title="Area"
-                options={Object.values(AreaFilter)}
-                selectedOption={localFilters.area || ""}
-                onChange={(value) => updateLocalFilter("area", value)}
-                className="border border-n-200"
-              />
+        <div className="flex flex-col gap-7">
+          {/* Location */}
+          <Motion variants={slideInUp} delay={0.1}>
+            <div className="flex flex-col gap-2">
+              <p className="text-n-700 ml-2 leading-tight">Location</p>
+              <div className="flex flex-wrap gap-3 gap-y-2">
+                {/* City */}
+                <FilterDropdown
+                  title="City"
+                  options={Object.values(CityFilter)}
+                  selectedOption={localFilters.city || ""}
+                  onChange={(value) => updateLocalFilter("city", value)}
+                  className="border border-n-200"
+                />
+
+                {/* Area */}
+                <FilterDropdown
+                  title="Area"
+                  options={Object.values(AreaFilter)}
+                  selectedOption={localFilters.area || ""}
+                  onChange={(value) => updateLocalFilter("area", value)}
+                  className="border border-n-200"
+                />
+              </div>
             </div>
-          </div>
-        </Motion>
+          </Motion>
 
-        {/* Basic Information */}
-        <Motion variants={slideInUp} delay={0.2}>
-          <div className="flex flex-col gap-2">
-            <p className="text-n-700 ml-2 leading-tight">Basic Information</p>
-            <div className="flex flex-wrap gap-3 gap-y-2">
-              <FilterDropdown
-                title="Age"
-                options={Object.values(Age)}
-                selectedOption={localFilters.age_category || ""}
-                onChange={(value) => updateLocalFilter("age_category", value)}
-                className="border border-n-200"
-              />
-              <FilterDropdown
-                title="Gender"
-                options={Object.values(Gender)}
-                selectedOption={localFilters.gender || ""}
-                onChange={(value) => updateLocalFilter("gender", value)}
-                className="border border-n-200"
-              />
+          {/* Basic Information */}
+          <Motion variants={slideInUp} delay={0.2}>
+            <div className="flex flex-col gap-2">
+              <p className="text-n-700 ml-2 leading-tight">Basic Information</p>
+              <div className="flex flex-wrap gap-3 gap-y-2">
+                <FilterDropdown
+                  title="Age"
+                  options={Object.values(Age)}
+                  selectedOption={localFilters.age_category || ""}
+                  onChange={(value) => updateLocalFilter("age_category", value)}
+                  className="border border-n-200"
+                />
+                <FilterDropdown
+                  title="Gender"
+                  options={Object.values(Gender)}
+                  selectedOption={localFilters.gender || ""}
+                  onChange={(value) => updateLocalFilter("gender", value)}
+                  className="border border-n-200"
+                />
+              </div>
             </div>
-          </div>
-        </Motion>
+          </Motion>
 
-        {/* Match Details */}
-        <Motion variants={slideInUp} delay={0.3}>
-          <div className="flex flex-col gap-2">
-            <p className="text-n-700 ml-2 leading-tight">Match Up Details</p>
-            <div className="flex flex-wrap gap-3 gap-y-2">
-              <FilterDropdown
-                title="Tournament Type"
-                options={Object.values(TournamentFilter)}
-                selectedOption={localFilters.tournament_format || ""}
-                onChange={(value) =>
-                  updateLocalFilter("tournament_format", value)
-                }
-                className="border border-n-200"
-              />
-              <FilterDropdown
-                title="Match Format"
-                options={Object.values(MatchFormatFilter)}
-                selectedOption={localFilters.format || ""}
-                onChange={(value) => updateLocalFilter("format", value)}
-                className="border border-n-200"
-              />
+          {/* Match Details */}
+          <Motion variants={slideInUp} delay={0.3}>
+            <div className="flex flex-col gap-2">
+              <p className="text-n-700 ml-2 leading-tight">Match Up Details</p>
+              <div className="flex flex-wrap gap-3 gap-y-2">
+                <FilterDropdown
+                  title="Tournament Type"
+                  options={Object.values(TournamentFilter)}
+                  selectedOption={localFilters.tournament_format || ""}
+                  onChange={(value) =>
+                    updateLocalFilter("tournament_format", value)
+                  }
+                  className="border border-n-200"
+                />
+                <FilterDropdown
+                  title="Match Format"
+                  options={Object.values(MatchFormatFilter)}
+                  selectedOption={localFilters.format || ""}
+                  onChange={(value) => updateLocalFilter("format", value)}
+                  className="border border-n-200"
+                />
+              </div>
             </div>
-          </div>
-        </Motion>
+          </Motion>
 
-        {/* Date Range */}
-        <Motion variants={slideInUp} delay={0.4}>
-          <div className="flex flex-col gap-2">
-            <p className="text-n-700 ml-2 leading-tight">Date Range</p>
+          {/* Date Range */}
+          <Motion variants={slideInUp} delay={0.4}>
+            <div className="flex flex-col gap-2">
+              <p className="text-n-700 ml-2 leading-tight">Date Range</p>
 
-            <div className="grid grid-cols-2 items-center">
-              {/* From Date */}
-              <DatePicker
-                value={localFilters.start_date}
-                onChange={(date) => {
-                  updateLocalFilter("start_date", format(date, "yyyy-MM-dd"));
-                }}
-                placeholder="From"
-                className="rounded-l-full h-11 rounded-r-none border-r-0 border-n-200 bg-n-50"
-              />
+              <div className="grid grid-cols-2 items-center">
+                {/* From Date */}
+                <DatePicker
+                  value={localFilters.start_date}
+                  onChange={(date) => {
+                    updateLocalFilter("start_date", format(date, "yyyy-MM-dd"));
+                  }}
+                  placeholder="From"
+                  className="rounded-l-full h-11 rounded-r-none border-r-0 border-n-200 bg-n-50"
+                />
 
-              {/* To Date */}
-              <DatePicker
-                value={localFilters.end_date}
-                onChange={(date) => updateLocalFilter("end_date", date)}
-                placeholder="To"
-                className="rounded-r-full h-11 rounded-l-none border-n-200 bg-n-50"
-              />
+                {/* To Date */}
+                <DatePicker
+                  value={localFilters.end_date}
+                  onChange={(date) =>
+                    updateLocalFilter("end_date", format(date, "yyyy-MM-dd"))
+                  }
+                  placeholder="To"
+                  className="rounded-r-full h-11 rounded-l-none border-n-200 bg-n-50"
+                />
+              </div>
             </div>
-          </div>
-        </Motion>
-      </div>
-      {/* Reset and Search Button */}
+          </Motion>
+        </div>
+        {/* Reset and Search Button */}
 
-      <div className="grid grid-cols-2 gap-2 w-full fixed bottom-0 left-0 p-3 bg-n-50">
-        {/* Reset Button */}
-        <Motion variants={shrinkIn} delay={0.6}>
-          <Button
-            type="button"
-            onClick={resetLocalFilters}
-            className="bg-n-50 text-n-950 border border-n-200 h-11 w-full rounded-3xl"
-            variant={"outline"}
-          >
-            Reset
-          </Button>
-        </Motion>
+        <div className="grid grid-cols-2 gap-2 w-full fixed bottom-0 left-0 p-3 bg-n-50">
+          {/* Reset Button */}
+          <Motion variants={shrinkIn} delay={0.6}>
+            <Button
+              type="button"
+              onClick={onReset}
+              className="bg-n-50 text-n-950 border border-n-200 h-11 w-full rounded-3xl"
+              variant={"outline"}
+            >
+              Reset
+            </Button>
+          </Motion>
 
-        {/* Search Button */}
-        <Motion variants={shrinkIn} delay={0.7}>
-          <Button
-            type="button"
-            onClick={() => onSearch(localFilters)}
-            className="h-11 w-full rounded-3xl"
-          >
-            Search
-          </Button>
-        </Motion>
-      </div>
-    </FilterDrawer>
+          {/* Search Button */}
+          <Motion variants={shrinkIn} delay={0.7}>
+            <Button
+              type="button"
+              onClick={() => onSearch(localFilters)}
+              className="bg-n-950 text-n-50 h-11 w-full rounded-3xl"
+            >
+              Search
+            </Button>
+          </Motion>
+        </div>
+      </DrawerContent>
+    </Drawer>
   );
 }

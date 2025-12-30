@@ -56,6 +56,7 @@ export default function TournamentCard({
           width={200}
           height={200}
           className="h-[195px] w-full object-cover"
+          loading="eager"
         />
         {/* Share button */}
         <Button

@@ -19,8 +19,8 @@ const ChevronRight = ({
     <path
       d="M1 10L5 5.5L1 1"
       stroke={primaryColor}
-      stroke-width="2"
-      stroke-linecap="round"
+      strokeWidth="2"
+      strokeLinecap="round"
     />
   </svg>
 );

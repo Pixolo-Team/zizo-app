@@ -17,7 +17,7 @@ import DetailsList from "@/components/tournament-details/DetailsList";
 import StickyCTA from "@/components/tournament-details/StickyCTA";
 import TournamentCardImage from "@/components/tournaments/TournamentCardImage";
 import Motion from "@/components/animations/Motion";
-import ShareDialog from "@/components/ShareDialog";
+import ShareDialog from "@/components/ShareDrawer";
 import ContactBottomDrawer from "@/components/tournament-details/ContactBottomDrawer";
 
 // SERVICES //
