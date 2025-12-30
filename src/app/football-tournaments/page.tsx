@@ -13,8 +13,6 @@ import {
 // COMPONENTS //
 import Motion from "@/components/animations/Motion";
 import TournamentCard from "@/components/tournaments/TournamentCard";
-import PageHeader from "@/components/PageHeader";
-import BrandLogo from "@/components/brand-logo/BrandLogo";
 import SearchInput from "@/components/ui/SearchInput";
 import Image from "next/image";
 import PrimaryFilters from "@/components/tournaments/PrimaryFilters";
@@ -28,7 +26,7 @@ import { getTournamentsRequest } from "@/services/queries/tournaments.query";
 // OTHERS //
 import { useDebounce } from "@/hooks/useDebounce";
 import { format } from "date-fns";
-import { fadeIn, shrinkIn } from "@/lib/animations";
+import { shrinkIn } from "@/lib/animations";
 
 // HOOKS //
 
@@ -135,22 +133,10 @@ export default function Tournaments() {
   }, []);
 
   return (
-    // Tournaments Listing Page
-    <section className="relative bg-n-100 min-h-screen overflow-x-hidden">
-      {/* Backdrop Image */}
-      <Motion as="div" variants={fadeIn} delay={0.1}>
-        <div className="fixed -top-[80px] -right-[140px] opacity-20 ">
-          <BrandLogo variant="color-icon" size={380} />
-        </div>
-      </Motion>
-
+    <>
+      {/* Tournaments Listing Page */}
       {/* Page Container */}
-      <div className="container relative mx-auto h-full  px-6 py-7 flex flex-col gap-5 z-4">
-        <Motion as="div" variants={shrinkIn} delay={0.1}>
-          {/* PageHeader component */}
-          <PageHeader title="Find local football tournaments near you." />
-        </Motion>
-
+      <div className="container relative mx-auto h-full px-6 pb-7 flex flex-col gap-5 z-4">
         <div className="flex flex-col gap-2.5">
           {/* Search Input */}
           <Motion as="div" variants={shrinkIn} delay={0.2}>
@@ -255,6 +241,6 @@ export default function Tournaments() {
         onOpenChange={setIsShareDialogOpen}
         copyLink={copyLink}
       />
-    </section>
+    </>
   );
 }
