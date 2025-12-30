@@ -17,8 +17,8 @@ import DetailsList from "@/components/tournament-details/DetailsList";
 import StickyCTA from "@/components/tournament-details/StickyCTA";
 import TournamentCardImage from "@/components/tournaments/TournamentCardImage";
 import Motion from "@/components/animations/Motion";
-import ShareDialog from "@/components/ShareDrawer";
 import ContactBottomDrawer from "@/components/tournament-details/ContactBottomDrawer";
+import TournamentInterestForm from "@/components/drawers/TournamentInterestForm";
 
 // SERVICES //
 import { getTournamentDetailsRequest } from "@/services/queries/tournaments.query";
@@ -28,6 +28,7 @@ import { useParams } from "next/navigation";
 
 // OTHERS //
 import { shrinkIn, fadeIn } from "@/lib/animations";
+import ShareDrawer from "@/components/drawers/ShareDrawer";
 
 /** Tournament Details Page */
 export default function TournamentDetails() {
@@ -45,6 +46,7 @@ export default function TournamentDetails() {
   const [origin, setOrigin] = useState<string>("");
   const [isContactDrawerOpen, setIsContactDrawerOpen] =
     useState<boolean>(false);
+  const [isInterestFormOpen, setIsInterestFormOpen] = useState<boolean>(false);
 
   // Define Helper Functions
   const copyLink = origin
@@ -211,7 +213,7 @@ export default function TournamentDetails() {
         {/* Sticky CTA */}
         <Motion variants={shrinkIn} delay={1.1}>
           <StickyCTA
-            onInterested={() => console.log("Interested clicked")}
+            onInterested={() => setIsInterestFormOpen(true)}
             onShowContact={() => setIsContactDrawerOpen(true)}
           />
         </Motion>
@@ -223,8 +225,13 @@ export default function TournamentDetails() {
         onOpenChange={setIsContactDrawerOpen}
       />
 
+      <TournamentInterestForm
+        isOpen={isInterestFormOpen}
+        onOpenChange={setIsInterestFormOpen}
+      />
+
       {/* SHARE DIALOG */}
-      <ShareDialog
+      <ShareDrawer
         isOpen={isShareDialogOpen}
         onOpenChange={setIsShareDialogOpen}
         copyLink={copyLink}

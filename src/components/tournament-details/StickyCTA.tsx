@@ -18,7 +18,7 @@ interface StickyCTAProps {
 export default function StickyCTA({
   onInterested,
   onShowContact,
-}: StickyCTAProps) {
+}: Readonly<StickyCTAProps>) {
   // WHY: Track whether the user has already expressed interest
   const [isInterested, setIsInterested] = useState(false);
 
