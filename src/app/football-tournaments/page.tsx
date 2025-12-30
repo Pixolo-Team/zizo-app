@@ -91,10 +91,10 @@ export default function Tournaments() {
     });
 
     if (error) {
-      console.error("Error getting tournaments:", error);
-    } else {
-      setTournamentItems(data ?? []);
+      return error;
     }
+
+    setTournamentItems(data ?? []);
     setIsTournamentsLoading(false);
   };
 
