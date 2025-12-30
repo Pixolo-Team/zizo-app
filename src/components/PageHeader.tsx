@@ -37,12 +37,12 @@ export default function PageHeader({ title }: PageHeaderProps) {
       </div>
 
       {/* Button Rights 2 Icon */}
-      <Link href="/football-tournaments">
+      {/* <Link href="/football-tournaments">
         <ButtonsRightIcon
           primaryColor="var(--color-n-900)"
           className="size-9 -rotate-45"
         />
-      </Link>
+      </Link> */}
     </div>
   );
 }

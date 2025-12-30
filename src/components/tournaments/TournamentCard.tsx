@@ -120,7 +120,10 @@ export default function TournamentCard({
               variant={"secondary"}
             >
               {/* Users Icon */}
-              <UserFullBody className="size-4" />
+              <UserFullBody
+                className="size-4"
+                primaryColor="var(--color-n-900)"
+              />
               {tournamentListingItem.format}
             </Badge>
 
