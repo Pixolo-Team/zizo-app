@@ -18,6 +18,7 @@ import StickyCTA from "@/components/tournament-details/StickyCTA";
 import TournamentCardImage from "@/components/tournaments/TournamentCardImage";
 import Motion from "@/components/animations/Motion";
 import ShareDialog from "@/components/ShareDialog";
+import ContactBottomDrawer from "@/components/tournament-details/ContactBottomDrawer";
 
 // SERVICES //
 import { getTournamentDetailsRequest } from "@/services/queries/tournaments.query";
@@ -42,6 +43,8 @@ export default function TournamentDetails() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isShareDialogOpen, setIsShareDialogOpen] = useState<boolean>(false);
   const [origin, setOrigin] = useState<string>("");
+  const [isContactDrawerOpen, setIsContactDrawerOpen] =
+    useState<boolean>(false);
 
   // Define Helper Functions
   const copyLink = origin
@@ -207,9 +210,19 @@ export default function TournamentDetails() {
 
         {/* Sticky CTA */}
         <Motion variants={shrinkIn} delay={1.1}>
-          <StickyCTA onInterested={() => console.log("Interested clicked")} />
+          <StickyCTA
+            onInterested={() => console.log("Interested clicked")}
+            onShowContact={() => setIsContactDrawerOpen(true)}
+          />
         </Motion>
       </div>
+
+      <ContactBottomDrawer
+        phone={"98929222"}
+        isOpen={isContactDrawerOpen}
+        onOpenChange={setIsContactDrawerOpen}
+      />
+
       {/* SHARE DIALOG */}
       <ShareDialog
         isOpen={isShareDialogOpen}
