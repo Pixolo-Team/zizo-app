@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 
 // UTILS //
 import { formatCurrency } from "@/utils/currency";
+import { formatLongDate } from "@/utils/date";
 
 // Interface Props
 interface TournamentCardProps {
@@ -89,6 +90,7 @@ export default function TournamentCard({
                 {/* Location Text */}
                 <p className="justify-start text-n-500 text-xs font-normal ">
                   {tournamentListingItem.area}
+                  {","} {tournamentListingItem.city}
                 </p>
               </div>
             </div>
@@ -111,7 +113,7 @@ export default function TournamentCard({
                 className="size-4"
                 primaryColor="var(--color-n-900)"
               />
-              {tournamentListingItem.start_date}
+              {formatLongDate(tournamentListingItem.start_date)}
             </Badge>
 
             <Badge

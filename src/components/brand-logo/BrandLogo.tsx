@@ -1,7 +1,7 @@
 // REACT //
 import React from "react";
 
-// NEXTJS //
+// COMPONENTS //
 import Image from "next/image";
 
 // Interface for the BrandLogo component */
