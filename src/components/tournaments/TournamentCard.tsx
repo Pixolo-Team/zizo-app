@@ -15,7 +15,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 // UTILS //
-import { formatCurrency } from "@/utils/currency";
 import { formatLongDate } from "@/utils/date";
 
 // Interface Props
@@ -97,7 +96,7 @@ export default function TournamentCard({
 
             {/* Price */}
             <p className="justify-start text-green-500 text-lg font-bold leading-6">
-              ₹{formatCurrency(tournamentListingItem.entry_fee)}
+              ₹{tournamentListingItem.entry_fee.toLocaleString()}
             </p>
           </div>
 
@@ -149,7 +148,7 @@ export default function TournamentCard({
             <div className="flex justify-start items-end gap-0.5">
               {/* Total Cash Prize */}
               <p className="text-n-900 text-xl font-bold leading-6">
-                ₹{formatCurrency(tournamentListingItem.cash_prize_total)}
+                ₹{tournamentListingItem.cash_prize_total.toLocaleString()}
               </p>
 
               {/* Extra text */}
