@@ -27,6 +27,32 @@ import { getOrganizerDetailsRequest } from "@/services/queries/tournaments.query
 import { useScroll, useMotionValueEvent } from "framer-motion";
 import { fadeIn, shrinkIn } from "@/lib/animations";
 
+// TODO: Remove this when we have real data
+const socialLinks = {
+  facebook: "https://facebook.com/skorostunited",
+  instagram: "https://instagram.com/skorostunited",
+  youtube: "https://youtube.com/@skorostunited",
+};
+
+// TODO: Remove this when we have real data
+const organizerSocialIcons = [
+  {
+    key: "facebook",
+    icon: <FacebookLogo2 />,
+    href: socialLinks.facebook,
+  },
+  {
+    key: "instagram",
+    icon: <InstagramLogo />,
+    href: socialLinks.instagram,
+  },
+  {
+    key: "youtube",
+    icon: <YoutubeLogo />,
+    href: socialLinks.youtube,
+  },
+];
+
 /** Organizer Profile Page */
 export default function OrganizerProfile() {
   // Define Navigation
@@ -44,13 +70,13 @@ export default function OrganizerProfile() {
   const contentCardRef = useRef<HTMLDivElement | null>(null);
 
   // Helper Functions
-  /** Function to track scroll progress of content card */
+  /** We track the scroll progress of the content card to know when it reaches the top of the viewport to show and hide the header */
   const { scrollYProgress } = useScroll({
     target: contentCardRef,
     offset: ["start start", "end start"],
   });
 
-  /** Function to Listen to scroll progress and toggle header visibility */
+  /** Show the floating header only after the content card crosses the top edge of the viewport */
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     // When content reaches the top, progress > 0
     setShowHeader(latest > 0);
@@ -62,13 +88,10 @@ export default function OrganizerProfile() {
     );
 
     if (error) {
-      console.error("Error getting organizer details:", error);
-    } else {
-      console.log(data, "data");
-      console.log(data.organizer_media[0].image_url);
-
-      setOrganizerItemDetails(data);
+      return error;
     }
+
+    setOrganizerItemDetails(data);
   };
 
   // UseEffects
@@ -112,9 +135,6 @@ export default function OrganizerProfile() {
       {/* IMPORTANT: parent of fill Image MUST be relative */}
       <div className="sticky top-0 h-56 w-full overflow-hidden">
         <Motion variants={fadeIn} as="div" delay={0.1}>
-          {/* Motion wrapper shouldn't break fill if it's not transforming layout.
-              If your Motion creates transforms, keep Image outside Motion.
-           */}
           <Image
             src={"/images/organizer-cover.jpg"}
             alt="Organizer Cover Image"
@@ -175,7 +195,9 @@ export default function OrganizerProfile() {
                 className="text-sm text-green-500"
                 variant="ghost"
                 size="sm"
-                onClick={() => router.push("/")}
+                onClick={() =>
+                  router.push(`/organizer/${organizerId}/testimonials`)
+                }
               >
                 See all
               </Button>
@@ -217,9 +239,16 @@ export default function OrganizerProfile() {
             <p className="font-medium text-lg text-n-700">Follow us on</p>
 
             <div className="grid grid-cols-3 gap-4">
-              <SocialIcon icon={<FacebookLogo2 />} href="/" />
-              <SocialIcon icon={<InstagramLogo />} href="/" />
-              <SocialIcon icon={<YoutubeLogo />} href="/" />
+              {organizerSocialIcons
+                .filter((socialItem) => socialItem.href)
+                .map((socialItem) => (
+                  <SocialIcon
+                    key={socialItem.key}
+                    icon={socialItem.icon}
+                    href={socialItem.href!}
+                    ariaLabel={socialItem.key}
+                  />
+                ))}
             </div>
           </div>
 
