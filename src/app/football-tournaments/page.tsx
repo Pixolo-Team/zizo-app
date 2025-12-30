@@ -24,11 +24,9 @@ import TournamentCardSkeleton from "@/components/tournaments/TournamentCardSkele
 import { getTournamentsRequest } from "@/services/queries/tournaments.query";
 
 // OTHERS //
-import { useDebounce } from "@/hooks/useDebounce";
 import { format } from "date-fns";
 import { shrinkIn } from "@/lib/animations";
-
-// HOOKS //
+import { useDebounce } from "@/hooks/useDebounce";
 
 /** Tournaments Page */
 export default function Tournaments() {
@@ -38,7 +36,7 @@ export default function Tournaments() {
   // Define Context
 
   // Define States
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState<string>("");
   const [tournamentItems, setTournamentItems] = useState<
     TournamentListingItemData[]
   >([]);
@@ -61,22 +59,25 @@ export default function Tournaments() {
   const [selectedTournamentId, setSelectedTournamentId] = useState<string>("");
   const [origin, setOrigin] = useState<string>("");
 
+  // Define Refs
+
+  // Helper Functions
+  /** Generate a shareable tournament link using current origin + selected tournament */
   const copyLink = origin
     ? `${origin}/football-tournaments/${selectedTournamentId}`
     : "";
 
-  // Define Refs
-
-  // Helper Functions
   /** Function to get all tournaments */
   const getAllTournaments = async () => {
     // Set loading state
     setIsTournamentsLoading(true);
 
+    // API Call to get all tournaments
     const { data, error } = await getTournamentsRequest({
       ...filters,
       // age_category: filters.age_category?.toLowerCase() || "",
       gender: filters.gender?.toLowerCase() || "",
+      // TODO: Need to make all filters dynamic
       tournament_format:
         filters.tournament_format?.toLowerCase().replace(" ", "_") || "",
       ground_type: "",
@@ -85,9 +86,11 @@ export default function Tournaments() {
       has_cash_prize: false,
       search_text: searchInput,
       page: 1,
-      page_size: 10,
+      // TODO: Need to make dynamic
+      page_size: 100,
     });
 
+    // Handle Error
     if (error) {
       return error;
     }
@@ -102,7 +105,7 @@ export default function Tournaments() {
   };
 
   /** Reset Filters */
-  const resetFilters = (primary?: boolean) => {
+  const resetFilters = (shouldRefetch?: boolean) => {
     // Reset Filters
     setFilters({
       city: "",
@@ -116,7 +119,7 @@ export default function Tournaments() {
     });
 
     // Refresh Data
-    if (primary) {
+    if (shouldRefetch) {
       setShouldRefresh((prev) => !prev);
     }
   };

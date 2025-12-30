@@ -38,13 +38,13 @@ export default function PrimaryFilters({
         />
       </div>
 
-      {/* Reset Button */}
+      {/* Clear Button */}
       <button
         type="button"
         className="underline text-n-950 text-xs cursor-pointer"
         onClick={resetFilters}
       >
-        Reset
+        Clear
       </button>
     </div>
   );
