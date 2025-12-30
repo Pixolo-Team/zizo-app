@@ -24,9 +24,9 @@ import TournamentCardSkeleton from "@/components/tournaments/TournamentCardSkele
 import { getTournamentsRequest } from "@/services/queries/tournaments.query";
 
 // OTHERS //
-import { format } from "date-fns";
 import { shrinkIn } from "@/lib/animations";
 import { useDebounce } from "@/hooks/useDebounce";
+import { DEFAULT_FILTERS } from "@/infrastructure/constants/tournaments";
 
 /** Tournaments Page */
 export default function Tournaments() {
@@ -42,16 +42,8 @@ export default function Tournaments() {
   >([]);
   const [isTournamentsLoading, setIsTournamentsLoading] =
     useState<boolean>(true);
-  const [filters, setFilters] = useState<TournamentFiltersData>({
-    city: "",
-    area: "",
-    format: "",
-    tournament_format: "",
-    age_category: "",
-    gender: "",
-    start_date: format(new Date(), "yyyy-MM-dd"),
-    end_date: "",
-  });
+  const [filters, setFilters] =
+    useState<TournamentFiltersData>(DEFAULT_FILTERS);
   const [isMoreFiltersDrawerOpen, setIsMoreFiltersDrawerOpen] =
     useState<boolean>(false);
   const [isShareDialogOpen, setIsShareDialogOpen] = useState<boolean>(false);
@@ -68,27 +60,31 @@ export default function Tournaments() {
     : "";
 
   /** Function to get all tournaments */
-  const getAllTournaments = async () => {
+  const getAllTournaments = async (overrideFilters?: TournamentFiltersData) => {
     // Set loading state
     setIsTournamentsLoading(true);
 
+    const currentFilters = overrideFilters || filters;
+
     // API Call to get all tournaments
     const { data, error } = await getTournamentsRequest({
-      ...filters,
-      // age_category: filters.age_category?.toLowerCase() || "",
-      gender: filters.gender?.toLowerCase() || "",
+      ...currentFilters,
+      // age_category: currentFilters.age_category?.toLowerCase() || "",
+      gender: currentFilters.gender?.toLowerCase() || "",
       // TODO: Need to make all filters dynamic
       tournament_format:
-        filters.tournament_format?.toLowerCase().replace(" ", "_") || "",
+        currentFilters.tournament_format?.toLowerCase().replace(" ", "_") || "",
       ground_type: "",
       entry_fee_min: undefined,
       entry_fee_max: undefined,
       has_cash_prize: false,
       search_text: searchInput,
-      page: 1,
       // TODO: Need to make dynamic
+      page: 1,
       page_size: 100,
     });
+
+    console.log("data", data);
 
     // Handle Error
     if (error) {
@@ -107,16 +103,7 @@ export default function Tournaments() {
   /** Reset Filters */
   const resetFilters = (shouldRefetch?: boolean) => {
     // Reset Filters
-    setFilters({
-      city: "",
-      area: "",
-      format: "",
-      tournament_format: "",
-      age_category: "",
-      gender: "",
-      start_date: "",
-      end_date: "",
-    });
+    setFilters(DEFAULT_FILTERS);
 
     // Refresh Data
     if (shouldRefetch) {
@@ -228,10 +215,10 @@ export default function Tournaments() {
       {/* MORE FILTERS DRAWER */}
       <TournamentsFilterDrawer
         filters={filters}
-        updateFilter={updateFilter}
-        resetFilters={() => resetFilters(false)}
-        onSearch={() => {
-          getAllTournaments();
+        defaultFilters={DEFAULT_FILTERS}
+        onSearch={(newFilters) => {
+          setFilters(newFilters);
+          getAllTournaments(newFilters);
           setIsMoreFiltersDrawerOpen(false);
         }}
         isOpen={isMoreFiltersDrawerOpen}

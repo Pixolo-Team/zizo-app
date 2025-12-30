@@ -1,5 +1,8 @@
 "use client";
 
+// REACT //
+import { useState, useEffect } from "react";
+
 // TYPES //
 import { TournamentFiltersData } from "@/types/tournament";
 
@@ -22,24 +25,48 @@ import { Button } from "@/components/ui/button";
 // OTHERS //
 import Motion from "../animations/Motion";
 import { shrinkIn, slideInUp } from "@/lib/animations";
+import { format } from "date-fns";
 
 interface TournamentsFilterDrawerProps {
   filters: TournamentFiltersData;
-  updateFilter: (key: keyof TournamentFiltersData, value: string) => void;
-  resetFilters: () => void;
-  onSearch: () => void;
+  defaultFilters: TournamentFiltersData;
+  onSearch: (filters: TournamentFiltersData) => void;
   isOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
 export default function TournamentsFilterDrawer({
   filters,
-  updateFilter,
-  resetFilters,
+  defaultFilters,
   onSearch,
   isOpen,
   onOpenChange,
 }: TournamentsFilterDrawerProps) {
+  const [localFilters, setLocalFilters] =
+    useState<TournamentFiltersData>(filters);
+
+  // Sync local filters with prop filters when drawer opens
+  useEffect(() => {
+    if (isOpen) {
+      setLocalFilters(filters);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, filters]);
+
+  const updateLocalFilter = (
+    key: keyof TournamentFiltersData,
+    value: string
+  ) => {
+    setLocalFilters((prev: TournamentFiltersData) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+  const resetLocalFilters = () => {
+    setLocalFilters(defaultFilters);
+  };
+
   return (
     <FilterDrawer
       title="Matchday Starts here"
@@ -53,18 +80,21 @@ export default function TournamentsFilterDrawer({
           <div className="flex flex-col gap-2">
             <p className="text-n-700 ml-2 leading-tight">Location</p>
             <div className="flex flex-wrap gap-3 gap-y-2">
+              {/* City */}
               <FilterDropdown
                 title="City"
                 options={Object.values(CityFilter)}
-                selectedOption={filters.city || ""}
-                onChange={(value) => updateFilter("city", value)}
+                selectedOption={localFilters.city || ""}
+                onChange={(value) => updateLocalFilter("city", value)}
                 className="border border-n-200"
               />
+
+              {/* Area */}
               <FilterDropdown
                 title="Area"
                 options={Object.values(AreaFilter)}
-                selectedOption={filters.area || ""}
-                onChange={(value) => updateFilter("area", value)}
+                selectedOption={localFilters.area || ""}
+                onChange={(value) => updateLocalFilter("area", value)}
                 className="border border-n-200"
               />
             </div>
@@ -79,15 +109,15 @@ export default function TournamentsFilterDrawer({
               <FilterDropdown
                 title="Age"
                 options={Object.values(Age)}
-                selectedOption={filters.age_category || ""}
-                onChange={(value) => updateFilter("age_category", value)}
+                selectedOption={localFilters.age_category || ""}
+                onChange={(value) => updateLocalFilter("age_category", value)}
                 className="border border-n-200"
               />
               <FilterDropdown
                 title="Gender"
                 options={Object.values(Gender)}
-                selectedOption={filters.gender || ""}
-                onChange={(value) => updateFilter("gender", value)}
+                selectedOption={localFilters.gender || ""}
+                onChange={(value) => updateLocalFilter("gender", value)}
                 className="border border-n-200"
               />
             </div>
@@ -102,15 +132,17 @@ export default function TournamentsFilterDrawer({
               <FilterDropdown
                 title="Tournament Type"
                 options={Object.values(TournamentFilter)}
-                selectedOption={filters.tournament_format || ""}
-                onChange={(value) => updateFilter("tournament_format", value)}
+                selectedOption={localFilters.tournament_format || ""}
+                onChange={(value) =>
+                  updateLocalFilter("tournament_format", value)
+                }
                 className="border border-n-200"
               />
               <FilterDropdown
                 title="Match Format"
                 options={Object.values(MatchFormatFilter)}
-                selectedOption={filters.format || ""}
-                onChange={(value) => updateFilter("format", value)}
+                selectedOption={localFilters.format || ""}
+                onChange={(value) => updateLocalFilter("format", value)}
                 className="border border-n-200"
               />
             </div>
@@ -125,16 +157,18 @@ export default function TournamentsFilterDrawer({
             <div className="grid grid-cols-2 items-center">
               {/* From Date */}
               <DatePicker
-                value={filters.start_date}
-                onChange={(date) => updateFilter("start_date", date)}
+                value={localFilters.start_date}
+                onChange={(date) => {
+                  updateLocalFilter("start_date", format(date, "yyyy-MM-dd"));
+                }}
                 placeholder="From"
                 className="rounded-l-full h-11 rounded-r-none border-r-0 border-n-200 bg-n-50"
               />
 
               {/* To Date */}
               <DatePicker
-                value={filters.end_date}
-                onChange={(date) => updateFilter("end_date", date)}
+                value={localFilters.end_date}
+                onChange={(date) => updateLocalFilter("end_date", date)}
                 placeholder="To"
                 className="rounded-r-full h-11 rounded-l-none border-n-200 bg-n-50"
               />
@@ -149,7 +183,7 @@ export default function TournamentsFilterDrawer({
         <Motion variants={shrinkIn} delay={0.6}>
           <Button
             type="button"
-            onClick={resetFilters}
+            onClick={resetLocalFilters}
             className="bg-n-50 text-n-950 border border-n-200 h-11 w-full rounded-3xl"
             variant={"outline"}
           >
@@ -161,7 +195,7 @@ export default function TournamentsFilterDrawer({
         <Motion variants={shrinkIn} delay={0.7}>
           <Button
             type="button"
-            onClick={onSearch}
+            onClick={() => onSearch(localFilters)}
             className="h-11 w-full rounded-3xl"
           >
             Search
