@@ -1,8 +1,11 @@
 "use client";
 
 // REACT //
-import React, { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+
+// TYPES //
+import { OrganizerDetailsData } from "@/types/tournament";
 
 // COMPONENTS //
 import Image from "next/image";
@@ -17,6 +20,9 @@ import InstagramLogo from "@/components/icons/neevo-icons/InstagramLogo";
 import YoutubeLogo from "@/components/icons/neevo-icons/YoutubeLogo";
 import LineArrowRight1 from "@/components/icons/neevo-icons/LineArrowRight1";
 
+// SERVICES //
+import { getOrganizerDetailsRequest } from "@/services/queries/tournaments.query";
+
 // OTHERS //
 import { useScroll, useMotionValueEvent } from "framer-motion";
 import { fadeIn, shrinkIn } from "@/lib/animations";
@@ -25,11 +31,14 @@ import { fadeIn, shrinkIn } from "@/lib/animations";
 export default function OrganizerProfile() {
   // Define Navigation
   const router = useRouter();
+  const { organizerId } = useParams();
 
   // Define Context
 
   // Define States
   const [showHeader, setShowHeader] = useState<boolean>(false);
+  const [organizerItemDetails, setOrganizerItemDetails] =
+    useState<OrganizerDetailsData | null>(null);
 
   // Define Refs
   const contentCardRef = useRef<HTMLDivElement | null>(null);
@@ -46,6 +55,26 @@ export default function OrganizerProfile() {
     // When content reaches the top, progress > 0
     setShowHeader(latest > 0);
   });
+
+  const getOrganizerDetails = async (organizerId: string) => {
+    const { data, error } = await getOrganizerDetailsRequest(
+      "9638deb6-2eaa-403c-a649-8d6415123c20"
+    );
+
+    if (error) {
+      console.error("Error getting organizer details:", error);
+    } else {
+      console.log(data, "data");
+      console.log(data.organizer_media[0].image_url);
+
+      setOrganizerItemDetails(data);
+    }
+  };
+
+  // UseEffects
+  useEffect(() => {
+    getOrganizerDetails(String(organizerId));
+  }, [organizerId]);
 
   return (
     <section className="relative min-h-screen bg-n-100">
@@ -87,7 +116,7 @@ export default function OrganizerProfile() {
               If your Motion creates transforms, keep Image outside Motion.
            */}
           <Image
-            src="/images/organizer-cover.jpg"
+            src={"/images/organizer-cover.jpg"}
             alt="Organizer Cover Image"
             fill
             className="object-cover"
@@ -105,7 +134,7 @@ export default function OrganizerProfile() {
           {/* Organizer Avatar */}
           <div className="size-24 absolute -top-12 overflow-hidden rounded-full border border-n-50">
             <Image
-              src="/images/organizer-profile.jpg"
+              src={"/images/organizer-profile.jpg"}
               alt="Organizer Avatar"
               width={80}
               height={80}
@@ -117,7 +146,7 @@ export default function OrganizerProfile() {
           <div className="flex flex-col gap-4 pt-14">
             <div className="flex flex-col">
               <p className="text-xl font-medium text-n-950">
-                Skorost United Football Club
+                {organizerItemDetails?.organizer.name}
               </p>
 
               <div className="flex items-center gap-1">
@@ -153,9 +182,9 @@ export default function OrganizerProfile() {
             </div>
 
             <TestimonialCard
-              name="George Haakip"
-              organization="Skorost United FC"
-              testimonial="A formal written description or statement about the abilities, character and qualities of a person, often given by a previous employer; a formal written statement about the quality of a product, service, etc."
+              testimonialItem={
+                organizerItemDetails?.organizer_testimonials[0] ?? null
+              }
               avatarUrl="/images/organizer-cover.jpg"
             />
           </div>
@@ -170,11 +199,11 @@ export default function OrganizerProfile() {
               {[
                 "/images/organizer-cover.jpg",
                 "/images/organizer-cover.jpg",
-              ].map((src, index) => (
+              ].map((mediaItem, index) => (
                 <Image
                   key={index}
-                  src={src}
-                  alt={`Match Photo ${index + 1}`}
+                  src={mediaItem}
+                  alt={`Media Post ${index + 1}`}
                   width={300}
                   height={200}
                   className="rounded-3xl w-56 h-36 object-cover"

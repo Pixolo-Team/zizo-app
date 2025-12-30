@@ -101,8 +101,8 @@ export interface OrganizerMediaData {
 export interface OrganizerTestimonialData {
   id: string;
   quote: string;
-  author_name: string;
-  author_role: string;
+  author_name: string | null;
+  author_role: string | null;
 }
 
 export interface SponsorData {

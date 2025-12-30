@@ -89,6 +89,7 @@ export default function TournamentCard({
                 {/* Location Text */}
                 <p className="justify-start text-n-500 text-xs font-normal ">
                   {tournamentListingItem.area}
+                  {","} {tournamentListingItem.city}
                 </p>
               </div>
             </div>
