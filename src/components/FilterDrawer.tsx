@@ -5,9 +5,7 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerHeader,
-  DrawerTitle,
 } from "@/components/ui/drawer";
 
 /** Filter Drawer Props */
@@ -66,12 +64,7 @@ export default function FilterDrawer({
         )}
 
         {/* Drawer Header */}
-        <DrawerHeader>
-          <DrawerTitle className="text-n-950 text-left">{title}</DrawerTitle>
-          <DrawerDescription className="text-n-500 text-xs text-left">
-            {description}
-          </DrawerDescription>
-        </DrawerHeader>
+        <DrawerHeader title={title} description={description} />
 
         {/* Drawer Body */}
         <div className="px-3 pt-3 pb-20 overflow-y-auto">{children}</div>

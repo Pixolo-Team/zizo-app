@@ -51,9 +51,9 @@ export default function FilterDropdown({
       </SelectTrigger>
 
       {/* Select Content */}
-      <SelectContent className="">
+      <SelectContent className="bg-n-50 ">
         {options.map((option) => (
-          <SelectItem key={option} value={option}>
+          <SelectItem key={option} value={option} className="text-n-950">
             {option}
           </SelectItem>
         ))}

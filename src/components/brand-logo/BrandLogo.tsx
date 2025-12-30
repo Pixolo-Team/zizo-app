@@ -8,6 +8,7 @@ import Image from "next/image";
 interface BrandLogoProps {
   variant?: Variant;
   size?: number;
+  className?: string;
 }
 
 // Type for the variant prop
@@ -23,11 +24,20 @@ type Variant =
 const BrandLogo: React.FC<BrandLogoProps> = ({
   variant = "color",
   size = 120,
+  className,
 }) => {
   // The path to the SVG logo image
   const imagePath = `/brand-logo/${variant}.svg`;
 
-  return <Image src={imagePath} alt="Brand Logo" width={size} height={size} />;
+  return (
+    <Image
+      src={imagePath}
+      alt="Brand Logo"
+      width={size}
+      height={size}
+      className={className}
+    />
+  );
 };
 
 export default BrandLogo;
