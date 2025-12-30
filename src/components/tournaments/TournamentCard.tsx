@@ -5,19 +5,17 @@ import { TournamentListingItemData } from "@/types/tournament";
 
 // COMPONENTS //
 import Image from "next/image";
+import LocationPin from "@/components/icons/neevo-icons/LocationPin";
+import CalendarMark from "@/components/icons/neevo-icons/CalendarMark";
+import UserFullBody from "@/components/icons/neevo-icons/UserFullBody";
+import CalendarUser from "@/components/icons/neevo-icons/CalendarUser";
+import LineArrowRight1 from "@/components/icons/neevo-icons/LineArrowRight1";
+import UploadBox2 from "@/components/icons/neevo-icons/UploadBox2";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 // UTILS //
 import { formatCurrency } from "@/utils/currency";
-
-// OTHERS //
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import LocationPin from "../../../public/icons/neevo-icons/LocationPin";
-import CalendarMark from "../../../public/icons/neevo-icons/CalendarMark";
-import UserFullBody from "../../../public/icons/neevo-icons/UserFullBody";
-import CalendarUser from "../../../public/icons/neevo-icons/CalendarUser";
-import LineArrowRight1 from "../../../public/icons/neevo-icons/LineArrowRight1";
-import UploadBox2 from "../../../public/icons/neevo-icons/UploadBox2";
 
 // Interface Props
 interface TournamentCardProps {
