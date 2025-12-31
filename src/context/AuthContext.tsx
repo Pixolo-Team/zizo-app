@@ -6,6 +6,9 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 // SERVICES //
 import { createIdentityRequest } from "@/services/queries/identity.query";
 
+// ENUMS //
+import { LocalStorageKeys } from "@/enums/app";
+
 interface AuthContextData {
   identityId: string | null;
   isLoading: boolean;
@@ -18,7 +21,7 @@ export function AuthProvider({
 }: Readonly<{ children: React.ReactNode }>) {
   // Define States
   const [identityId, setIdentityId] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Define Use Effect
   useEffect(() => {
@@ -26,7 +29,7 @@ export function AuthProvider({
     const initAuth = async () => {
       try {
         // 1. Check Local Storage
-        const storedId = localStorage.getItem("zizo-id");
+        const storedId = localStorage.getItem(LocalStorageKeys.ZIZO_ID);
 
         // If found - then set
         if (storedId) {
@@ -46,7 +49,7 @@ export function AuthProvider({
         }
 
         // 3. Store new ID
-        localStorage.setItem("zizo-id", newId);
+        localStorage.setItem(LocalStorageKeys.ZIZO_ID, newId);
         setIdentityId(newId);
       } catch (error) {
         console.error("Auth initialization error:", error);

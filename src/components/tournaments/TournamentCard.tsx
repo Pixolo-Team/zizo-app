@@ -43,7 +43,10 @@ export default function TournamentCard({
 
   // Use Effects
   return (
-    <div className="rounded-4xl bg-n-50 overflow-hidden w-full">
+    <a
+      className="rounded-4xl bg-n-50 overflow-hidden w-full"
+      onClick={onRightArrowClick}
+    >
       {/* Image part */}
       <div className="relative rounded-3xl overflow-hidden">
         {/* Card Image */}
@@ -75,7 +78,7 @@ export default function TournamentCard({
           {/* Title + price */}
           <div className="flex justify-between items-start">
             {/* Title + location */}
-            <div className={`flex flex-col justify-start items-start`}>
+            <div className={`flex flex-col justify-start items-start gap-1.5`}>
               {/* Title */}
               <p className="justify-start text-n-900 text-xl font-medium leading-none">
                 {tournamentListingItem.tournament_name}
@@ -85,12 +88,12 @@ export default function TournamentCard({
               <div className="flex items-center gap-1">
                 {/* Location Icon */}
                 <LocationPin
-                  className="size-3"
+                  className="size-4"
                   primaryColor="var(--color-n-400)"
                 />
 
                 {/* Location Text */}
-                <p className="justify-start text-n-500 text-xs font-normal ">
+                <p className="justify-start text-n-500 text-md font-normal ">
                   {tournamentListingItem.area}
                   {","} {tournamentListingItem.city}
                 </p>
@@ -158,7 +161,7 @@ export default function TournamentCard({
               </p>
 
               {/* Extra text */}
-              <p className="text-n-500 text-xs font-normal leading-5">
+              <p className="ml-1 text-n-500 text-xs font-normal leading-5">
                 and more
               </p>
             </div>
@@ -171,6 +174,7 @@ export default function TournamentCard({
             size="icon"
             aria-label="View tournament details"
             onClick={onRightArrowClick}
+            className="rounded-full"
           >
             <ChevronRight
               primaryColor="var(--color-n-700)"
@@ -179,6 +183,6 @@ export default function TournamentCard({
           </Button>
         </div>
       </div>
-    </div>
+    </a>
   );
 }

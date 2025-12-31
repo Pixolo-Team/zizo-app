@@ -104,11 +104,10 @@ export default function Tournaments() {
         city:
           currentFilters.city?.toLowerCase() === "any"
             ? ""
-            : currentFilters.city?.toLowerCase() || "",
+            : currentFilters.city || "",
         gender: currentFilters.gender?.toLowerCase() || "",
         tournament_format:
-          currentFilters.tournament_format?.toLowerCase().replace(" ", "_") ||
-          "",
+          currentFilters.tournament_format?.toLocaleLowerCase() || "",
         ground_type: "",
         entry_fee_min: undefined,
         entry_fee_max: undefined,

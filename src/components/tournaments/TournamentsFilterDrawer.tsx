@@ -10,7 +10,6 @@ import { TournamentFiltersData } from "@/types/tournament";
 import {
   Age,
   AreaFilter,
-  CityFilter,
   Gender,
   MatchFormatFilter,
   TournamentFilter,
@@ -20,6 +19,9 @@ import {
 import FilterDropdown from "@/components/ui/FilterDropdown";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { Button } from "@/components/ui/button";
+
+// SERVICES //
+import { getUniqueCitiesRequest } from "@/services/queries/tournaments.query";
 
 // OTHERS //
 import Motion from "../animations/Motion";
@@ -44,6 +46,7 @@ export default function TournamentsFilterDrawer({
 }: Readonly<TournamentsFilterDrawerProps>) {
   const [localFilters, setLocalFilters] =
     useState<TournamentFiltersData>(filters);
+  const [cities, setCities] = useState<string[]>([]);
 
   // Sync local filters with prop filters when drawer opens
   useEffect(() => {
@@ -52,6 +55,25 @@ export default function TournamentsFilterDrawer({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, filters]);
+
+  /** Fetch unique cities */
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const { data, error } = await getUniqueCitiesRequest();
+
+        if (error) {
+          console.error("Error fetching cities:", error);
+        } else {
+          setCities(data || []);
+        }
+      } catch (err) {
+        console.error("Error in fetchCities:", err);
+      }
+    };
+
+    fetchCities();
+  }, []);
 
   const updateLocalFilter = (
     key: keyof TournamentFiltersData,
@@ -82,20 +104,20 @@ export default function TournamentsFilterDrawer({
                 {/* City */}
                 <FilterDropdown
                   title="City"
-                  options={Object.values(CityFilter)}
+                  options={cities}
                   selectedOption={localFilters.city || ""}
                   onChange={(value) => updateLocalFilter("city", value)}
                   className="border border-n-200"
                 />
 
                 {/* Area */}
-                <FilterDropdown
+                {/* <FilterDropdown
                   title="Area"
                   options={Object.values(AreaFilter)}
                   selectedOption={localFilters.area || ""}
                   onChange={(value) => updateLocalFilter("area", value)}
                   className="border border-n-200"
-                />
+                /> */}
               </div>
             </div>
           </Motion>

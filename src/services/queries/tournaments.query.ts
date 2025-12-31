@@ -62,6 +62,7 @@ export const getTournamentsRequest = async (
 
     // Check for City
     if (filters.city) {
+      console.log("City Filter: ", filters.city);
       query = query.eq("tournament_series.city", filters.city);
     }
 
@@ -172,6 +173,34 @@ export const getTournamentsRequest = async (
 };
 
 /**
+ * Get all unique cities from tournament series
+ */
+export const getUniqueCitiesRequest = async (): Promise<
+  QueryResponseData<string[]>
+> => {
+  try {
+    const { data, error } = await supabase
+      .from("tournament_series")
+      .select("city")
+      .not("city", "is", null);
+
+    // Check for Error
+    if (error) {
+      throw error;
+    }
+
+    // Extract unique cities and sort them alphabetically
+    const cities = Array.from(
+      new Set(data.map((item: { city: string }) => item.city))
+    ).sort((a, b) => a.localeCompare(b));
+
+    return { data: cities, error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
+};
+
+/**
  * Get the full details about a tournament
  */
 export const getTournamentDetailsRequest = async (
@@ -203,6 +232,9 @@ export const getTournamentDetailsRequest = async (
     
         registration_deadline,
         match_days_text,
+
+        contact_name,
+        contact_phone,
     
         min_matches,
         playing_team_size,
@@ -337,7 +369,7 @@ export const addTournamentLeadRequest = async (
   leadData: LeadData
 ): Promise<QueryResponseData<boolean>> => {
   try {
-    const { identity_id, name, phone } = leadData;
+    const { identity_id, name, phone, team_name } = leadData;
 
     // 1. Insert lead
     const { error } = await supabase
@@ -348,6 +380,7 @@ export const addTournamentLeadRequest = async (
           identity_id,
           name_snapshot: name,
           phone_snapshot: phone,
+          team_snapshot: team_name,
         },
       ])
       .select()
