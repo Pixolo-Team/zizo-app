@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import Motion from "../animations/Motion";
 import { shrinkIn, slideInUp } from "@/lib/animations";
 import { format } from "date-fns";
-import { Drawer, DrawerClose, DrawerContent, DrawerHeader } from "../ui/drawer";
+import { Drawer, DrawerContent, DrawerHeader } from "../ui/drawer";
 
 interface TournamentsFilterDrawerProps {
   filters: TournamentFiltersData;

@@ -5,6 +5,7 @@ import "./globals.css";
 import Script from "next/script";
 import localFont from "next/font/local";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/context/AuthContext";
 
 // DATA //
 import type { Metadata } from "next";
@@ -104,8 +105,10 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="antialiased font-sans">
-        {children}
-        <Toaster duration={2000} />
+        <AuthProvider>
+          {children}
+          <Toaster duration={2000} />
+        </AuthProvider>
       </body>
     </html>
   );

@@ -43,15 +43,9 @@ export default function TournamentDetails() {
     useState<TournamentDetailsData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isShareDialogOpen, setIsShareDialogOpen] = useState<boolean>(false);
-  const [origin, setOrigin] = useState<string>("");
   const [isContactDrawerOpen, setIsContactDrawerOpen] =
     useState<boolean>(false);
   const [isInterestFormOpen, setIsInterestFormOpen] = useState<boolean>(false);
-
-  // Define Helper Functions
-  const copyLink = origin
-    ? `${origin}/football-tournaments/${tournamentId}`
-    : "";
 
   /** Get Tournament Details */
   const getTournamentDetails = async () => {
@@ -85,7 +79,6 @@ export default function TournamentDetails() {
 
   /** UseEffect */
   useEffect(() => {
-    setOrigin(window.location.origin);
     window.scrollTo(0, 0);
   }, []);
 
@@ -234,7 +227,7 @@ export default function TournamentDetails() {
       <ShareDrawer
         isOpen={isShareDialogOpen}
         onOpenChange={setIsShareDialogOpen}
-        copyLink={copyLink}
+        tournamentId={tournamentId}
       />
     </>
   );

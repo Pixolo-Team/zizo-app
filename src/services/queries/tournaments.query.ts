@@ -7,6 +7,9 @@ import {
   OrganizerDetailsData,
   LeadData,
   TournamentContactData,
+  OrganizerOptionData,
+  TournamentSeriesCreateData,
+  TournamentCategoryCreateData,
 } from "@/types/tournament";
 
 // SERVICES //
@@ -514,3 +517,57 @@ export const getOrganizerDetailsRequest = async (
     return { data: null, error: error as Error };
   }
 };
+
+/**
+ * Tournament create service functions
+ */
+
+/**
+ * Fetch organizers for dropdown
+ */
+export async function getOrganizersRequest(): Promise<OrganizerOptionData[]> {
+  const { data, error } = await supabase
+    .from("organizers")
+    .select("id, name")
+    .order("name");
+
+  if (error) {
+    throw error;
+  }
+
+  return (data ?? []) as OrganizerOptionData[];
+}
+
+/**
+ * Create tournament series and multiple categories
+ */
+export async function createTournamentService(
+  seriesData: TournamentSeriesCreateData,
+  categoriesData: TournamentCategoryCreateData[]
+): Promise<string> {
+  const { data: series, error: seriesError } = await supabase
+    .from("tournament_series")
+    .insert(seriesData)
+    .select("id")
+    .single();
+
+  if (seriesError) {
+    throw seriesError;
+  }
+
+  const categoriesPayload = categoriesData.map((category) => ({
+    ...category,
+    series_id: series.id,
+    status: "published",
+  }));
+
+  const { error: categoriesError } = await supabase
+    .from("tournaments")
+    .insert(categoriesPayload);
+
+  if (categoriesError) {
+    throw categoriesError;
+  }
+
+  return series.id as string;
+}

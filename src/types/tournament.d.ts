@@ -182,3 +182,81 @@ export interface TournamentContactData {
   contact_name: string;
   contact_phone: string;
 }
+
+// CREATE TOURNAMENT
+/**
+ * Tournament create form data types
+ */
+
+/**
+ * Tournament create form data types
+ */
+
+export type GroundTypeData = "turf" | "mud";
+export type TournamentSeriesStatusData = "draft" | "published" | "closed";
+
+export type GenderData = "boys" | "girls" | "mixed";
+export type TournamentFormatData = "league" | "knockout" | "league_knockout";
+export type SlotStatusData = "open" | "filling_fast" | "almost_full" | "closed";
+
+export type AgeCategoryData =
+  | "U8"
+  | "U10"
+  | "U12"
+  | "U14"
+  | "U16"
+  | "U18"
+  | "OPEN";
+
+export type MatchFormatData = "5v5" | "7v7" | "9v9" | "11v11";
+
+export interface OrganizerOptionData {
+  id: string;
+  name: string;
+}
+
+export interface TournamentSeriesCreateData {
+  name: string;
+  city: string;
+  area: string;
+  ground_name: string;
+  ground_type: GroundTypeData;
+  organizer_id: string;
+  poster_url?: string;
+  status: TournamentSeriesStatusData;
+}
+
+export interface TournamentCategoryCreateData {
+  age_category: AgeCategoryData;
+  gender: GenderData;
+  format: MatchFormatData;
+  tournament_format: TournamentFormatData;
+
+  contact_name?: string | null;
+  contact_phone?: string | null;
+
+  start_date?: string | null; // yyyy-mm-dd
+  start_time?: string | null; // HH:mm
+  end_date?: string | null; // yyyy-mm-dd
+  end_time?: string | null; // HH:mm
+
+  entry_fee?: number | null;
+  advance_fee?: number | null;
+
+  prizes_text?: string | null;
+  cash_prize_total?: number | null;
+
+  age_cutoff_date?: string | null; // yyyy-mm-dd
+  rules_text?: string | null;
+
+  registration_deadline?: string | null; // yyyy-mm-dd
+  match_days_text?: string | null;
+  min_matches?: number | null;
+
+  playing_team_size?: number | null;
+  total_team_size?: number | null;
+  min_players?: number | null;
+  max_players?: number | null;
+
+  slot_status: SlotStatusData;
+}

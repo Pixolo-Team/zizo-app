@@ -11,14 +11,16 @@ import {
 } from "@/types/tournament";
 
 // COMPONENTS //
+
 import Motion from "@/components/animations/Motion";
 import TournamentCard from "@/components/tournaments/TournamentCard";
 import SearchInput from "@/components/ui/SearchInput";
 import Image from "next/image";
 import PrimaryFilters from "@/components/tournaments/PrimaryFilters";
 import TournamentsFilterDrawer from "@/components/tournaments/TournamentsFilterDrawer";
-import ShareDialog from "@/components/ShareDrawer";
+import ShareDrawer from "@/components/drawers/ShareDrawer";
 import TournamentCardSkeleton from "@/components/tournaments/TournamentCardSkeleton";
+import InfiniteScroll from "@/components/ui/infinite-scroll";
 
 // SERVICES //
 import { getTournamentsRequest } from "@/services/queries/tournaments.query";
@@ -49,69 +51,32 @@ export default function Tournaments() {
   const [isShareDialogOpen, setIsShareDialogOpen] = useState<boolean>(false);
   const [shouldRefresh, setShouldRefresh] = useState<boolean>(false);
   const [selectedTournamentId, setSelectedTournamentId] = useState<string>("");
-  const [origin, setOrigin] = useState<string>("");
 
-  // Define Refs
+  // Pagination States
+  const [page, setPage] = useState<number>(1);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const PAGE_SIZE = 10;
 
   // Helper Functions
-  /** Generate a shareable tournament link using current origin + selected tournament */
-  const copyLink = origin
-    ? `${origin}/football-tournaments/${selectedTournamentId}`
-    : "";
-
-  /** Function to get all tournaments */
-  const getAllTournaments = async (overrideFilters?: TournamentFiltersData) => {
-    // Set loading state
-    setIsTournamentsLoading(true);
-
-    const currentFilters = overrideFilters || filters;
-
-    // API Call to get all tournaments
-    const { data, error } = await getTournamentsRequest({
-      ...currentFilters,
-      area:
-        currentFilters.area?.toLowerCase() === "any"
-          ? ""
-          : currentFilters.area?.toLowerCase() || "",
-      city:
-        currentFilters.city?.toLowerCase() === "any"
-          ? ""
-          : currentFilters.city?.toLowerCase() || "",
-      // age_category: currentFilters.age_category?.toLowerCase() || "",
-      gender: currentFilters.gender?.toLowerCase() || "",
-      // TODO: Need to make all filters dynamic
-      tournament_format:
-        currentFilters.tournament_format?.toLowerCase().replace(" ", "_") || "",
-      ground_type: "",
-      entry_fee_min: undefined,
-      entry_fee_max: undefined,
-      has_cash_prize: false,
-      search_text: searchInput,
-      // TODO: Need to make dynamic
-      page: 1,
-      page_size: 100,
-    });
-
-    console.log("data", data);
-
-    // Handle Error
-    if (error) {
-      return error;
-    }
-
-    setTournamentItems(data ?? []);
-    setIsTournamentsLoading(false);
-  };
-
   /** Update Filter */
   const updateFilter = (key: keyof TournamentFiltersData, value: string) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
+    setPage(1);
+    setHasMore(true);
   };
 
   /** Reset Filters */
   const resetFilters = (shouldRefetch?: boolean) => {
+    // Check if filters are already default
+    const isAlreadyDefault =
+      JSON.stringify(filters) === JSON.stringify(DEFAULT_FILTERS);
+
+    if (isAlreadyDefault) return;
+
     // Reset Filters
     setFilters(DEFAULT_FILTERS);
+    setPage(1);
+    setHasMore(true);
 
     // Refresh Data
     if (shouldRefetch) {
@@ -121,14 +86,63 @@ export default function Tournaments() {
 
   const debouncedSearchInput = useDebounce(searchInput, 500);
 
-  // Use Effects
+  // Use Effects - Fetch Data
   useEffect(() => {
-    getAllTournaments();
-  }, [debouncedSearchInput, filters.city, filters.format, shouldRefresh]);
+    const fetchTournaments = async () => {
+      // Set loading state
+      setIsTournamentsLoading(true);
 
-  useEffect(() => {
-    setOrigin(window.location.origin);
-  }, []);
+      const currentFilters = filters;
+
+      // API Call to get all tournaments
+      const { data, error } = await getTournamentsRequest({
+        ...currentFilters,
+        area:
+          currentFilters.area?.toLowerCase() === "any"
+            ? ""
+            : currentFilters.area?.toLowerCase() || "",
+        city:
+          currentFilters.city?.toLowerCase() === "any"
+            ? ""
+            : currentFilters.city?.toLowerCase() || "",
+        gender: currentFilters.gender?.toLowerCase() || "",
+        tournament_format:
+          currentFilters.tournament_format?.toLowerCase().replace(" ", "_") ||
+          "",
+        ground_type: "",
+        entry_fee_min: undefined,
+        entry_fee_max: undefined,
+        has_cash_prize: false,
+        search_text: debouncedSearchInput,
+        page: page,
+        page_size: PAGE_SIZE,
+      });
+
+      // Handle Error
+      if (error) {
+        setIsTournamentsLoading(false);
+        return;
+      }
+
+      const newItems = data ?? [];
+
+      if (page === 1) {
+        setTournamentItems(newItems);
+      } else {
+        setTournamentItems((prev) => {
+          // Prevent duplicates if React Strict Mode runs effects twice
+          const newIds = new Set(newItems.map((i) => i.tournament_id));
+          const filteredPrev = prev.filter((p) => !newIds.has(p.tournament_id));
+          return [...filteredPrev, ...newItems];
+        });
+      }
+
+      setHasMore(newItems.length === PAGE_SIZE);
+      setIsTournamentsLoading(false);
+    };
+
+    fetchTournaments();
+  }, [page, debouncedSearchInput, filters, shouldRefresh]);
 
   return (
     <>
@@ -143,6 +157,8 @@ export default function Tournaments() {
               value={searchInput}
               onChange={(value) => {
                 setSearchInput(value);
+                setPage(1);
+                setHasMore(true);
               }}
               rightIcon
               onRightIconClick={() => {
@@ -164,16 +180,25 @@ export default function Tournaments() {
         {/* Tournaments Listing */}
         <Motion as="div" variants={shrinkIn} delay={0.4}>
           <div className="flex flex-col gap-5">
-            {isTournamentsLoading
-              ? Array.from({ length: 3 }).map(
-                  (skeletonItem, skeletonItemIndex) => (
-                    // TournamentCardSkeleton component
-                    <TournamentCardSkeleton
-                      key={`skeleton-${skeletonItemIndex}`}
-                    />
-                  )
-                )
-              : tournamentItems.map((tournamentItem) => (
+            {isTournamentsLoading && page === 1 ? (
+              Array.from({ length: 3 }).map((skeletonItem, skeletonIndex) => (
+                // TournamentCardSkeleton component
+                <TournamentCardSkeleton key={`skeleton-${skeletonIndex}`} />
+              ))
+            ) : (
+              <InfiniteScroll
+                hasMore={hasMore}
+                isLoading={isTournamentsLoading}
+                next={() => setPage((prev) => prev + 1)}
+                threshold={0.5}
+                className="flex flex-col gap-5"
+                loadingComponent={
+                  <div className="flex flex-col gap-5">
+                    <TournamentCardSkeleton />
+                  </div>
+                }
+              >
+                {tournamentItems.map((tournamentItem) => (
                   // TournamentCard component
                   <TournamentCard
                     key={tournamentItem.tournament_id}
@@ -189,6 +214,8 @@ export default function Tournaments() {
                     }}
                   />
                 ))}
+              </InfiniteScroll>
+            )}
           </div>
         </Motion>
 
@@ -238,7 +265,6 @@ export default function Tournaments() {
         filters={filters}
         onSearch={(newFilters) => {
           setFilters(newFilters);
-          getAllTournaments(newFilters);
           setIsMoreFiltersDrawerOpen(false);
         }}
         onReset={() => {
@@ -249,11 +275,10 @@ export default function Tournaments() {
         onOpenChange={setIsMoreFiltersDrawerOpen}
       />
 
-      {/* SHARE DIALOG */}
-      <ShareDialog
+      <ShareDrawer
         isOpen={isShareDialogOpen}
         onOpenChange={setIsShareDialogOpen}
-        copyLink={copyLink}
+        tournamentId={selectedTournamentId}
       />
     </>
   );

@@ -5,10 +5,7 @@ import BrandLogo from "@/components/brand-logo/BrandLogo";
 import Motion from "@/components/animations/Motion";
 import PageHeader from "@/components/PageHeader";
 
-// NAVIGATION //
-import { usePathname } from "next/navigation";
-
-// OTHERS //
+// ANIMATIONS //
 import { fadeIn, shrinkIn } from "@/lib/animations";
 
 export default function FootballTournamentsLayout({
@@ -16,8 +13,6 @@ export default function FootballTournamentsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-
   return (
     <div className="relative bg-n-100 min-h-screen overflow-x-hidden">
       {/* Backdrop Image */}
