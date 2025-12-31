@@ -1,7 +1,6 @@
 "use client";
 
 // REACT //
-import { useState } from "react";
 
 // COMPONENTS //
 import { Button } from "@/components/ui/button";
@@ -11,27 +10,25 @@ import Motion from "../animations/Motion";
 import { shrinkIn } from "@/lib/animations";
 
 interface StickyCTAProps {
-  onInterested?: () => void;
-  onShowContact?: () => void;
+  isContactRevealed?: boolean;
+  onRequestInterest?: () => void;
+  onContactClick?: () => void;
 }
 
 export default function StickyCTA({
-  onInterested,
-  onShowContact,
+  isContactRevealed = false,
+  onRequestInterest,
+  onContactClick,
 }: Readonly<StickyCTAProps>) {
-  // WHY: Track whether the user has already expressed interest
-  const [isInterested, setIsInterested] = useState(false);
-
   const handleClick = () => {
     // WHY: First interaction converts intent → interest
-    if (!isInterested) {
-      setIsInterested(true);
-      onInterested?.();
+    if (!isContactRevealed) {
+      onRequestInterest?.();
       return;
     }
 
     // WHY: Second interaction should reveal contact options
-    onShowContact?.();
+    onContactClick?.();
   };
 
   return (
@@ -40,12 +37,12 @@ export default function StickyCTA({
         <Button
           onClick={handleClick}
           className={`w-full h-[56px] rounded-[24px] text-[16px] font-medium transition-colors ${
-            isInterested
+            isContactRevealed
               ? "bg-green-500 hover:bg-green-600 text-white"
               : "bg-n-950 hover:bg-n-900 text-n-50"
           }`}
         >
-          {isInterested ? "Show Contact Details" : "I'm Interested"}
+          {isContactRevealed ? "Show Contact Details" : "I'm Interested"}
         </Button>
       </Motion>
     </div>

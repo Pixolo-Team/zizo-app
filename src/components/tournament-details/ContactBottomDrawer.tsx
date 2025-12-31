@@ -27,10 +27,11 @@ export default function ContactBottomDrawer({
 }: Readonly<ContactBottomDrawerProps>) {
   const whatsappLink = `https://wa.me/91${phone}`;
 
+  // Helper Functions
   /** Copy link to clipboard */
   const copyToClipboard = () => {
-    navigator.clipboard.writeText("");
-    toast.success("Link copied to clipboard");
+    navigator.clipboard.writeText(phone);
+    toast.success("Phone number copied");
   };
 
   return (

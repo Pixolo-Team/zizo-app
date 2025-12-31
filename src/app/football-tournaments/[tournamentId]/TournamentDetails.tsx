@@ -10,7 +10,6 @@ import TournamentHero from "@/components/tournament-details/TournamentHero";
 import InfoGrid from "@/components/tournament-details/InfoGrid";
 import FeesSection from "@/components/tournament-details/FeesSection";
 import PrizePool from "@/components/tournament-details/PrizePool";
-import AwardsSection from "@/components/tournament-details/AwardsSection";
 import SponsorsSection from "@/components/tournament-details/SponsorsSection";
 import OrganizerSection from "@/components/tournament-details/OrganizerSection";
 import DetailsList from "@/components/tournament-details/DetailsList";
@@ -30,6 +29,9 @@ import { useParams } from "next/navigation";
 import { shrinkIn, fadeIn } from "@/lib/animations";
 import ShareDrawer from "@/components/drawers/ShareDrawer";
 
+// ENUMS //
+import { LocalStorageKeys } from "@/enums/app";
+
 /** Tournament Details Page */
 export default function TournamentDetails() {
   // Define Navigation
@@ -46,6 +48,7 @@ export default function TournamentDetails() {
   const [isContactDrawerOpen, setIsContactDrawerOpen] =
     useState<boolean>(false);
   const [isInterestFormOpen, setIsInterestFormOpen] = useState<boolean>(false);
+  const [isContactRevealed, setIsContactRevealed] = useState<boolean>(false);
 
   /** Get Tournament Details */
   const getTournamentDetails = async () => {
@@ -60,8 +63,6 @@ export default function TournamentDetails() {
       if (error) {
         console.error("Error getting tournament details:", error);
       } else {
-        console.log(data);
-
         setTournamentDetails(data);
       }
     } catch (err) {
@@ -80,7 +81,16 @@ export default function TournamentDetails() {
   /** UseEffect */
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+
+    // WHY: Check if the user has already expressed interest in this tournament
+    const interestedTournaments = JSON.parse(
+      localStorage.getItem(LocalStorageKeys.INTERESTED_TOURNAMENTS) || "[]"
+    );
+
+    if (interestedTournaments.includes(tournamentId)) {
+      setIsContactRevealed(true);
+    }
+  }, [tournamentId]);
 
   // Render Loading State
   if (isLoading) {
@@ -102,7 +112,7 @@ export default function TournamentDetails() {
 
   return (
     <>
-      <div className="h-full pb-20 max-w-[450px] mx-auto relative z-4">
+      <div className="bg-n-50 h-full pb-20 max-w-[450px] mx-auto relative z-4">
         {/* THumbnail Image */}
         <Motion variants={shrinkIn} delay={0.2}>
           <TournamentCardImage
@@ -115,7 +125,7 @@ export default function TournamentDetails() {
         </Motion>
 
         {/* Details Section */}
-        <div className="bg-n-50 px-6 py-7 flex flex-col gap-6 rounded-b-2xl">
+        <div className="px-6 py-7 flex flex-col gap-6 rounded-b-2xl">
           {/* Main Info */}
           <div className="flex flex-col gap-5">
             {/* Tournament Hero */}
@@ -123,7 +133,7 @@ export default function TournamentDetails() {
               <TournamentHero
                 title={tournamentDetails.series.name}
                 location={`${tournamentDetails.series.ground_name}, ${tournamentDetails.series.city}`}
-                price={tournamentDetails.tournament.entry_fee}
+                entryFee={tournamentDetails.tournament.entry_fee}
               />
             </Motion>
 
@@ -167,14 +177,16 @@ export default function TournamentDetails() {
           {/* Bottom Information */}
           <div className="flex flex-col gap-10">
             {/* Awards Section */}
-            <Motion variants={fadeIn} delay={0.7}>
+            {/* <Motion variants={fadeIn} delay={0.7}>
               <AwardsSection />
-            </Motion>
+            </Motion> */}
 
-            {/* Sponsors Section */}
-            <Motion variants={fadeIn} delay={0.8}>
-              <SponsorsSection sponsors={tournamentDetails.sponsors ?? []} />
-            </Motion>
+            {tournamentDetails.sponsors.length > 0 && (
+              // Sponsors Section
+              <Motion variants={fadeIn} delay={0.8}>
+                <SponsorsSection sponsors={tournamentDetails.sponsors ?? []} />
+              </Motion>
+            )}
 
             {/* Organizer Section */}
             {tournamentDetails.organizer && (
@@ -206,24 +218,29 @@ export default function TournamentDetails() {
         {/* Sticky CTA */}
         <Motion variants={shrinkIn} delay={1.1}>
           <StickyCTA
-            onInterested={() => setIsInterestFormOpen(true)}
-            onShowContact={() => setIsContactDrawerOpen(true)}
+            isContactRevealed={isContactRevealed}
+            onRequestInterest={() => setIsInterestFormOpen(true)}
+            onContactClick={() => setIsContactDrawerOpen(true)}
           />
         </Motion>
       </div>
 
+      {/* Contact Bottom Drawer */}
       <ContactBottomDrawer
-        phone={"98929222"}
+        phone={tournamentDetails.tournament?.contact_phone}
         isOpen={isContactDrawerOpen}
         onOpenChange={setIsContactDrawerOpen}
       />
 
+      {/* Tournament Interest Form */}
       <TournamentInterestForm
         isOpen={isInterestFormOpen}
         onOpenChange={setIsInterestFormOpen}
+        tournamentId={tournamentId}
+        onSuccess={() => setIsContactRevealed(true)}
       />
 
-      {/* SHARE DIALOG */}
+      {/* Share Drawer */}
       <ShareDrawer
         isOpen={isShareDialogOpen}
         onOpenChange={setIsShareDialogOpen}

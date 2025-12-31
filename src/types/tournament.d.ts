@@ -66,6 +66,9 @@ export interface TournamentData {
   winning_prizes: string[]; // jsonb array
   awards: string[]; // jsonb array
 
+  contact_name: string;
+  contact_phone: string;
+
   registration_deadline: string;
   match_days_text: string;
 
@@ -124,6 +127,7 @@ export interface LeadData {
   identity_id: string;
   name: string;
   phone: string;
+  team_name?: string;
 }
 
 export interface OrganizerDetailsData {

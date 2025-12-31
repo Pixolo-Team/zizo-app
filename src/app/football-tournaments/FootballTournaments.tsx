@@ -30,7 +30,6 @@ import { shrinkIn } from "@/lib/animations";
 import { useDebounce } from "@/hooks/useDebounce";
 import { DEFAULT_FILTERS } from "@/infrastructure/constants/tournaments";
 
-
 /** Tournaments Page */
 export default function Tournaments() {
   // Define Navigation
@@ -105,11 +104,10 @@ export default function Tournaments() {
         city:
           currentFilters.city?.toLowerCase() === "any"
             ? ""
-            : currentFilters.city?.toLowerCase() || "",
+            : currentFilters.city || "",
         gender: currentFilters.gender?.toLowerCase() || "",
         tournament_format:
-          currentFilters.tournament_format?.toLowerCase().replace(" ", "_") ||
-          "",
+          currentFilters.tournament_format?.toLocaleLowerCase() || "",
         ground_type: "",
         entry_fee_min: undefined,
         entry_fee_max: undefined,
