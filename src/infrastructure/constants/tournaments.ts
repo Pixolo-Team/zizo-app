@@ -8,6 +8,7 @@ import {
   SlotStatusData,
   GroundTypeData,
   TournamentSeriesStatusData,
+  OrganizerTypeData,
 } from "@/types/tournament";
 
 // UTILS //
@@ -65,4 +66,9 @@ export const seriesStatusOptionsData: TournamentSeriesStatusData[] = [
   "draft",
   "published",
   "closed",
+];
+
+export const organizerTypeOptionsData: OrganizerTypeData[] = [
+  "individual",
+  "group",
 ];

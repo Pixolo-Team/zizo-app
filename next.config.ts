@@ -19,6 +19,11 @@ const nextConfig: NextConfig = {
         hostname: "upload.wikimedia.org",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "bhopalliteraturefestival.com",
+        port: "",
+      },
     ],
   },
 };
