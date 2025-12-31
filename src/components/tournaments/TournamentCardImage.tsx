@@ -1,7 +1,7 @@
 "use client";
 
 // REACT //
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // COMPONENTS //
 import Image from "next/image";
@@ -18,20 +18,24 @@ interface TournamentCardImageProps {
 export default function TournamentCardImage({
   posterUrl,
   onShareBtnClick,
-}: TournamentCardImageProps) {
+}: Readonly<TournamentCardImageProps>) {
   const defaultImage = "/images/default/tournament-card-thumbnail.png";
 
   // Define States
-  const [imageSrc, setImageSrc] = useState<string>(defaultImage);
+  const [hasError, setHasError] = useState(false);
+  const [prevPosterUrl, setPrevPosterUrl] = useState(posterUrl);
 
-  useEffect(() => {
-    // Only set the image if posterUrl exists and is not an empty string
-    if (posterUrl && posterUrl.trim() !== "") {
-      setImageSrc(posterUrl);
-    } else {
-      setImageSrc(defaultImage);
-    }
-  }, [posterUrl]);
+  // If posterUrl changes, reset error state
+  if (posterUrl !== prevPosterUrl) {
+    setPrevPosterUrl(posterUrl);
+    setHasError(false);
+  }
+
+  // Calculate image Source
+  const imageSrc =
+    !hasError && posterUrl && posterUrl.trim() !== ""
+      ? posterUrl
+      : defaultImage;
 
   return (
     <>
@@ -43,7 +47,7 @@ export default function TournamentCardImage({
         height={200}
         className="h-[219px] w-full object-cover rounded-4xl"
         loading="eager"
-        onError={() => setImageSrc(defaultImage)}
+        onError={() => setHasError(true)}
       />
 
       {/* Share button */}

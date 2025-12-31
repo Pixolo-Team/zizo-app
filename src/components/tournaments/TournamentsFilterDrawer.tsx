@@ -9,7 +9,6 @@ import { TournamentFiltersData } from "@/types/tournament";
 // ENUMS //
 import {
   Age,
-  AreaFilter,
   Gender,
   MatchFormatFilter,
   TournamentFilter,

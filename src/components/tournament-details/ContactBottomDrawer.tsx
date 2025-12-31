@@ -38,7 +38,7 @@ export default function ContactBottomDrawer({
     <Drawer open={isOpen} onOpenChange={onOpenChange}>
       <DrawerContent>
         <DrawerHeader
-          title="Contact"
+          title="You’re in! ⚽"
           subTitle="Reach out to the organiser to confirm your spot"
         />
         <Motion variants={slideInUp} delay={0.1}>

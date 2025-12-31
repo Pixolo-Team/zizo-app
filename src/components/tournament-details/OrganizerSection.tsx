@@ -5,16 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface OrganizerSectionProps {
-  id: string;
+  organizerId: string;
   name: string;
   imageSrc: string;
 }
 
 export default function OrganizerSection({
-  id,
+  organizerId,
   name,
   imageSrc,
-}: OrganizerSectionProps) {
+}: Readonly<OrganizerSectionProps>) {
   return (
     <div className="flex flex-col gap-3.5">
       <h3 className="text-lg font-medium text-n-950">About the Organizer</h3>
@@ -23,7 +23,7 @@ export default function OrganizerSection({
         <div className="relative h-12 w-12 rounded-full overflow-hidden border border-n-300">
           <Image
             src={imageSrc}
-            alt={name}
+            alt={`${name}-${organizerId}`}
             width={56}
             height={56}
             className="w-full h-full object-contain"
@@ -33,12 +33,12 @@ export default function OrganizerSection({
         {/* Name & See Profile */}
         <div className="flex flex-col gap-1 flex-1">
           <p className="text-lg font-bold leading-none text-n-950">{name}</p>
-          <Link
+          {/* <Link
             href={`/organizer/${id}`}
             className="text-sm font-medium leading-none text-green-500 hover:underline"
           >
             See Profile
-          </Link>
+          </Link> */}
         </div>
       </div>
     </div>
