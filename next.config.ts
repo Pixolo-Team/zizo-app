@@ -24,6 +24,11 @@ const nextConfig: NextConfig = {
         hostname: "bhopalliteraturefestival.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "encrypted-tbn0.gstatic.com",
+        port: "",
+      },
     ],
   },
 };
