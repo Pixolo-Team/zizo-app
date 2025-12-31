@@ -18,6 +18,7 @@ import TournamentCardImage from "@/components/tournaments/TournamentCardImage";
 import Motion from "@/components/animations/Motion";
 import ContactBottomDrawer from "@/components/tournament-details/ContactBottomDrawer";
 import TournamentInterestForm from "@/components/drawers/TournamentInterestForm";
+import ShareDrawer from "@/components/drawers/ShareDrawer";
 
 // SERVICES //
 import { getTournamentDetailsRequest } from "@/services/queries/tournaments.query";
@@ -27,7 +28,6 @@ import { useParams } from "next/navigation";
 
 // OTHERS //
 import { shrinkIn, fadeIn } from "@/lib/animations";
-import ShareDrawer from "@/components/drawers/ShareDrawer";
 
 // ENUMS //
 import { LocalStorageKeys } from "@/enums/app";
