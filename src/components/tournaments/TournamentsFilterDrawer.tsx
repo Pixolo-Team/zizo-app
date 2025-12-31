@@ -83,6 +83,7 @@ export default function TournamentsFilterDrawer({
       ...prev,
       [key]: value,
     }));
+    
   };
 
   return (

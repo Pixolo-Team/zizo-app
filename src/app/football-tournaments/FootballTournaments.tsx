@@ -29,6 +29,7 @@ import { getTournamentsRequest } from "@/services/queries/tournaments.query";
 import { shrinkIn } from "@/lib/animations";
 import { useDebounce } from "@/hooks/useDebounce";
 import { DEFAULT_FILTERS } from "@/infrastructure/constants/tournaments";
+import { trackEvent } from "@/utils/analytics";
 
 /** Tournaments Page */
 export default function Tournaments() {
@@ -142,6 +143,21 @@ export default function Tournaments() {
 
     fetchTournaments();
   }, [page, debouncedSearchInput, filters, shouldRefresh]);
+
+  // Use Effects - Search Event Tracking
+  useEffect(() => {
+    if (debouncedSearchInput.length >= 3) {
+      trackEvent({
+        action: "search_tournament",
+        params: {
+          search_query: debouncedSearchInput,
+          city: filters.city,
+          age_category: filters.age_category,
+          event_category: "tournament_listing",
+        },
+      });
+    }
+  }, [debouncedSearchInput, filters.city, filters.age_category]);
 
   return (
     <>
