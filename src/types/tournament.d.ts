@@ -264,3 +264,24 @@ export interface TournamentCategoryCreateData {
 
   slot_status: SlotStatusData;
 }
+
+export type OrganizerTypeData = "individual" | "group";
+
+export interface OrganizerCreateData {
+  name: string;
+  type: OrganizerTypeData;
+  contact_name: string;
+  contact_phone: string;
+  whatsapp_phone: string;
+  logo_url: string;
+}
+
+export interface OrganizerListingItemData {
+  id: string;
+  name: string;
+  type: string;
+  contact_name: string | null;
+  contact_phone: string | null;
+  logo_url: string | null;
+  created_at: string;
+}

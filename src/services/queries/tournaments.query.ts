@@ -10,6 +10,8 @@ import {
   OrganizerOptionData,
   TournamentSeriesCreateData,
   TournamentCategoryCreateData,
+  OrganizerCreateData,
+  OrganizerListingItemData,
 } from "@/types/tournament";
 
 // SERVICES //
@@ -603,4 +605,51 @@ export async function createTournamentService(
   }
 
   return series.id as string;
+}
+
+/**
+ * Create an Organizer
+ */
+export async function createOrganizerRequest(
+  organizerData: OrganizerCreateData
+): Promise<QueryResponseData<string>> {
+  try {
+    const { data, error } = await supabase
+      .from("organizers")
+      .insert([organizerData])
+      .select("id")
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    return { data: data.id as string, error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
+}
+
+/**
+ * Get all organizers for listing
+ */
+export async function getOrganizersListRequest(): Promise<
+  QueryResponseData<OrganizerListingItemData[]>
+> {
+  try {
+    const { data, error } = await supabase
+      .from("organizers")
+      .select(
+        "id, name, type, contact_name, contact_phone, logo_url, created_at"
+      )
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      throw error;
+    }
+
+    return { data: (data as any[]) ?? [], error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
 }

@@ -235,7 +235,7 @@ export default function TournamentDetails() {
                 tournamentFormat={
                   tournamentDetails.tournament.tournament_format
                 }
-                minMatches={`${tournamentDetails.tournament.min_matches} minimum`}
+                minMatches={tournamentDetails.tournament.min_matches}
                 fillingFast={
                   tournamentDetails.tournament.slot_status === "filling_fast"
                 }

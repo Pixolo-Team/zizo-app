@@ -27,7 +27,7 @@ function DetailItem({ icon, label, value }: DetailItemProps) {
 interface DetailsListProps {
   matchFormat: string;
   tournamentFormat: string;
-  minMatches: string;
+  minMatches: number;
   fillingFast?: boolean;
 }
 
@@ -65,7 +65,7 @@ export default function DetailsList({
           <DetailItem
             icon={<FileReportIcon className="text-n-700 size-4" />}
             label="Matches"
-            value={minMatches}
+            value={`${minMatches}+`}
           />
         )}
 
