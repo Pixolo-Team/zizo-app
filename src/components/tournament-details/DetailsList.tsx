@@ -36,7 +36,7 @@ export default function DetailsList({
   tournamentFormat,
   minMatches,
   fillingFast,
-}: DetailsListProps) {
+}: Readonly<DetailsListProps>) {
   return (
     <div className="flex flex-col gap-3">
       {/* Heading */}
@@ -46,26 +46,37 @@ export default function DetailsList({
 
       {/* List */}
       <div className="flex flex-col gap-3">
+        {/* Match Format */}
         <DetailItem
           icon={<FileReportIcon className="text-n-700 size-4" />}
           label="Match Format"
           value={matchFormat}
         />
+
+        {/* Tournament Format */}
         <DetailItem
           icon={<FileReportIcon className="text-n-700 size-4" />}
           label="Tournament Format"
           value={tournamentFormat}
         />
-        <DetailItem
-          icon={<FileReportIcon className="text-n-700 size-4" />}
-          label="Matches"
-          value={minMatches}
-        />
-        <DetailItem
-          icon={<FileReportIcon className="text-n-700 size-4" />}
-          label="Available Slots"
-          value={fillingFast ? "Filling Fast" : "Available"}
-        />
+
+        {/* Minimum Number of Matches */}
+        {minMatches && (
+          <DetailItem
+            icon={<FileReportIcon className="text-n-700 size-4" />}
+            label="Matches"
+            value={minMatches}
+          />
+        )}
+
+        {/* Available Slots */}
+        {fillingFast && (
+          <DetailItem
+            icon={<FileReportIcon className="text-n-700 size-4" />}
+            label="Available Slots"
+            value={fillingFast ? "Filling Fast" : "Available"}
+          />
+        )}
       </div>
     </div>
   );

@@ -192,7 +192,7 @@ export default function TournamentDetails() {
             {tournamentDetails.organizer && (
               <Motion variants={fadeIn} delay={0.9}>
                 <OrganizerSection
-                  id={tournamentDetails.organizer.id}
+                  organizerId={tournamentDetails.organizer.id}
                   name={tournamentDetails.organizer.name}
                   imageSrc={tournamentDetails.organizer.logo_url}
                 />
