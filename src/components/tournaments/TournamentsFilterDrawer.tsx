@@ -27,6 +27,7 @@ import Motion from "../animations/Motion";
 import { shrinkIn, slideInUp } from "@/lib/animations";
 import { format } from "date-fns";
 import { Drawer, DrawerContent, DrawerHeader } from "../ui/drawer";
+import { trackEvent } from "@/utils/analytics";
 
 interface TournamentsFilterDrawerProps {
   filters: TournamentFiltersData;
@@ -82,7 +83,19 @@ export default function TournamentsFilterDrawer({
       ...prev,
       [key]: value,
     }));
-    
+  };
+
+  /** Track Filter Application Events */
+  const trackFilterEvent = (filterName: string, filterValue: string) => {
+    // Add Event Tracking
+    trackEvent({
+      action: "apply_filter",
+      params: {
+        filter_type: filterName,
+        filter_value: filterValue,
+        city: filters.city || "any",
+      },
+    });
   };
 
   return (
@@ -106,7 +119,10 @@ export default function TournamentsFilterDrawer({
                   title="City"
                   options={cities}
                   selectedOption={localFilters.city || ""}
-                  onChange={(value) => updateLocalFilter("city", value)}
+                  onChange={(value) => {
+                    updateLocalFilter("city", value);
+                    trackFilterEvent("city", value);
+                  }}
                   className="border border-n-200"
                 />
 
@@ -131,14 +147,20 @@ export default function TournamentsFilterDrawer({
                   title="Age"
                   options={Object.values(Age)}
                   selectedOption={localFilters.age_category || ""}
-                  onChange={(value) => updateLocalFilter("age_category", value)}
+                  onChange={(value) => {
+                    updateLocalFilter("age_category", value);
+                    trackFilterEvent("age_category", value);
+                  }}
                   className="border border-n-200"
                 />
                 <FilterDropdown
                   title="Gender"
                   options={Object.values(Gender)}
                   selectedOption={localFilters.gender || ""}
-                  onChange={(value) => updateLocalFilter("gender", value)}
+                  onChange={(value) => {
+                    updateLocalFilter("gender", value);
+                    trackFilterEvent("gender", value);
+                  }}
                   className="border border-n-200"
                 />
               </div>
@@ -154,16 +176,20 @@ export default function TournamentsFilterDrawer({
                   title="Tournament Type"
                   options={Object.values(TournamentFilter)}
                   selectedOption={localFilters.tournament_format || ""}
-                  onChange={(value) =>
-                    updateLocalFilter("tournament_format", value)
-                  }
+                  onChange={(value) => {
+                    updateLocalFilter("tournament_format", value);
+                    trackFilterEvent("tournament_type", value);
+                  }}
                   className="border border-n-200"
                 />
                 <FilterDropdown
                   title="Match Format"
                   options={Object.values(MatchFormatFilter)}
                   selectedOption={localFilters.format || ""}
-                  onChange={(value) => updateLocalFilter("format", value)}
+                  onChange={(value) => {
+                    updateLocalFilter("format", value);
+                    trackFilterEvent("match_format", value);
+                  }}
                   className="border border-n-200"
                 />
               </div>
@@ -181,6 +207,7 @@ export default function TournamentsFilterDrawer({
                   value={localFilters.start_date}
                   onChange={(date) => {
                     updateLocalFilter("start_date", format(date, "yyyy-MM-dd"));
+                    trackFilterEvent("start_date", format(date, "yyyy-MM-dd"));
                   }}
                   placeholder="From"
                   className="rounded-l-full h-11 rounded-r-none border-r-0 border-n-200 bg-n-50"
@@ -189,9 +216,10 @@ export default function TournamentsFilterDrawer({
                 {/* To Date */}
                 <DatePicker
                   value={localFilters.end_date}
-                  onChange={(date) =>
-                    updateLocalFilter("end_date", format(date, "yyyy-MM-dd"))
-                  }
+                  onChange={(date) => {
+                    updateLocalFilter("end_date", format(date, "yyyy-MM-dd"));
+                    trackFilterEvent("end_date", format(date, "yyyy-MM-dd"));
+                  }}
                   placeholder="To"
                   className="rounded-r-full h-11 rounded-l-none border-n-200 bg-n-50"
                 />

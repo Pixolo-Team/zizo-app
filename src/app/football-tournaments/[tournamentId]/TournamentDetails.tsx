@@ -31,6 +31,7 @@ import { shrinkIn, fadeIn } from "@/lib/animations";
 
 // ENUMS //
 import { LocalStorageKeys } from "@/enums/app";
+import { trackEvent } from "@/utils/analytics";
 
 /** Tournament Details Page */
 export default function TournamentDetails() {
@@ -77,6 +78,34 @@ export default function TournamentDetails() {
   useEffect(() => {
     getTournamentDetails();
   }, []);
+
+  useEffect(() => {
+    trackEvent({
+      action: "view_tournament_detail",
+      params: {
+        tournament_id: tournamentDetails?.tournament.id,
+        tournament_name: tournamentDetails?.series?.name,
+        city: tournamentDetails?.series?.city,
+        age_category: tournamentDetails?.tournament.age_category,
+        tournament_format: tournamentDetails?.tournament.tournament_format,
+        entry_fee: tournamentDetails?.tournament.entry_fee,
+      },
+    });
+  }, [tournamentDetails]);
+
+  /** UseEffect - Track Interest Clicks */
+  useEffect(() => {
+    if (isInterestFormOpen) {
+      trackEvent({
+        action: "click_im_interested",
+        params: {
+          tournament_id: tournamentDetails?.tournament.id,
+          tournament_name: tournamentDetails?.series?.name,
+          city: tournamentDetails?.series?.city,
+        },
+      });
+    }
+  }, [isInterestFormOpen, tournamentDetails]);
 
   /** UseEffect */
   useEffect(() => {

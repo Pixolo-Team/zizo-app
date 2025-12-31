@@ -223,6 +223,16 @@ export default function Tournaments() {
                       setSelectedTournamentId(tournamentItem.tournament_id);
                     }}
                     onRightArrowClick={() => {
+                      trackEvent({
+                        action: "view_tournament_card",
+                        params: {
+                          tournament_id: tournamentItem.tournament_id,
+                          tournament_name: tournamentItem.tournament_name,
+                          city: tournamentItem.city,
+                          age_category: tournamentItem.age_category,
+                          gender: tournamentItem.gender,
+                        },
+                      });
                       router.push(
                         `/football-tournaments/${tournamentItem.tournament_id}`
                       );
