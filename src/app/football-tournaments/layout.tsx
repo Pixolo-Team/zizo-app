@@ -10,9 +10,7 @@ import { fadeIn, shrinkIn } from "@/lib/animations";
 
 export default function FootballTournamentsLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className="relative bg-n-100 min-h-screen overflow-x-hidden">
       {/* Backdrop Image */}
