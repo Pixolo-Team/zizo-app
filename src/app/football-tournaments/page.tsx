@@ -14,7 +14,7 @@ export const metadata = {
     siteName: "ZIZO",
     images: [
       {
-        url: "/images/og.png",
+        url: "/images/og.jpg",
         width: 1200,
         height: 630,
         alt: "Local Football Tournaments in India | ZIZO",
