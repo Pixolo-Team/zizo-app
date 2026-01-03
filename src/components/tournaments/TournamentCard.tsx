@@ -22,7 +22,7 @@ import ChevronRight from "../icons/neevo-icons/ChevronRight";
 // Interface Props
 interface TournamentCardProps {
   tournamentListingItem: TournamentListingItemData;
-  onShareBtnClick: () => void;
+  onShareBtnClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onRightArrowClick: () => void;
 }
 

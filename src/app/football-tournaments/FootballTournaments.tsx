@@ -218,7 +218,8 @@ export default function Tournaments() {
                   <TournamentCard
                     key={tournamentItem.tournament_id}
                     tournamentListingItem={tournamentItem}
-                    onShareBtnClick={() => {
+                    onShareBtnClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                      e.stopPropagation();
                       setIsShareDialogOpen(true);
                       setSelectedTournamentId(tournamentItem.tournament_id);
                     }}
