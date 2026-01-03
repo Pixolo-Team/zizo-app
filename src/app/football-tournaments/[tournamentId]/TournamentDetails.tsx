@@ -20,6 +20,9 @@ import ContactBottomDrawer from "@/components/tournament-details/ContactBottomDr
 import TournamentInterestForm from "@/components/drawers/TournamentInterestForm";
 import ShareDrawer from "@/components/drawers/ShareDrawer";
 
+// CONSTANTS //
+import { TOURNAMENT_FORMAT_LABELS } from "@/constants/labels";
+
 // SERVICES //
 import { getTournamentDetailsRequest } from "@/services/queries/tournaments.query";
 
@@ -233,7 +236,9 @@ export default function TournamentDetails() {
               <DetailsList
                 matchFormat={tournamentDetails.tournament.format}
                 tournamentFormat={
-                  tournamentDetails.tournament.tournament_format
+                  TOURNAMENT_FORMAT_LABELS[
+                    tournamentDetails.tournament.tournament_format
+                  ]
                 }
                 minMatches={tournamentDetails.tournament.min_matches}
                 fillingFast={

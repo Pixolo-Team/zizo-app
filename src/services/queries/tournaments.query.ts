@@ -17,6 +17,9 @@ import {
 // SERVICES //
 import { supabase } from "@/services/supabase";
 
+// UTILS //
+import { toSnakeCase } from "@/utils/formatter";
+
 /**
  * Get a list of tournaments (with filters)
  */
@@ -85,7 +88,7 @@ export const getTournamentsRequest = async (
 
     // Check for Tournament Format
     if (filters.tournament_format) {
-      query = query.eq("tournament_format", filters.tournament_format);
+      query = query.eq("tournament_format", toSnakeCase(filters.tournament_format));
     }
 
     // Check for Format

@@ -20,7 +20,7 @@ export default function FeesSection({ entryFee, advance }: FeesSectionProps) {
       <div className="flex flex-col items-center justify-center gap-1">
         <p className="text-xs text-n-500 font-medium">Advance</p>
         <p className="text-xl text-n-900 font-semibold leading-tight">
-          ₹{advance.toLocaleString()}
+          {advance ? `₹${advance.toLocaleString()}` : "N/A"}
         </p>
       </div>
     </div>

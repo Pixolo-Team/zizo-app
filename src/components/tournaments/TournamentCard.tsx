@@ -157,7 +157,7 @@ export default function TournamentCard({
             <div className="flex justify-start items-end gap-0.5">
               {/* Total Cash Prize */}
               <p className="text-n-900 text-xl font-bold leading-6">
-                ₹{tournamentListingItem.cash_prize_total.toLocaleString()}
+                {(tournamentListingItem?.cash_prize_total)?`₹${tournamentListingItem.cash_prize_total?.toLocaleString()}`: "Trophies"}
               </p>
 
               {/* Extra text */}

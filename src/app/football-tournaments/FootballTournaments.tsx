@@ -107,8 +107,7 @@ export default function Tournaments() {
             ? ""
             : currentFilters.city || "",
         gender: currentFilters.gender?.toLowerCase() || "",
-        tournament_format:
-          currentFilters.tournament_format?.toLocaleLowerCase() || "",
+        tournament_format: currentFilters.tournament_format || "",
         ground_type: "",
         entry_fee_min: undefined,
         entry_fee_max: undefined,
@@ -121,6 +120,7 @@ export default function Tournaments() {
       // Handle Error
       if (error) {
         setIsTournamentsLoading(false);
+        setHasMore(false);
         return;
       }
 
