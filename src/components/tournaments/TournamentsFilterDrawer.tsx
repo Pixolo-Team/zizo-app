@@ -110,7 +110,7 @@ export default function TournamentsFilterDrawer({
           subTitle="Select your preferences"
         />
 
-        <div className="flex flex-col gap-7 max-h-[45vh] overflow-y-auto pb-12 px-4 ">
+        <div className="flex flex-col gap-7 max-h-[45vh] overflow-y-auto pb-12">
           {/* Location */}
           <Motion variants={slideInUp} delay={0.1}>
             <div className="flex flex-col gap-2">

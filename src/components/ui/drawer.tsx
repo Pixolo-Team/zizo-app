@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 
 // ICONS //
 import Close from "../icons/neevo-icons/Close";
+import Motion from "../animations/Motion";
+import { slideInUp } from "@/lib/animations";
 
 function Drawer({
   ...props
@@ -99,17 +101,22 @@ function DrawerHeader({
   return (
     <div
       data-slot="drawer-header"
-      className={cn("flex flex-col gap-1 pb-8", className)}
+      className={cn("flex flex-col gap-1 pb-6", className)}
       {...props}
     >
-      {title && (
-        <p className="text-lg font-semibold text-n-800 leading-tight">
-          {title}
-        </p>
-      )}
-      {subTitle && (
-        <p className="text-sm text-n-600 leading-tight">{subTitle}</p>
-      )}
+      <Motion variants={slideInUp} delay={0.1}>
+        {title && (
+          <p className="text-lg font-semibold text-n-800 leading-tight">
+            {title}
+          </p>
+        )}
+      </Motion>
+
+      <Motion variants={slideInUp} delay={0.2}>
+        {subTitle && (
+          <p className="text-sm text-n-600 leading-tight">{subTitle}</p>
+        )}
+      </Motion>
     </div>
   );
 }

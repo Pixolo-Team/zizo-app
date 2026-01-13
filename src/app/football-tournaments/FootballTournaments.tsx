@@ -218,7 +218,9 @@ export default function Tournaments() {
                   <TournamentCard
                     key={tournamentItem.tournament_id}
                     tournamentListingItem={tournamentItem}
-                    onShareBtnClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                    onShareBtnClick={(
+                      e: React.MouseEvent<HTMLButtonElement>
+                    ) => {
                       e.stopPropagation();
                       setIsShareDialogOpen(true);
                       setSelectedTournamentId(tournamentItem.tournament_id);
@@ -247,38 +249,38 @@ export default function Tournaments() {
 
         {/* Empty State */}
         {!isTournamentsLoading && tournamentItems.length === 0 && (
-          <div className="flex flex-col gap-6 h-full pt-16 items-center justify-center">
+          <div className="flex flex-col gap-3 h-full pt-16 items-center justify-center">
             {/* Empty State Image */}
             <div className="hidden dark-mode-block">
               <Image
-                src="/images/empty-tournament-darkmode.png"
+                src="/images/empty-state-tournament-lightmode.png"
                 alt="No tournaments (light)"
                 width={1200}
                 height={120}
                 priority
-                className="w-[220px] h-[120px] object-contain"
+                className="w-full h-[173px] object-cover invert-[1]"
               />
             </div>
 
             <div className=" block dark-mode-hidden">
               <Image
-                src="/images/empty-tournament-lightmode.png"
+                src="/images/empty-state-tournament-lightmode.png"
                 alt="No tournaments (dark)"
                 width={1200}
                 height={120}
                 priority
-                className="w-[220px] h-[120px] object-contain"
+                className="w-full h-[173px] object-cover"
               />
             </div>
 
-            <div className="flex flex-col gap-2.5 items-center w-[78%]">
+            <div className="flex flex-col gap-2 items-center">
               {/* Empty State Title */}
               <p className="text-center text-n-900 font-medium text-xl">
                 No tournaments on the field
               </p>
 
               {/* Empty State Subtitle */}
-              <p className="text-center text-n-600 font-normal text-sm">
+              <p className="text-center text-n-600 font-normal leading-[137%] text-sm w-[78%]">
                 Try changing your filters or search a different area
               </p>
             </div>

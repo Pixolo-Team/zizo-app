@@ -18,7 +18,7 @@ type Props = {
 export default function SearchInput({
   value = "",
   onChange,
-  placeholder = "Search...",
+  placeholder = "Mumbai, 7 a side, December",
   onClear,
   className,
   rightIcon,

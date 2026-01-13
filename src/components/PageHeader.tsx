@@ -1,15 +1,15 @@
 // COMPONENTS //
 import BrandLogo from "@/components/brand-logo/BrandLogo";
-import ButtonsRightIcon from "@/components/icons/neevo-icons/ButtonsRight";
 import Link from "next/link";
 
 // Interface props
 interface PageHeaderProps {
   title?: string;
+  children?: React.ReactNode;
 }
 
 // Page Header Component
-export default function PageHeader({ title }: PageHeaderProps) {
+export default function PageHeader({ title, children }: PageHeaderProps) {
   // Define Navigation
 
   // Define Context
@@ -46,13 +46,8 @@ export default function PageHeader({ title }: PageHeaderProps) {
         )}
       </div>
 
-      {/* Button Rights 2 Icon */}
-      {/* <Link href="/football-tournaments">
-        <ButtonsRightIcon
-          primaryColor="var(--color-n-900)"
-          className="size-9 -rotate-45"
-        />
-      </Link> */}
+      {/* Right Content */}
+      <div>{children}</div>
     </div>
   );
 }

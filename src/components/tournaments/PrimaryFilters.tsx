@@ -70,7 +70,7 @@ export default function PrimaryFilters({
       {/* Clear Button */}
       <button
         type="button"
-        className="underline text-n-950 text-xs cursor-pointer"
+        className="py-2 px-2.5 bg-n-50 rounded-[20px] flex items-center justify-center text-n-950 text-xs cursor-pointer"
         onClick={resetFilters}
       >
         Clear

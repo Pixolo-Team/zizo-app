@@ -18,6 +18,8 @@ import { formatLongDate } from "@/utils/date";
 
 // OTHERS //
 import ChevronRight from "../icons/neevo-icons/ChevronRight";
+import Bookmark from "../icons/neevo-icons/Bookmark";
+import { useEffect, useState } from "react";
 
 // Interface Props
 interface TournamentCardProps {
@@ -36,12 +38,21 @@ export default function TournamentCard({
   // Define Context
 
   // Define States
+  const [imageSrc, setImageSrc] = useState<string>(
+    "/images/default/tournament-card-thumbnail.png"
+  );
 
   // Define Refs
 
   // Helper Functions
 
   // Use Effects
+  useEffect(() => {
+    if (tournamentListingItem.poster_url) {
+      setImageSrc(tournamentListingItem.poster_url);
+    }
+  }, [tournamentListingItem]);
+
   return (
     <a
       className="rounded-4xl bg-n-50 overflow-hidden w-full"
@@ -50,37 +61,34 @@ export default function TournamentCard({
       {/* Image part */}
       <div className="relative rounded-3xl overflow-hidden">
         {/* Card Image */}
-        <Image
-          src={
-            tournamentListingItem.poster_url ??
-            "/images/default/tournament-card-thumbnail.png"
-          }
-          alt="Brand Logo"
-          width={200}
-          height={200}
-          className="h-[195px] w-full object-cover"
-          loading="eager"
-        />
+        {imageSrc !== "" && (
+          <Image
+            src={imageSrc}
+            onError={() =>
+              setImageSrc("/images/default/tournament-card-thumbnail.png")
+            }
+            alt="Brand Logo"
+            width={200}
+            height={200}
+            className="h-[200px] w-full object-cover"
+            loading="eager"
+          />
+        )}
         {/* Share button */}
-        <Button
-          className="absolute top-5 right-5 text-n-50 bg-n-950 rounded-full hover:bg-n-700"
-          variant={"default"}
-          size={"icon"}
-          onClick={onShareBtnClick}
-        >
-          {/* Share Icon */}
-          <UploadBox2 primaryColor="var(--color-n-50)" className="size-4" />
-        </Button>
+        <div className="absolute top-5 right-5 flex justify-center items-center text-n-800 text-sm leading-[26px]  font-semibold bg-n-50 rounded-3xl py-0.5 px-2">
+          {/* Price Chip */}
+          {`₹${tournamentListingItem.entry_fee.toLocaleString()}/-`}
+        </div>
       </div>
       {/* Content part */}
-      <div className="p-5 flex flex-col gap-5">
+      <div className="pt-2.5 pb-6 px-5 flex flex-col gap-3.5">
         <div className="flex flex-col gap-4">
-          {/* Title + price */}
+          {/* Title + action button */}
           <div className="flex justify-between items-start">
             {/* Title + location */}
-            <div className={`flex flex-col justify-start items-start gap-1.5`}>
+            <div className={`flex flex-col justify-start items-start gap-1`}>
               {/* Title */}
-              <p className="justify-start text-n-900 text-xl font-medium leading-none">
+              <p className="justify-start text-n-900 text-xl font-medium leading-tight">
                 {tournamentListingItem.tournament_name}
               </p>
 
@@ -88,22 +96,41 @@ export default function TournamentCard({
               <div className="flex items-center gap-1">
                 {/* Location Icon */}
                 <LocationPin
-                  className="size-4"
+                  className="size-3"
                   primaryColor="var(--color-n-400)"
                 />
 
                 {/* Location Text */}
-                <p className="justify-start text-n-500 text-md font-normal ">
+                <p className="justify-start text-n-500 text-sm font-normal ">
                   {tournamentListingItem.area}
                   {","} {tournamentListingItem.city}
                 </p>
               </div>
             </div>
 
-            {/* Price */}
-            <p className="justify-start text-green-500 text-lg font-bold leading-6">
-              ₹{tournamentListingItem.entry_fee.toLocaleString()}
-            </p>
+            {/* Action Buttons */}
+            <div className="flex items-center gap-4">
+              {/* Share Button */}
+              <Button
+                variant={"ghost"}
+                size="icon"
+                className="size-5"
+                onClick={onShareBtnClick}
+              >
+                <UploadBox2
+                  primaryColor="var(--color-n-950)"
+                  className="size-5"
+                />
+              </Button>
+
+              {/* Save Button */}
+              <Button variant={"ghost"} size="icon" className="size-5">
+                <Bookmark
+                  primaryColor="var(--color-n-950)"
+                  className="size-5"
+                />
+              </Button>
+            </div>
           </div>
 
           {/* Badges */}
@@ -113,7 +140,7 @@ export default function TournamentCard({
               className="flex items-center gap-1 px-3 py-2.5 text-n-900 font-normal text-xs"
               variant={"secondary"}
             >
-              {/* Calendar Icon */}
+              {/* Start Date */}
               <CalendarMark
                 className="size-4"
                 primaryColor="var(--color-n-900)"
@@ -125,7 +152,7 @@ export default function TournamentCard({
               className="flex items-center gap-1 px-3 py-2.5 text-n-900 font-normal text-xs"
               variant={"secondary"}
             >
-              {/* Users Icon */}
+              {/* Format */}
               <UserFullBody
                 className="size-4"
                 primaryColor="var(--color-n-900)"
@@ -137,12 +164,25 @@ export default function TournamentCard({
               className="flex items-center gap-1 px-3 py-2.5 text-n-900 font-normal text-xs"
               variant={"secondary"}
             >
-              {/* Contact Icon */}
+              {/* Age Category */}
               <CalendarUser
                 className="size-4"
                 primaryColor="var(--color-n-900)"
               />
               {tournamentListingItem.age_category}
+            </Badge>
+
+            <Badge
+              className="flex items-center gap-1 px-3 py-2.5 text-n-900 font-normal text-xs"
+              variant={"secondary"}
+            >
+              {/* Slot Status */}
+              <CalendarUser
+                className="size-4"
+                primaryColor="var(--color-n-900)"
+              />
+              {tournamentListingItem.slot_status.charAt(0).toUpperCase() +
+                tournamentListingItem.slot_status.slice(1)}
             </Badge>
           </div>
         </div>
@@ -157,11 +197,13 @@ export default function TournamentCard({
             <div className="flex justify-start items-end gap-0.5">
               {/* Total Cash Prize */}
               <p className="text-n-900 text-xl font-bold leading-6">
-                {(tournamentListingItem?.cash_prize_total)?`₹${tournamentListingItem.cash_prize_total?.toLocaleString()}`: "Trophies"}
+                {tournamentListingItem?.cash_prize_total
+                  ? `₹${tournamentListingItem.cash_prize_total?.toLocaleString()}`
+                  : "Trophies"}
               </p>
 
               {/* Extra text */}
-              <p className="ml-1 text-n-500 text-xs font-normal leading-5">
+              <p className="text-n-500 text-xs font-normal leading-5">
                 and more
               </p>
             </div>
@@ -178,7 +220,7 @@ export default function TournamentCard({
           >
             <ChevronRight
               primaryColor="var(--color-n-700)"
-              className="size-2.5"
+              className="size-3.5"
             />
           </Button>
         </div>
