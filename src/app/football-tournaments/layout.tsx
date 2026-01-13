@@ -15,15 +15,15 @@ export default function FootballTournamentsLayout({
     <div className="relative bg-n-100 min-h-screen overflow-x-hidden">
       {/* Backdrop Image */}
       <Motion as="div" variants={fadeIn} delay={0.1}>
-        <div className="fixed -top-[80px] -right-[140px] opacity-20 ">
+        <div className="fixed -top-[13px] -right-[60px]">
           <BrandLogo
             variant="color-icon"
-            size={380}
+            size={260}
             className="hidden dark-mode-block"
           />
           <BrandLogo
             variant="color-icon"
-            size={380}
+            size={260}
             className="block dark-mode-hidden"
           />
         </div>

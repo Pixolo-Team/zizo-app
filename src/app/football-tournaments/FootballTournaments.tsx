@@ -79,6 +79,16 @@ export default function Tournaments() {
     setPage(1);
     setHasMore(true);
 
+    // Track Event
+    trackEvent({
+      action: "clear_filter",
+      params: {
+        city: filters.city,
+        age_category: filters.age_category,
+        event_category: "tournament_listing",
+      },
+    });
+
     // Refresh Data
     if (shouldRefetch) {
       setShouldRefresh((prev) => !prev);
