@@ -70,7 +70,7 @@ export default function TournamentCard({
             alt="Brand Logo"
             width={200}
             height={200}
-            className="h-[200px] w-full object-cover"
+            className="h-[200px] md:h-[280px] xl:h-[340px] w-full object-cover"
             loading="eager"
           />
         )}

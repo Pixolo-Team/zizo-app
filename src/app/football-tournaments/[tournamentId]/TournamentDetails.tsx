@@ -144,7 +144,7 @@ export default function TournamentDetails() {
 
   return (
     <>
-      <div className="bg-n-50 h-full pb-20 max-w-[450px] mx-auto relative z-4">
+      <div className="h-full pb-20 max-w-[450px] mx-auto relative z-4">
         {/* THumbnail Image */}
         <Motion variants={shrinkIn} delay={0.2}>
           <TournamentCardImage
