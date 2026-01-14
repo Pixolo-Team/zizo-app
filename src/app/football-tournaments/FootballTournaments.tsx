@@ -2,7 +2,7 @@
 
 // REACT //
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // TYPES //
 import {
@@ -53,6 +53,10 @@ export default function Tournaments() {
   const [shouldRefresh, setShouldRefresh] = useState<boolean>(false);
   const [selectedTournamentId, setSelectedTournamentId] = useState<string>("");
 
+  // Define Refs
+  const hasFiredFilterNoResults = useRef<boolean>(false);
+  const hasFiredSearchNoResults = useRef<boolean>(false);
+
   // Pagination States
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
@@ -64,6 +68,41 @@ export default function Tournaments() {
     setFilters((prev) => ({ ...prev, [key]: value }));
     setPage(1);
     setHasMore(true);
+  };
+
+  /** Has Active Filters */
+  const hasActiveFilters = () =>
+    Object.entries(filters).some(
+      ([key, value]) => key !== "city" && value !== "any"
+    );
+
+  /** Handle Right arrow click */
+  const handleArrowClick = (tournamentItem: TournamentListingItemData) => {
+    // If filters are active, track event
+    if (hasActiveFilters()) {
+      trackEvent({
+        action: "filter_then_click",
+        params: {
+          filter_type: Object.keys(filters).find(
+            (key) => filters[key as keyof TournamentFiltersData] !== "any"
+          ),
+          tournament_id: tournamentItem.tournament_id,
+          tournament_name: tournamentItem.tournament_name,
+        },
+      });
+    }
+
+    trackEvent({
+      action: "view_tournament_card",
+      params: {
+        tournament_id: tournamentItem.tournament_id,
+        tournament_name: tournamentItem.tournament_name,
+        city: tournamentItem.city,
+        age_category: tournamentItem.age_category,
+        gender: tournamentItem.gender,
+      },
+    });
+    router.push(`/football-tournaments/${tournamentItem.tournament_id}`);
   };
 
   /** Reset Filters */
@@ -79,13 +118,12 @@ export default function Tournaments() {
     setPage(1);
     setHasMore(true);
 
-    // Track Event
+    // Track Reset Event
     trackEvent({
       action: "clear_filter",
       params: {
         city: filters.city,
-        age_category: filters.age_category,
-        event_category: "tournament_listing",
+        filter_type: "all",
       },
     });
 
@@ -169,6 +207,94 @@ export default function Tournaments() {
     }
   }, [debouncedSearchInput, filters.city, filters.age_category]);
 
+  useEffect(() => {
+    hasFiredFilterNoResults.current = false;
+  }, [filters]);
+
+  useEffect(() => {
+    hasFiredSearchNoResults.current = false;
+  }, [debouncedSearchInput]);
+
+  useEffect(() => {
+    if (
+      !isTournamentsLoading &&
+      tournamentItems.length === 0 &&
+      !debouncedSearchInput &&
+      !hasFiredFilterNoResults.current
+    ) {
+      hasFiredFilterNoResults.current = true;
+
+      trackEvent({
+        action: "filter_no_results",
+        params: {
+          filter_type: Object.keys(filters).find(
+            (key) => filters[key as keyof TournamentFiltersData] !== "any"
+          ),
+          filter_value: Object.values(filters).find((v) => v !== "any"),
+          city: filters.city,
+        },
+      });
+    }
+  }, [isTournamentsLoading, tournamentItems, debouncedSearchInput, filters]);
+
+  useEffect(() => {
+    if (
+      !isTournamentsLoading &&
+      tournamentItems.length === 0 &&
+      debouncedSearchInput.length >= 3 &&
+      !hasFiredSearchNoResults.current
+    ) {
+      hasFiredSearchNoResults.current = true;
+
+      trackEvent({
+        action: "search_no_results",
+        params: {
+          search_query: debouncedSearchInput,
+          city: filters.city,
+        },
+      });
+    }
+  }, [
+    isTournamentsLoading,
+    tournamentItems,
+    debouncedSearchInput,
+    filters.city,
+  ]);
+
+  // Fire scroll_75 event once per page
+  useEffect(() => {
+    let hasFired = false;
+    const initialHeight = document.documentElement.scrollHeight;
+
+    const handleScroll = () => {
+      if (hasFired) return;
+
+      const scrollTop = window.scrollY;
+      const viewportHeight = window.innerHeight;
+
+      const progress = (scrollTop + viewportHeight) / initialHeight;
+
+      if (progress >= 0.75) {
+        hasFired = true;
+
+        trackEvent({
+          action: "scroll_75",
+          params: {
+            ...filters,
+          },
+        });
+
+        window.removeEventListener("scroll", handleScroll);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <>
       {/* Tournaments Listing Page */}
@@ -236,19 +362,7 @@ export default function Tournaments() {
                       setSelectedTournamentId(tournamentItem.tournament_id);
                     }}
                     onRightArrowClick={() => {
-                      trackEvent({
-                        action: "view_tournament_card",
-                        params: {
-                          tournament_id: tournamentItem.tournament_id,
-                          tournament_name: tournamentItem.tournament_name,
-                          city: tournamentItem.city,
-                          age_category: tournamentItem.age_category,
-                          gender: tournamentItem.gender,
-                        },
-                      });
-                      router.push(
-                        `/football-tournaments/${tournamentItem.tournament_id}`
-                      );
+                      handleArrowClick(tournamentItem);
                     }}
                   />
                 ))}
