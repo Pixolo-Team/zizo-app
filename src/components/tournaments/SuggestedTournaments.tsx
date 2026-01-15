@@ -35,6 +35,14 @@ const tabs = [
     label: "Matches",
     href: "/football-tournaments",
   },
+   {
+    label: "Jobs",
+    href: "/football-tournaments",
+  },
+   {
+    label: "Time",
+    href: "/football-tournaments",
+  },
 ];
 
 export default function SuggestedTournaments({
