@@ -69,14 +69,14 @@ function DrawerContent({
           "data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mt-24 data-[vaul-drawer-direction=bottom]:max-h-[85vh] data-[vaul-drawer-direction=bottom]:border-t",
           "data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-3/4 data-[vaul-drawer-direction=right]:border-l data-[vaul-drawer-direction=right]:sm:max-w-sm",
           "data-[vaul-drawer-direction=left]:inset-y-0 data-[vaul-drawer-direction=left]:left-0 data-[vaul-drawer-direction=left]:w-3/4 data-[vaul-drawer-direction=left]:border-r data-[vaul-drawer-direction=left]:sm:max-w-sm",
-          "px-5 py-8 pb-12 bg-n-50 rounded-tl-4xl rounded-tr-4xl",
+          "px-5 py-8 pb-12 lg:px-7 bg-n-50 rounded-tl-4xl rounded-tr-4xl",
           className
         )}
         {...props}
       >
         {/* Close Button */}
-        <DrawerClose className="absolute -top-16 left-1/2 -translate-x-1/2 shadow-[0_0_6px_0_rgba(0,0,0,0.25)] bg-n-700 hover:bg-n-700/80 size-10 rounded-full text-n-50 transition-colors flex justify-center items-center">
-          <Close primaryColor={"var(--color-n-300)"} className="size-5" />
+        <DrawerClose className="absolute -top-16 lg:-top-20 left-1/2 -translate-x-1/2 shadow-[0_0_6px_0_rgba(0,0,0,0.25)] bg-n-700 hover:bg-n-700/80 size-10 lg:size-12 rounded-full text-n-50 transition-colors flex justify-center items-center">
+          <Close primaryColor={"var(--color-n-300)"} className="size-5 lg:size-6" />
         </DrawerClose>
 
         {/* Drawer Content */}
@@ -101,12 +101,12 @@ function DrawerHeader({
   return (
     <div
       data-slot="drawer-header"
-      className={cn("flex flex-col gap-1 pb-6", className)}
+      className={cn("flex flex-col gap-1 pb-6 lg:pb-7 lg:gap-1.5", className)}
       {...props}
     >
       <Motion variants={slideInUp} delay={0.1}>
         {title && (
-          <p className="text-lg font-semibold text-n-800 leading-tight">
+          <p className="text-lg font-semibold text-n-800 leading-tight lg:text-2xl ">
             {title}
           </p>
         )}
@@ -114,7 +114,7 @@ function DrawerHeader({
 
       <Motion variants={slideInUp} delay={0.2}>
         {subTitle && (
-          <p className="text-sm text-n-600 leading-tight">{subTitle}</p>
+          <p className="text-sm text-n-600 leading-tight lg:text-base">{subTitle}</p>
         )}
       </Motion>
     </div>

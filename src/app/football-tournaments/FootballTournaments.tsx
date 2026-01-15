@@ -386,7 +386,7 @@ export default function Tournaments() {
 
           {/* Empty State */}
           {!isTournamentsLoading && tournamentItems.length === 0 && (
-            <div className="flex flex-col gap-3 h-full pt-16 items-center justify-center">
+            <div className="flex flex-col gap-3 h-full pt-16 lg:pt-0 items-center justify-center">
               {/* Empty State Image */}
               <div className="hidden dark-mode-block">
                 <Image
@@ -395,7 +395,7 @@ export default function Tournaments() {
                   width={1200}
                   height={120}
                   priority
-                  className="w-full h-[173px] object-cover invert-[1]"
+                  className="w-full h-[173px] object-cover invert-[1] lg:h-[280px] xl:h-[350px]"
                 />
               </div>
 
@@ -406,18 +406,18 @@ export default function Tournaments() {
                   width={1200}
                   height={120}
                   priority
-                  className="w-full h-[173px] object-cover"
+                  className="w-full h-[173px] object-cover lg:h-[280px] xl:h-[350px]"
                 />
               </div>
 
               <div className="flex flex-col gap-2 items-center">
                 {/* Empty State Title */}
-                <p className="text-center text-n-900 font-medium text-xl">
+                <p className="text-center text-n-900 font-medium text-xl lg:text-2xl xl:text-3xl">
                   No tournaments on the field
                 </p>
 
                 {/* Empty State Subtitle */}
-                <p className="text-center text-n-600 font-normal leading-[137%] text-sm w-[78%]">
+                <p className="text-center text-n-600 font-normal leading-[137%] text-sm w-[78%] lg:text-lg xl:text-xl ">
                   Try changing your filters or search a different area
                 </p>
               </div>

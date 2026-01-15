@@ -44,7 +44,7 @@ export default function FilterDropdown({
       <SelectTrigger
         isSelected={Boolean(selectedOption)}
         className={
-          cn(selectedOption ? "bg-n-900 text-n-50 " : "") + " " + className
+          cn(selectedOption ? "bg-n-900 text-n-50  " : "") + " " + className
         }
       >
         <SelectValue placeholder={title} />

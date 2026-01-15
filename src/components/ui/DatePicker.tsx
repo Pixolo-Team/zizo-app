@@ -34,7 +34,7 @@ export function DatePicker({
         <Button
           variant={"outline"}
           className={cn(
-            "w-full justify-between text-left font-normal text-n-950",
+            "w-full justify-between text-left font-normal text-n-950 lg:py-4 lg:px-5 lg:text-lg lg:h-[53px]",
             !value && "text-n-950",
             className
           )}
@@ -50,7 +50,7 @@ export function DatePicker({
             height="6"
             viewBox="0 0 10 6"
             fill="none"
-            className={cn("size-3 text-n-950 mr-2")}
+            className={cn("size-3 text-n-950 mr-2 lg:mr-5")}
           >
             <path
               d="M0.5 0.5L5 5L9.5 0.5"
@@ -60,7 +60,7 @@ export function DatePicker({
           </svg>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-4 mr-4" align="start">
+      <PopoverContent className="w-auto p-4 mr-4 lg:p-5" align="start">
         <Calendar
           mode="single"
           selected={dateValue}
