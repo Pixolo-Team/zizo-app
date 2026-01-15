@@ -16,12 +16,12 @@ export default function PrizePool({ totalPool, prizes }: PrizePoolProps) {
   const [isOpen, setIsOpen] = useState<boolean>(true);
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex justify-between items-end py-3.5 border-b border-n-200">
+    <div className="flex w-full p-5 bg-n-50 rounded-2xl flex-col gap-3 border border-n-200">
+      <div className="flex justify-between items-end">
         {/* Header */}
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2">
           {/* Left Title  */}
-          <p className="text-xs text-n-500">Prize Pool</p>
+          <p className="font-medium text-n-500">Prizes</p>
           <div className="flex items-baseline gap-1">
             <h2 className="text-xl font-semibold text-n-900 leading-tight">
               ₹{totalPool.toLocaleString()}
@@ -69,21 +69,17 @@ export default function PrizePool({ totalPool, prizes }: PrizePoolProps) {
         {prizes.map((prize, index) => (
           <div
             key={index}
-            className="flex justify-between items-center border-b border-n-100 last:border-0 px-3 py-3"
+            className="flex justify-between items-center border-t border-n-200 p-3"
           >
             {/* Position Number and text */}
-            <div className="flex items-center gap-2.5">
-              {/* Position Number */}
-              <div className="size-[18.6px] px-[3px] rounded-[6px] bg-n-700 text-n-50 flex items-center justify-center text-sm font-bold -rotate-45">
-                <p className="rotate-45">{index + 1}</p>
-              </div>
+            <div className="flex">
               {/* Position Text */}
-              <p className="text-lg text-n-950">{prize.position}</p>
+              <p className="text-lg text-n-900">{prize.position}</p>
             </div>
 
             {/* Prize Amount */}
             <div className="flex flex-col items-end">
-              <p className="text-n-950 font-bold leading-normal">
+              <p className="text-n-900 font-bold leading-normal">
                 ₹{prize.amount.toLocaleString()}
               </p>
               <p className="text-xs text-n-600 leading-[14px]">

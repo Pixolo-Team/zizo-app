@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 // OTHERS //
 import Motion from "../animations/Motion";
 import { shrinkIn } from "@/lib/animations";
+import UploadBox2 from "../icons/neevo-icons/UploadBox2";
 
 interface StickyCTAProps {
   isContactRevealed?: boolean;
@@ -32,19 +33,37 @@ export default function StickyCTA({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 p-5 bg-n-100 border-t border-n-200 z-50">
-      <Motion variants={shrinkIn} delay={1.3}>
+    <div className="fixed bottom-0 left-0 right-0 p-5 bg-n-50 border-t border-n-200 z-50">
+      <div className="flex items-center gap-3">
+        <div className="flex-1">
+          <Motion variants={shrinkIn} delay={1.3}>
+            <Button
+              onClick={handleClick}
+              className={`w-full h-[50px] rounded-[24px] text-[16px] font-medium transition-colors ${
+                isContactRevealed
+                  ? "bg-green-500 hover:bg-green-600 text-white"
+                  : "bg-n-950 hover:bg-n-900 text-n-50"
+              }`}
+            >
+              {isContactRevealed ? "Show Contact Details" : "I'm Interested"}
+            </Button>
+          </Motion>
+        </div>
+
+        {/* Share Icon */}
+        {/* Share Button */}
         <Button
-          onClick={handleClick}
-          className={`w-full h-[56px] rounded-[24px] text-[16px] font-medium transition-colors ${
-            isContactRevealed
-              ? "bg-green-500 hover:bg-green-600 text-white"
-              : "bg-n-950 hover:bg-n-900 text-n-50"
-          }`}
+          variant={"ghost"}
+          size="icon"
+          className="size-[50px] lg:size-8 bg-n-100 rounded-4xl"
+          // onClick={onShareBtnClick}
         >
-          {isContactRevealed ? "Show Contact Details" : "I'm Interested"}
+          <UploadBox2
+            primaryColor="var(--color-n-800)"
+            className="size-[18px] lg:size-8"
+          />
         </Button>
-      </Motion>
+      </div>
     </div>
   );
 }

@@ -27,8 +27,9 @@ const mockAwards: AwardItem[] = [
 
 export default function AwardsSection() {
   return (
-    <div className="flex flex-col gap-3">
-      <h3 className="text-lg font-medium text-n-950">Honours & Awards</h3>
+    <div className="flex w-full p-5 bg-n-50 rounded-2xl flex-col gap-3 border border-n-200">
+      {/* Heading */}
+      <p className="text-n-500 font-medium">Honours & Awards</p>
       <div className="grid grid-cols-3 gap-3">
         {mockAwards.map((award, index) => (
           <div

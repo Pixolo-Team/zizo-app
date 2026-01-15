@@ -193,7 +193,7 @@ export default function RootLayout({
                   <SideMenu menuItems={menuItems} />
                 </Motion>
               </div>
-              <div className="flex-1">{children}</div>
+              <div className="w-full lg:flex-1">{children}</div>
             </div>
           </div>
           <Toaster duration={2000} />

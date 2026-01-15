@@ -38,11 +38,9 @@ export default function DetailsList({
   fillingFast,
 }: Readonly<DetailsListProps>) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex w-full p-5 bg-n-50 rounded-2xl flex-col gap-3 border border-n-200">
       {/* Heading */}
-      <h3 className="text-[16px] font-medium text-n-950 mb-3">
-        Tournament Details
-      </h3>
+      <p className="text-n-500 font-medium">Extra Details</p>
 
       {/* List */}
       <div className="flex flex-col gap-3">

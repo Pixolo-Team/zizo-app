@@ -9,8 +9,9 @@ export default function SponsorsSection({
   sponsors: SponsorData[];
 }) {
   return (
-    <div className="flex flex-col gap-3">
-      <h3 className="text-lg font-medium text-n-950">Our Sponsors</h3>
+    <div className="flex w-full p-5 bg-n-50 rounded-2xl flex-col gap-3 border border-n-200">
+      {/* Heading */}
+      <p className="text-n-500 font-medium">Our Sponsors</p>
 
       {/* Sponsors */}
       <div className="flex gap-6 items-center flex-wrap">

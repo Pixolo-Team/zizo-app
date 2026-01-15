@@ -12,12 +12,12 @@ import UploadBox2 from "../icons/neevo-icons/UploadBox2";
 
 interface TournamentCardImageProps {
   posterUrl: string | undefined | null;
-  onShareBtnClick: () => void;
+  entryFee: number;
 }
 
 export default function TournamentCardImage({
   posterUrl,
-  onShareBtnClick,
+  entryFee,
 }: Readonly<TournamentCardImageProps>) {
   const defaultImage = "/images/default/tournament-card-thumbnail.png";
 
@@ -45,21 +45,17 @@ export default function TournamentCardImage({
         alt="Tournament Card"
         width={200}
         height={200}
-        className="h-[219px] w-full object-cover rounded-4xl"
+        className="h-[200px] md:h-[280px] xl:h-[340px] w-full object-cover rounded-3xl"
         loading="eager"
         onError={() => setHasError(true)}
       />
 
-      {/* Share button */}
-      <Button
-        className="absolute top-5 right-5 text-n-50 bg-n-950/50 rounded-full hover:bg-n-950/70"
-        variant={"default"}
-        size={"icon"}
-        onClick={onShareBtnClick}
-      >
-        {/* Share Icon */}
-        <UploadBox2 primaryColor="var(--color-n-50)" className="size-4" />
-      </Button>
+      {entryFee > 0 && (
+        <div className="absolute top-7 right-5 lg:top-7 lg:right-9 flex justify-center items-center text-n-800 text-sm leading-[26px]  font-semibold bg-n-50 rounded-3xl py-0.5 px-2 lg:py-3.5 lg:px-5 lg:text-xl">
+          {/* Price Chip */}
+          {`₹${entryFee.toLocaleString()}/-`}
+        </div>
+      )}
     </>
   );
 }
