@@ -169,12 +169,12 @@ export default function RootLayout({
               <BrandLogo
                 variant="color-icon"
                 size={260}
-                className="hidden dark-mode-block"
+                className="hidden dark-mode-block lg:hidden!"
               />
               <BrandLogo
                 variant="color-icon"
                 size={260}
-                className="block dark-mode-hidden"
+                className="block dark-mode-hidden lg:hidden!"
               />
             </div>
           </Motion>

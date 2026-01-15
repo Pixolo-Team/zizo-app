@@ -304,14 +304,16 @@ export default function Tournaments() {
       {/* Tournaments Listing Page */}
       {/* Page Container */}
       <div className="flex gap-15 2xl:gap-50">
-        <div className="relative xl:max-w-2/3 flex-1 h-full pb-7 flex flex-col gap-5 z-4">
+        <div className="relative xl:max-w-2/3 flex-1 h-full pb-7 flex flex-col gap-5 lg:gap-12 z-4">
           {/* Header Text */}
-          <Motion variants={fadeIn} delay={0.2}>
-            <p className="text-base text-n-950 font-medium font-gtwalsheim w-3/5 leading-none lg:hidden">
-              Find local football tournaments near you.
-            </p>
-          </Motion>
-          <div className="flex flex-col gap-2.5">
+          <div className=" lg:hidden">
+            <Motion variants={fadeIn} delay={0.2}>
+              <p className="text-base text-n-950 font-medium font-gtwalsheim w-3/5 leading-none lg:hidden">
+                Find local football tournaments near you.
+              </p>
+            </Motion>
+          </div>
+          <div className="flex flex-col gap-2.5 lg:gap-4">
             {/* Search Input */}
             <Motion as="div" variants={shrinkIn} delay={0.2}>
               <SearchInput
@@ -341,7 +343,7 @@ export default function Tournaments() {
 
           {/* Tournaments Listing */}
           <Motion as="div" variants={shrinkIn} delay={0.4}>
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-5 lg:gap-6">
               {isTournamentsLoading && page === 1 ? (
                 Array.from({ length: 3 }).map((skeletonItem, skeletonIndex) => (
                   // TournamentCardSkeleton component
@@ -353,9 +355,9 @@ export default function Tournaments() {
                   isLoading={isTournamentsLoading}
                   next={() => setPage((prev) => prev + 1)}
                   threshold={0.5}
-                  className="flex flex-col gap-5"
+                  className="flex flex-col gap-5 lg:gap-6"
                   loadingComponent={
-                    <div className="flex flex-col gap-5">
+                    <div className="flex flex-col gap-5 lg:gap-6">
                       <TournamentCardSkeleton />
                     </div>
                   }

@@ -39,7 +39,7 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        " rounded-[20px] cursor-pointer leading-tight data-[placeholder]:text-n-950 [&_svg:not([class*='text-'])]:text-n-950  dark:bg-n-50 dark:hover:bg-n-50 flex w-fit items-center justify-between gap-2.5  px-4 py-2.5 text-base whitespace-nowrap -xs transition-[color] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-10 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 bg-n-50 text-n-950 ",
+        " rounded-[20px] lg:rounded-4xl lg:gap-3 cursor-pointer leading-tight data-placeholder:text-n-950 [&_svg:not([class*='text-'])]:text-n-950  dark:bg-n-50 dark:hover:bg-n-50 flex w-fit items-center justify-between gap-2.5  px-4 py-2.5 lg:py-4 lg:px-6 lg:text-2xl text-base whitespace-nowrap -xs transition-[color] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 bg-n-50 text-n-950 ",
         className
       )}
       {...props}
@@ -52,7 +52,7 @@ function SelectTrigger({
           height="6"
           viewBox="0 0 10 6"
           fill="none"
-          className={cn("size-3", isSelected ? "text-n-50" : "text-n-950")}
+          className={cn("size-3 lg:size-4", isSelected ? "text-n-50" : "text-n-950")}
         >
           <path
             d="M0.5 0.5L5 5L9.5 0.5"

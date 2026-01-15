@@ -28,12 +28,12 @@ export default function PageHeader({ children }: PageHeaderProps) {
         <BrandLogo
           variant="text-logo"
           size={80}
-          className=" block dark-mode-hidden"
+          className=" block dark-mode-hidden lg:w-30"
         />
         <BrandLogo
           variant="text-logo-white"
           size={80}
-          className="hidden dark-mode-block"
+          className="hidden dark-mode-block lg:w-30"
         />
       </Link>
 
