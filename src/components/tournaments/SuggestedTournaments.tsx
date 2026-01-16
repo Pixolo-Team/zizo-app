@@ -35,11 +35,11 @@ const tabs = [
     label: "Matches",
     href: "/football-tournaments",
   },
-   {
+  {
     label: "Jobs",
     href: "/football-tournaments",
   },
-   {
+  {
     label: "Time",
     href: "/football-tournaments",
   },
@@ -75,8 +75,8 @@ export default function SuggestedTournaments({
 
         {/* Tournaments */}
         <div className="flex flex-col gap-7">
-          {suggestedTournaments.map((tournament) => (
-            <SuggestedTournamentCard key={tournament.tournament_id} />
+          {suggestedTournaments.map((tournament, tournamentIndex) => (
+            <SuggestedTournamentCard key={tournamentIndex} />
           ))}
         </div>
       </div>

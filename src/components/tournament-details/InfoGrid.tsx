@@ -19,18 +19,20 @@ interface InfoCardProps {
 /** Info Card Component */
 function InfoCard({ label, value, subValue, icon }: InfoCardProps) {
   return (
-    <div className="bg-n-100 rounded-2xl py-3 px-4 flex flex-col h-full gap-3.5 justify-between">
+    <div className="bg-n-100 rounded-2xl py-3 px-4 flex flex-col h-full gap-3.5 lg:gap-5 justify-between">
       {/* Icon and Label */}
-      <div className="flex gap-1 items-center">
-        {icon && <div className="size-4 text-n-500">{icon}</div>}
-        <p className="text-xs text-n-500">{label}</p>
+      <div className="flex gap-1 items-center lg:gap-2">
+        {icon && <div className="size-4 lg:size-5 text-n-500">{icon}</div>}
+        <p className="text-xs lg:text-base text-n-500">{label}</p>
       </div>
 
       {/* Values */}
-      <div className="flex flex-col gap-1">
-        <p className="text-base text-n-800 leading-tight">{value}</p>
+      <div className="flex flex-col gap-1 lg:gap-2">
+        <p className="text-base lg:text-2xl text-n-800 leading-tight">
+          {value}
+        </p>
         {subValue && (
-          <p className="text-xs font-semibold text-n-800 leading-tight">
+          <p className="text-xs lg:text-lg font-semibold text-n-800 leading-tight">
             {subValue}
           </p>
         )}
@@ -61,27 +63,42 @@ export default function InfoGrid({
   category,
 }: InfoGridProps) {
   return (
-    <div className="bg-n-50 p-5 rounded-2xl flex flex-col gap-3">
+    <div className="bg-n-50 p-5 rounded-2xl flex flex-col gap-3  lg:p-7 lg:rounded-3xl lg:gap-3.5">
       <div className="grid grid-cols-2 gap-3">
         {/* Date and Time */}
         <InfoCard
           label="From"
           value={formatLongDate(startDate)}
           subValue={startTime}
-          icon={<CalendarMark className="text-n-500 size-4" />}
+          icon={
+            <CalendarMark
+              primaryColor="var(--color-n-500)"
+              className="size-4 lg:size-5"
+            />
+          }
         />
         <InfoCard
           label="To"
           value={formatLongDate(endDate)}
           subValue={endTime}
-          icon={<CalendarMark className="text-n-500 size-4" />}
+          icon={
+            <CalendarMark
+              primaryColor="var(--color-n-500)"
+              className="size-4 lg:size-5"
+            />
+          }
         />
 
         {/* Age Group */}
         <InfoCard
           label="Age Group"
           value={ageGroup}
-          icon={<UserFullBody className="text-n-500 size-4" />}
+          icon={
+            <UserFullBody
+              primaryColor="var(--color-n-500)"
+              className="size-4 lg:size-5"
+            />
+          }
         />
 
         {/* Format */}
@@ -92,17 +109,27 @@ export default function InfoGrid({
             category.replace("_", " + ").charAt(0).toUpperCase() +
             category.replace("_", " + ").slice(1)
           }
-          icon={<BorderFull className="text-n-500 size-4" />}
+          icon={
+            <BorderFull
+              primaryColor="var(--color-n-500)"
+              className="size-4 lg:size-5"
+            />
+          }
         />
       </div>
 
       {/* Navigate Link */}
       <Link
         href="#"
-        className="flex items-center gap-2 rounded-3xl w-full bg-n-100 py-3.5 px-4 justify-center"
+        className="flex items-center gap-2 lg:gap-3s rounded-3xl w-full bg-n-100 py-3.5 px-4 lg:py-4 justify-center"
       >
-        <TriangleArrowBendDownLeft className="text-n-800 size-4 rotate-180" />
-        <p className="text-n-800 text-sm font-medium">Navigate to Venue</p>
+        <TriangleArrowBendDownLeft
+          primaryColor="var(--color-n-800)"
+          className="size-4 rotate-180 lg:size-5"
+        />
+        <p className="text-n-800 text-sm lg:text-xl font-medium">
+          Navigate to Venue
+        </p>
       </Link>
     </div>
   );

@@ -137,7 +137,7 @@ export default function TournamentInterestForm({
           subTitle="Fill in your details to register interest"
         />
 
-        <div className="flex flex-col gap-4 p-4 pb-0">
+        <div className="flex flex-col gap-4 pb-0">
           <div className="space-y-2">
             <Input
               placeholder="Name *"
