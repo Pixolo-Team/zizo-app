@@ -205,11 +205,18 @@ export type SlotStatusData = "open" | "filling_fast" | "almost_full" | "closed";
 
 export type AgeCategoryData =
   | "U8"
+  | "U9"
   | "U10"
+  | "U11"
   | "U12"
+  | "U13"
   | "U14"
+  | "U15"
   | "U16"
+  | "U17"
   | "U18"
+  | "U19"
+  | "U20"
   | "OPEN";
 
 export type MatchFormatData = "5v5" | "7v7" | "9v9" | "11v11";
