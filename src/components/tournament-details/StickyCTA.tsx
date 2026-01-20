@@ -35,7 +35,7 @@ export default function StickyCTA({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 p-5 lg:p-7 bg-n-50 border-t border-n-200 z-50">
+    <div className="p-5 lg:p-7 bg-n-50 border-t border-n-200 z-50">
       <div className="flex items-center gap-3">
         <div className="flex-1">
           <Motion variants={shrinkIn} delay={1.3}>

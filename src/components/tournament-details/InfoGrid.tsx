@@ -28,11 +28,11 @@ function InfoCard({ label, value, subValue, icon }: InfoCardProps) {
 
       {/* Values */}
       <div className="flex flex-col gap-1 lg:gap-2">
-        <p className="text-base lg:text-2xl text-n-800 leading-tight">
+        <p className="text-base lg:text-2xl font-bold text-n-800 leading-tight">
           {value}
         </p>
         {subValue && (
-          <p className="text-xs lg:text-lg font-semibold text-n-800 leading-tight">
+          <p className="text-xs lg:text-lg font-normal text-n-800 leading-tight">
             {subValue}
           </p>
         )}

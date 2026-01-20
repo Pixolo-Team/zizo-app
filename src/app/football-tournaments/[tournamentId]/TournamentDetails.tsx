@@ -392,19 +392,18 @@ export default function TournamentDetails() {
               {/* Rules and Regulations */}
               <Motion variants={fadeIn} delay={1.1}>
                 <RulesAndRegulations />
+                {/* Sticky CTA */}
+                <Motion variants={shrinkIn} delay={1.1}>
+                  <StickyCTA
+                    isContactRevealed={isContactRevealed}
+                    onRequestInterest={() => setIsInterestFormOpen(true)}
+                    onContactClick={() => setIsContactDrawerOpen(true)}
+                    onShareBtnClick={() => setIsShareDialogOpen(true)}
+                  />
+                </Motion>
               </Motion>
             </div>
           </div>
-
-          {/* Sticky CTA */}
-          <Motion variants={shrinkIn} delay={1.1}>
-            <StickyCTA
-              isContactRevealed={isContactRevealed}
-              onRequestInterest={() => setIsInterestFormOpen(true)}
-              onContactClick={() => setIsContactDrawerOpen(true)}
-              onShareBtnClick={() => setIsShareDialogOpen(true)}
-            />
-          </Motion>
         </div>
 
         {/* SuggestedTournaments */}

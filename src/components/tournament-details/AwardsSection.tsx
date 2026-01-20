@@ -49,7 +49,7 @@ export default function AwardsSection() {
     <div className="flex w-full p-5 bg-n-50 rounded-2xl flex-col gap-3 border border-n-200 lg:p-7 lg:rounded-3xl">
       {/* Heading */}
       <p className="text-n-500 font-medium lg:text-2xl">Honours & Awards</p>
-      <div className="grid grid-cols-3 gap-3 lg:gap-5">
+      <div className="grid grid-cols-3 gap-2 lg:gap-5">
         {mockAwards.map((award, index) => (
           <div
             key={index}
@@ -60,9 +60,9 @@ export default function AwardsSection() {
               <p className="text-[14px] text-n-800 leading-none font-semibold lg:text-xl">
                 {award.label}
               </p>
-              <p className="text-sm lg:text-base text-n-800">
+              <p className="text-sm font-normal lg:text-base text-n-800">
                 {" "}
-                {"₹" + award.amount.toLocaleString() + "& Trophy"}
+                {"₹" + award.amount.toLocaleString() + " & Trophy"}
               </p>
             </div>
           </div>

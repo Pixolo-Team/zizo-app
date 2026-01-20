@@ -29,7 +29,7 @@ export default function TournamentHero({
         </div>
 
         {/* Price */}
-        <p className="justify-start text-green-500 text-lg font-bold leading-6">
+        <p className="justify-start text-green-500 text-lg font-bold leading-6 rounded-full">
           ₹{entryFee}
         </p>
       </div>
