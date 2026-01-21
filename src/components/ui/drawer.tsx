@@ -1,9 +1,16 @@
 "use client";
 
+// REACT //
 import * as React from "react";
-import { Drawer as DrawerPrimitive } from "vaul";
 
+// OTHERS //
+import { Drawer as DrawerPrimitive } from "vaul";
 import { cn } from "@/lib/utils";
+
+// ICONS //
+import Close from "../icons/neevo-icons/Close";
+import Motion from "../animations/Motion";
+import { slideInUp } from "@/lib/animations";
 
 function Drawer({
   ...props
@@ -53,35 +60,64 @@ function DrawerContent({
   return (
     <DrawerPortal data-slot="drawer-portal">
       <DrawerOverlay />
+      <DrawerPrimitive.Title></DrawerPrimitive.Title>
       <DrawerPrimitive.Content
         data-slot="drawer-content"
         className={cn(
-          "group/drawer-content bg-n-50 fixed z-50 flex h-auto flex-col",
-          "data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mb-24 data-[vaul-drawer-direction=top]:max-h-[80vh] data-[vaul-drawer-direction=top]:rounded-b-lg data-[vaul-drawer-direction=top]:border-b",
-          "data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mt-24 data-[vaul-drawer-direction=bottom]:max-h-[85vh] data-[vaul-drawer-direction=bottom]:rounded-t-lg data-[vaul-drawer-direction=bottom]:border-t",
+          "group/drawer-content fixed z-50 flex h-auto flex-col",
+          "data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mb-24 data-[vaul-drawer-direction=top]:max-h-[80vh] data-[vaul-drawer-direction=top]:border-b",
+          "data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mt-24 data-[vaul-drawer-direction=bottom]:max-h-[85vh] data-[vaul-drawer-direction=bottom]:border-t",
           "data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-3/4 data-[vaul-drawer-direction=right]:border-l data-[vaul-drawer-direction=right]:sm:max-w-sm",
           "data-[vaul-drawer-direction=left]:inset-y-0 data-[vaul-drawer-direction=left]:left-0 data-[vaul-drawer-direction=left]:w-3/4 data-[vaul-drawer-direction=left]:border-r data-[vaul-drawer-direction=left]:sm:max-w-sm",
+          "px-5 py-8 pb-12 lg:px-7 bg-n-50 rounded-tl-4xl rounded-tr-4xl",
           className
         )}
         {...props}
       >
-        <div className="bg-muted mx-auto mt-4 hidden h-2 w-[100px] shrink-0 rounded-full group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
+        {/* Close Button */}
+        <DrawerClose className="absolute -top-16 lg:-top-20 left-1/2 -translate-x-1/2 shadow-[0_0_6px_0_rgba(0,0,0,0.25)] bg-n-700 hover:bg-n-700/80 size-10 lg:size-12 rounded-full text-n-50 transition-colors flex justify-center items-center">
+          <Close primaryColor={"var(--color-n-300)"} className="size-5 lg:size-6" />
+        </DrawerClose>
+
+        {/* Drawer Content */}
+        {/* <div className="bg-muted mx-auto mt-4 hidden h-2 w-[100px] shrink-0 rounded-full group-data-[vaul-drawer-direction=bottom]/drawer-content:block" /> */}
         {children}
       </DrawerPrimitive.Content>
     </DrawerPortal>
   );
 }
 
-function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
+interface DrawerHeaderProps extends React.ComponentProps<"div"> {
+  title?: string;
+  subTitle?: string;
+}
+
+function DrawerHeader({
+  className,
+  title,
+  subTitle,
+  ...props
+}: Readonly<DrawerHeaderProps>) {
   return (
     <div
       data-slot="drawer-header"
-      className={cn(
-        "flex flex-col gap-0.5 p-4 group-data-[vaul-drawer-direction=bottom]/drawer-content:text-center group-data-[vaul-drawer-direction=top]/drawer-content:text-center md:gap-1.5 md:text-left",
-        className
-      )}
+      className={cn("flex flex-col gap-1 pb-6 lg:pb-7 lg:gap-1.5", className)}
       {...props}
-    />
+    >
+      <Motion variants={slideInUp} delay={0.1}>
+        {title && (
+          <p className="text-lg font-semibold text-n-800 leading-tight lg:text-2xl ">
+            {title}
+          </p>
+        )}
+      </Motion>
+
+      <Motion variants={slideInUp} delay={0.2}>
+        {subTitle && (
+          <p className="text-sm text-n-600 leading-tight lg:text-base">{subTitle}</p>
+        )}
+      </Motion>
+    </div>
   );
 }
 
@@ -90,32 +126,6 @@ function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="drawer-footer"
       className={cn("mt-auto flex flex-col gap-2 p-4", className)}
-      {...props}
-    />
-  );
-}
-
-function DrawerTitle({
-  className,
-  ...props
-}: React.ComponentProps<typeof DrawerPrimitive.Title>) {
-  return (
-    <DrawerPrimitive.Title
-      data-slot="drawer-title"
-      className={cn("text-foreground font-semibold", className)}
-      {...props}
-    />
-  );
-}
-
-function DrawerDescription({
-  className,
-  ...props
-}: React.ComponentProps<typeof DrawerPrimitive.Description>) {
-  return (
-    <DrawerPrimitive.Description
-      data-slot="drawer-description"
-      className={cn("text-muted-foreground text-sm", className)}
       {...props}
     />
   );
@@ -130,6 +140,4 @@ export {
   DrawerContent,
   DrawerHeader,
   DrawerFooter,
-  DrawerTitle,
-  DrawerDescription,
 };

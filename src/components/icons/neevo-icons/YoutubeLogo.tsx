@@ -4,10 +4,12 @@ import React from "react";
 // TYPES //
 import { IconProps } from "@/types/icon";
 
-const YoutubeLogo = ({
-  primaryColor = "currentColor",
+const YoutubeLogo: IconComponent = ({
+  primaryColor,
+  secondaryColor,
+  tertiaryColor,
   ...props
-}: IconProps) => (
+}) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width={28}

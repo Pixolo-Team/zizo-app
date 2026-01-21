@@ -7,11 +7,11 @@ export default function TournamentCardSkeleton() {
     <div className="rounded-4xl bg-n-50 overflow-hidden w-full">
       {/* Image */}
       <div className="relative rounded-3xl overflow-hidden">
-        <Skeleton className="bg-n-200 h-[195px] w-full" />
+        <Skeleton className="bg-n-200 h-[195px] lg:h-[280px] xl:h-[340px] w-full" />
       </div>
 
       {/* Content */}
-      <div className="p-5 flex flex-col gap-5">
+      <div className="p-5 flex flex-col gap-5 lg:gap-6">
         <div className="flex flex-col gap-4">
           {/* Title + price */}
           <div className="flex justify-between items-start">

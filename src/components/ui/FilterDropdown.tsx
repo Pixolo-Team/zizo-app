@@ -44,16 +44,16 @@ export default function FilterDropdown({
       <SelectTrigger
         isSelected={Boolean(selectedOption)}
         className={
-          cn(selectedOption ? "bg-n-900 text-n-50" : "") + " " + className
+          cn(selectedOption ? "bg-n-900 text-n-50  " : "") + " " + className
         }
       >
         <SelectValue placeholder={title} />
       </SelectTrigger>
 
       {/* Select Content */}
-      <SelectContent className="">
+      <SelectContent className="bg-n-50 ">
         {options.map((option) => (
-          <SelectItem key={option} value={option}>
+          <SelectItem key={option} value={option} className="text-n-950">
             {option}
           </SelectItem>
         ))}

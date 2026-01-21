@@ -7,10 +7,18 @@ import {
   OrganizerDetailsData,
   LeadData,
   TournamentContactData,
+  OrganizerOptionData,
+  TournamentSeriesCreateData,
+  TournamentCategoryCreateData,
+  OrganizerCreateData,
+  OrganizerListingItemData,
 } from "@/types/tournament";
 
 // SERVICES //
 import { supabase } from "@/services/supabase";
+
+// UTILS //
+import { toSnakeCase } from "@/utils/formatter";
 
 /**
  * Get a list of tournaments (with filters)
@@ -59,6 +67,7 @@ export const getTournamentsRequest = async (
 
     // Check for City
     if (filters.city) {
+      console.log("City Filter: ", filters.city);
       query = query.eq("tournament_series.city", filters.city);
     }
 
@@ -79,7 +88,7 @@ export const getTournamentsRequest = async (
 
     // Check for Tournament Format
     if (filters.tournament_format) {
-      query = query.eq("tournament_format", filters.tournament_format);
+      query = query.eq("tournament_format", toSnakeCase(filters.tournament_format));
     }
 
     // Check for Format
@@ -169,6 +178,34 @@ export const getTournamentsRequest = async (
 };
 
 /**
+ * Get all unique cities from tournament series
+ */
+export const getUniqueCitiesRequest = async (): Promise<
+  QueryResponseData<string[]>
+> => {
+  try {
+    const { data, error } = await supabase
+      .from("tournament_series")
+      .select("city")
+      .not("city", "is", null);
+
+    // Check for Error
+    if (error) {
+      throw error;
+    }
+
+    // Extract unique cities and sort them alphabetically
+    const cities = Array.from(
+      new Set(data.map((item: { city: string }) => item.city))
+    ).sort((a, b) => a.localeCompare(b));
+
+    return { data: cities, error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
+};
+
+/**
  * Get the full details about a tournament
  */
 export const getTournamentDetailsRequest = async (
@@ -200,6 +237,9 @@ export const getTournamentDetailsRequest = async (
     
         registration_deadline,
         match_days_text,
+
+        contact_name,
+        contact_phone,
     
         min_matches,
         playing_team_size,
@@ -334,7 +374,7 @@ export const addTournamentLeadRequest = async (
   leadData: LeadData
 ): Promise<QueryResponseData<boolean>> => {
   try {
-    const { identity_id, name, phone } = leadData;
+    const { identity_id, name, phone, team_name } = leadData;
 
     // 1. Insert lead
     const { error } = await supabase
@@ -345,6 +385,7 @@ export const addTournamentLeadRequest = async (
           identity_id,
           name_snapshot: name,
           phone_snapshot: phone,
+          team_snapshot: team_name,
         },
       ])
       .select()
@@ -514,3 +555,104 @@ export const getOrganizerDetailsRequest = async (
     return { data: null, error: error as Error };
   }
 };
+
+/**
+ * Tournament create service functions
+ */
+
+/**
+ * Fetch organizers for dropdown
+ */
+export async function getOrganizersRequest(): Promise<OrganizerOptionData[]> {
+  const { data, error } = await supabase
+    .from("organizers")
+    .select("id, name")
+    .order("name");
+
+  if (error) {
+    throw error;
+  }
+
+  return (data ?? []) as OrganizerOptionData[];
+}
+
+/**
+ * Create tournament series and multiple categories
+ */
+export async function createTournamentService(
+  seriesData: TournamentSeriesCreateData,
+  categoriesData: TournamentCategoryCreateData[]
+): Promise<string> {
+  const { data: series, error: seriesError } = await supabase
+    .from("tournament_series")
+    .insert(seriesData)
+    .select("id")
+    .single();
+
+  if (seriesError) {
+    throw seriesError;
+  }
+
+  const categoriesPayload = categoriesData.map((category) => ({
+    ...category,
+    series_id: series.id,
+    status: "published",
+  }));
+
+  const { error: categoriesError } = await supabase
+    .from("tournaments")
+    .insert(categoriesPayload);
+
+  if (categoriesError) {
+    throw categoriesError;
+  }
+
+  return series.id as string;
+}
+
+/**
+ * Create an Organizer
+ */
+export async function createOrganizerRequest(
+  organizerData: OrganizerCreateData
+): Promise<QueryResponseData<string>> {
+  try {
+    const { data, error } = await supabase
+      .from("organizers")
+      .insert([organizerData])
+      .select("id")
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    return { data: data.id as string, error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
+}
+
+/**
+ * Get all organizers for listing
+ */
+export async function getOrganizersListRequest(): Promise<
+  QueryResponseData<OrganizerListingItemData[]>
+> {
+  try {
+    const { data, error } = await supabase
+      .from("organizers")
+      .select(
+        "id, name, type, contact_name, contact_phone, logo_url, created_at"
+      )
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      throw error;
+    }
+
+    return { data: (data as any[]) ?? [], error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
+}

@@ -1,10 +1,15 @@
 "use client";
+// REACT //
+import { useState, useEffect } from "react";
 
 // TYPES //
 import { TournamentFiltersData } from "@/types/tournament";
 
 // ENUMS //
-import { CityFilter, MatchFormatFilter } from "@/enums/tournament-filter.enum";
+import { MatchFormatFilter } from "@/enums/tournament-filter.enum";
+
+// SERVICES //
+import { getUniqueCitiesRequest } from "@/services/queries/tournaments.query";
 
 // COMPONENTS //
 import FilterDropdown from "@/components/ui/FilterDropdown";
@@ -20,16 +25,40 @@ export default function PrimaryFilters({
   updateFilter,
   resetFilters,
 }: PrimaryFiltersProps) {
+  const [cities, setCities] = useState<string[]>([]);
+
+  /** Fetch unique cities */
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const { data, error } = await getUniqueCitiesRequest();
+
+        if (error) {
+          console.error("Error fetching cities:", error);
+        } else {
+          setCities(data || []);
+        }
+      } catch (err) {
+        console.error("Error in fetchCities:", err);
+      }
+    };
+
+    fetchCities();
+  }, []);
+
   return (
     <div className="flex justify-between items-center w-full gap-3.5">
       {/* Primary Filters */}
       <div className="flex gap-3.5 overflow-x-auto no-scrollbar">
+        {/* City Filter */}
         <FilterDropdown
           title="City"
-          options={Object.values(CityFilter)}
+          options={cities}
           selectedOption={filters.city || ""}
           onChange={(value) => updateFilter("city", value)}
         />
+
+        {/* Match Format Filter */}
         <FilterDropdown
           title="Match Format"
           options={Object.values(MatchFormatFilter)}
@@ -38,13 +67,13 @@ export default function PrimaryFilters({
         />
       </div>
 
-      {/* Reset Button */}
+      {/* Clear Button */}
       <button
         type="button"
-        className="underline text-n-950 text-xs cursor-pointer"
+        className="py-2 px-2.5 lg:py-3 lg:px-4.5 bg-n-50 rounded-[20px] flex items-center justify-center text-n-950 text-xs lg:text-base cursor-pointer"
         onClick={resetFilters}
       >
-        Reset
+        Clear
       </button>
     </div>
   );

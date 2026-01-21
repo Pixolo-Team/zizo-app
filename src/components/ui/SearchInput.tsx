@@ -18,7 +18,7 @@ type Props = {
 export default function SearchInput({
   value = "",
   onChange,
-  placeholder = "Search...",
+  placeholder = "Mumbai, 7 a side, December",
   onClear,
   className,
   rightIcon,
@@ -44,6 +44,7 @@ export default function SearchInput({
           height="18"
           viewBox="0 0 20 18"
           fill="none"
+          className="size-5 lg:size-7"
         >
           <path
             fillRule="evenodd"
@@ -63,7 +64,7 @@ export default function SearchInput({
         }}
         placeholder={placeholder}
         aria-label={placeholder}
-        className={`pl-12 ${rightIcon ? "pr-12" : ""} h-[50px] ${className}`}
+        className={`pl-12 lg:pl-15 ${rightIcon ? "pr-12" : ""} h-[50px] lg:h-[68px] lg:text-xl ${className}`}
       />
 
       {/* Right Icon */}
@@ -73,10 +74,10 @@ export default function SearchInput({
           size="icon"
           variant="ghost"
           onClick={onRightIconClick}
-          className="absolute right-5 size-5 rounded-full hover:bg-n-100"
+          className="absolute right-5 size-5 rounded-full hover:bg-n-100 lg:size-7"
         >
           <NewFilterSlide
-            className="size-5 rotate-90"
+            className="size-5 rotate-90 lg:size-7"
             primaryColor="var(--color-n-700)"
           />
         </Button>

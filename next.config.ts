@@ -14,6 +14,26 @@ const nextConfig: NextConfig = {
         hostname: "picsum.photos",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "upload.wikimedia.org",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "bhopalliteraturefestival.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "encrypted-tbn0.gstatic.com",
+        port: "",
+      },
+
+      {
+        protocol: "https",
+        hostname: "**",
+      },
     ],
   },
 };
