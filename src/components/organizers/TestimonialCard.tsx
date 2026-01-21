@@ -32,12 +32,10 @@ export default function TestimonialCard({
 
         {/* Name + Org */}
         <div className="flex flex-col">
-          <p className="text-sm font-medium leading-none">
+          <p className="text-sm text-n-950 leading-none">
             {testimonialItem?.author_name}
           </p>
-          <p className="text-xs text-neutral-500">
-            {testimonialItem?.author_role}
-          </p>
+          <p className="text-xs text-n-700">{testimonialItem?.author_role}</p>
         </div>
       </div>
 

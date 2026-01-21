@@ -26,6 +26,7 @@ import { getOrganizerDetailsRequest } from "@/services/queries/tournaments.query
 // OTHERS //
 import { useScroll, useMotionValueEvent } from "framer-motion";
 import { fadeIn, shrinkIn } from "@/lib/animations";
+import TestimonialSlider from "@/components/organizers/TestimonialSlider";
 
 // TODO: Remove this when we have real data
 const socialLinks = {
@@ -38,17 +39,17 @@ const socialLinks = {
 const organizerSocialIcons = [
   {
     key: "facebook",
-    icon: <FacebookLogo2 />,
+    icon: <FacebookLogo2 primaryColor="var(--color-n-700)" />,
     href: socialLinks.facebook,
   },
   {
     key: "instagram",
-    icon: <InstagramLogo />,
+    icon: <InstagramLogo primaryColor="var(--color-n-700)" />,
     href: socialLinks.instagram,
   },
   {
     key: "youtube",
-    icon: <YoutubeLogo />,
+    icon: <YoutubeLogo primaryColor="var(--color-n-700)" />,
     href: socialLinks.youtube,
   },
 ];
@@ -203,11 +204,25 @@ export default function OrganizerProfile() {
               </Button>
             </div>
 
-            <TestimonialCard
-              testimonialItem={
-                organizerItemDetails?.organizer_testimonials[0] ?? null
+            <TestimonialSlider
+              testimonials={
+                organizerItemDetails?.organizer_testimonials?.length
+                  ? organizerItemDetails.organizer_testimonials
+                  : [
+                      {
+                        author_name: "John Doe",
+                        author_role: "Coach at Skorost United",
+                        quote:
+                          "Organizing tournaments with this platform has been a game-changer for us. The seamless experience and excellent support made everything so much easier.",
+                      },
+                      {
+                        author_name: "Sarah Smith",
+                        author_role: "Manager",
+                        quote:
+                          "Super smooth experience. Great UI, great support, and everything worked perfectly.",
+                      },
+                    ]
               }
-              avatarUrl="/images/organizer-cover.jpg"
             />
           </div>
 
