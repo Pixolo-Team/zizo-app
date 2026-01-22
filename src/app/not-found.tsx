@@ -6,18 +6,18 @@ export default function NotFound() {
       {/* Empty State Image */}
       <div className="hidden dark-mode-block">
         <Image
-          src="/images/no-tournament-dark.png"
+          src="/images/under-construction-light.png"
           alt="No tournaments (light)"
           width={1200}
           height={120}
           priority
-          className="w-full h-[173px] object-cover invert-[1] lg:h-[280px] xl:h-[350px]"
+          className="w-full h-[173px] object-cover lg:h-[280px] xl:h-[350px]"
         />
       </div>
 
       <div className=" block dark-mode-hidden">
         <Image
-          src="/images/no-tournament-light.png"
+          src="/images/under-construction.png"
           alt="No tournaments (dark)"
           width={1200}
           height={120}
