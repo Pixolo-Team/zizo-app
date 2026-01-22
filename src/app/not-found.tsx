@@ -29,12 +29,13 @@ export default function NotFound() {
       <div className="flex flex-col gap-2 items-center">
         {/* Empty State Title */}
         <p className="text-center text-n-900 font-medium text-xl lg:text-2xl xl:text-3xl">
-          No tournaments on the field
+          Oops, you are here too soon!
         </p>
 
         {/* Empty State Subtitle */}
         <p className="text-center text-n-600 font-normal leading-[137%] text-sm w-[78%] lg:text-lg xl:text-xl ">
-          Try changing your filters or search a different area
+          We are still preparing the playing field, come back later to see this
+          page.
         </p>
       </div>
     </div>
