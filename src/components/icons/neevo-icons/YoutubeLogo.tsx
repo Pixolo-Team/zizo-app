@@ -2,7 +2,7 @@
 import React from "react";
 
 // TYPES //
-import { IconComponent } from "@/types/icon";
+import { IconProps } from "@/types/icon";
 
 const YoutubeLogo: IconComponent = ({
   primaryColor,
