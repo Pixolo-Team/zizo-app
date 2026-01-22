@@ -1,0 +1,688 @@
+// TYPES //
+import { QueryResponseData } from "@/types/query";
+import {
+  TournamentListingItemData,
+  TournamentFiltersData,
+  TournamentDetailsData,
+  OrganizerDetailsData,
+  LeadData,
+  TournamentContactData,
+  OrganizerOptionData,
+  TournamentSeriesCreateData,
+  TournamentCategoryCreateData,
+  OrganizerCreateData,
+  OrganizerListingItemData,
+} from "@/types/tournament";
+
+// SERVICES //
+import { supabase } from "@/services/supabase";
+
+// UTILS //
+import { toSnakeCase } from "@/utils/formatter";
+
+/**
+ * Get a list of tournaments (with filters)
+ */
+export const getTournamentsRequest = async (
+  filters: TournamentFiltersData
+): Promise<QueryResponseData<TournamentListingItemData[]>> => {
+  try {
+    // Prepare the variables for the Query
+    const page = filters.page || 1;
+    const pageSize = filters.page_size || 10;
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize - 1;
+
+    // Prepare the Query
+    let query = supabase
+      .from("tournaments")
+      .select(
+        `
+        id,
+        age_category,
+        format,
+        gender,
+        tournament_format,
+        entry_fee,
+        cash_prize_total,
+        slot_status,
+        start_date,
+        end_date,
+
+        tournament_series!inner (
+              id,
+          name,
+          city,
+          area,
+          ground_type,
+          poster_url,
+          organizers (
+            name
+          )
+        )
+        `,
+        { count: "exact" }
+      )
+      .eq("status", "published")
+      .range(from, to);
+
+    // Check for City
+    if (filters.city) {
+      console.log("City Filter: ", filters.city);
+      query = query.eq("tournament_series.city", filters.city);
+    }
+
+    // Check for Area
+    if (filters.area) {
+      query = query.eq("tournament_series.area", filters.area);
+    }
+
+    // Check for Age Category
+    if (filters.age_category) {
+      query = query.eq("age_category", filters.age_category);
+    }
+
+    // Check for Gender
+    if (filters.gender) {
+      query = query.eq("gender", filters.gender);
+    }
+
+    // Check for Tournament Format
+    if (filters.tournament_format) {
+      query = query.eq(
+        "tournament_format",
+        toSnakeCase(filters.tournament_format)
+      );
+    }
+
+    // Check for Format
+    if (filters.format) {
+      query = query.eq("format", filters.format);
+    }
+
+    // Check for Ground Type
+    if (filters.ground_type) {
+      query = query.eq("tournament_series.ground_type", filters.ground_type);
+    }
+
+    // Check for Entry Fee Range
+    if (filters.entry_fee_min !== undefined) {
+      query = query.gte("entry_fee", filters.entry_fee_min);
+    }
+
+    // Check for Entry Fee Range
+    if (filters.entry_fee_max !== undefined) {
+      query = query.lte("entry_fee", filters.entry_fee_max);
+    }
+
+    // Check for Has Cash Prize
+    if (filters.has_cash_prize) {
+      query = query.gt("cash_prize_total", 0);
+    }
+
+    // Check for Start Date
+    if (filters.start_date) {
+      query = query.gte("start_date", filters.start_date);
+    }
+
+    // Check for End Date
+    if (filters.end_date) {
+      query = query.lte("end_date", filters.end_date);
+    }
+
+    // Check for Search Text
+    if (filters.search_text) {
+      const search = filters.search_text.trim();
+
+      query = query.or(`name.ilike.%${search}%`, {
+        foreignTable: "tournament_series",
+      });
+    }
+
+    // Execute the Query
+    const { data: tournamentItems, error } = await query;
+
+    // Check for Error
+    if (error) {
+      throw error;
+    }
+
+    // Mapping Database response with the required data
+    const tournamentsRaw = tournamentItems as any[];
+
+    const groupedBySeries = new Map<string, any>();
+
+    tournamentsRaw.forEach((t) => {
+      const series = t.tournament_series;
+      const seriesId = series?.id;
+
+      if (!seriesId) return;
+
+      const existing = groupedBySeries.get(seriesId);
+
+      if (!existing) {
+        groupedBySeries.set(seriesId, {
+          tournament_series_id: seriesId,
+
+          tournament_id: t.id,
+          tournament_name: series?.name ?? null,
+
+          // ✅ all age categories for this series
+          age_categories: [t.age_category],
+
+          // keep one "representative" set of fields for UI card
+          format: t.format,
+          gender: t.gender,
+          tournament_format: t.tournament_format,
+
+          entry_fee: t.entry_fee,
+          cash_prize_total: t.cash_prize_total,
+          slot_status: t.slot_status,
+
+          start_date: t.start_date,
+          end_date: t.end_date,
+
+          city: series?.city ?? null,
+          area: series?.area ?? null,
+          ground_type: series?.ground_type ?? null,
+
+          poster_url: series?.poster_url ?? null,
+          organizer_name: series?.organizers?.name ?? null,
+        });
+      } else {
+        // ✅ add unique age categories only
+        if (!existing.age_categories.includes(t.age_category)) {
+          existing.age_categories.push(t.age_category);
+        }
+      }
+    });
+
+    const tournaments: TournamentListingItemData[] = Array.from(
+      groupedBySeries.values()
+    );
+
+    return { data: tournaments, error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
+};
+
+/**
+ * Get all unique cities from tournament series
+ */
+export const getUniqueCitiesRequest = async (): Promise<
+  QueryResponseData<string[]>
+> => {
+  try {
+    const { data, error } = await supabase
+      .from("tournament_series")
+      .select("city")
+      .not("city", "is", null);
+
+    // Check for Error
+    if (error) {
+      throw error;
+    }
+
+    // Extract unique cities and sort them alphabetically
+    const cities = Array.from(
+      new Set(data.map((item: { city: string }) => item.city))
+    ).sort((a, b) => a.localeCompare(b));
+
+    return { data: cities, error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
+};
+
+/**
+ * Get the full details about a tournament
+ */
+export const getTournamentDetailsRequest = async (
+  tournamentId: string
+): Promise<QueryResponseData<TournamentDetailsData>> => {
+  try {
+    const { data: tournamentFullDetails, error } = await supabase
+      .from("tournaments")
+      .select(
+        `
+        id,
+        series_id,
+        age_category,
+        format,
+        gender,
+        tournament_format,
+    
+        start_date,
+        start_time,
+        end_date,
+        end_time,
+    
+        entry_fee,
+        advance_fee,
+        prizes_text,
+        cash_prize_total,
+        winning_prizes,
+        awards,
+    
+        registration_deadline,
+        match_days_text,
+
+        contact_name,
+        contact_phone,
+    
+        min_matches,
+        playing_team_size,
+        total_team_size,
+        min_players,
+        max_players,
+    
+        slot_status,
+        status,
+        created_at,
+        
+        tournament_series (
+          id,
+          name,
+          city,
+          area,
+          ground_name,
+          ground_type,
+          poster_url,
+          status,
+          
+          tournaments ( 
+            id,
+            age_category,
+            format,
+            gender,
+            tournament_format,
+            entry_fee,
+            cash_prize_total,
+            slot_status,
+            start_date,
+            end_date,
+            status
+          ),
+          
+          organizers (
+            id,
+            name,
+            type,
+            description,
+            logo_url,
+            
+            organizer_media (
+              id,
+              image_url,
+              caption,
+              sort_order
+            ),
+            organizer_testimonials (
+              id,
+              quote,
+              author_name,
+              author_role
+            )
+          ),
+          
+          tournament_sponsor (
+            sponsors (
+              id,
+              name,
+              logo_url,
+              website_url
+            )
+          )
+        )
+      `
+      )
+      .eq("id", tournamentId)
+      .eq("status", "published")
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    // Mapping
+    const tournamentData = tournamentFullDetails as any;
+    const allTournamentsInSeries =
+      tournamentData.tournament_series?.tournaments || [];
+
+    // Current Tournament
+    const currentTournament = tournamentData;
+
+    // Other Tournaments (to show in Top tabs)
+    const otherTournaments = allTournamentsInSeries.filter(
+      (tournamentItem: any) => tournamentItem.status === "published"
+    );
+
+    // Pick the Tournament Details
+    const tournamentDetails: TournamentDetailsData = {
+      tournament: currentTournament,
+
+      otherTournaments,
+
+      series: {
+        id: tournamentData.tournament_series?.id,
+        name: tournamentData.tournament_series?.name,
+        city: tournamentData.tournament_series?.city,
+        area: tournamentData.tournament_series?.area,
+        ground_name: tournamentData.tournament_series?.ground_name,
+        ground_type: tournamentData.tournament_series?.ground_type,
+        poster_url: tournamentData.tournament_series?.poster_url,
+        status: tournamentData.tournament_series?.status,
+      },
+
+      organizer: tournamentData.tournament_series?.organizers ?? null,
+
+      organizer_media:
+        tournamentData.tournament_series?.organizers?.organizer_media ?? [],
+
+      organizer_testimonials:
+        tournamentData.tournament_series?.organizers?.organizer_testimonials ??
+        [],
+
+      sponsors:
+        tournamentData.tournament_series?.tournament_sponsor?.map(
+          (row: any) => row.sponsors
+        ) ?? [],
+    };
+
+    return { data: tournamentDetails, error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
+};
+
+/**
+ * Add lead for a tournament
+ */
+export const addTournamentLeadRequest = async (
+  tournamentId: string,
+  leadData: LeadData
+): Promise<QueryResponseData<boolean>> => {
+  try {
+    const { identity_id, name, phone, team_name } = leadData;
+
+    // 1. Insert lead
+    const { error } = await supabase
+      .from("tournament_leads")
+      .insert([
+        {
+          tournament_id: tournamentId,
+          identity_id,
+          name_snapshot: name,
+          phone_snapshot: phone,
+          team_snapshot: team_name,
+        },
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    // 2. Log engagement
+    const { error: engagementError } = await supabase
+      .from("tournament_engagement")
+      .insert([
+        {
+          tournament_id: tournamentId,
+          identity_id,
+          event_type: "contact_reveal",
+          name_snapshot: name,
+          phone_snapshot: phone,
+        },
+      ]);
+
+    if (engagementError) {
+      throw engagementError;
+    }
+
+    return { data: true, error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
+};
+
+/**
+ * Get the contact details for a tournament
+ */
+export const getTournamentContactDetailsRequest = async (
+  tournamentId: string
+): Promise<QueryResponseData<TournamentContactData>> => {
+  try {
+    const { data, error } = await supabase
+      .from("tournaments")
+      .select(
+        `
+        contact_name,
+        contact_phone
+      `
+      )
+      .eq("id", tournamentId)
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    return { data, error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
+};
+
+/**
+ * Get the full details about a Organizer
+ */
+export const getOrganizerDetailsRequest = async (
+  organizerId: string
+): Promise<QueryResponseData<OrganizerDetailsData>> => {
+  try {
+    const { data, error } = await supabase
+      .from("organizers")
+      .select(
+        `
+    id,
+    name,
+    type,
+    description,
+    contact_name,
+    contact_phone,
+    whatsapp_phone,
+    logo_url,
+    created_at,
+
+    organizer_media (
+      id,
+      image_url,
+      caption,
+      sort_order
+    ),
+
+    organizer_testimonials (
+      id,
+      quote,
+      author_name,
+      author_role
+    ),
+
+    tournament_series (
+      id,
+      name,
+      city,
+      area,
+      ground_name,
+      ground_type,
+      poster_url,
+      status,
+
+      tournaments (
+        id,
+        age_category,
+        format,
+        gender,
+        tournament_format,
+        entry_fee,
+        cash_prize_total,
+        slot_status,
+        start_date,
+        end_date,
+        status
+      )
+    )
+  `
+      )
+      .eq("id", organizerId)
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    // Mapping
+    const organizerData = data as any;
+    const page_data: OrganizerDetailsData = {
+      organizer: {
+        id: organizerData.id,
+        name: organizerData.name,
+        type: organizerData.type,
+        description: organizerData.description,
+        contact_name: organizerData.contact_name,
+        contact_phone: organizerData.contact_phone,
+        whatsapp_phone: organizerData.whatsapp_phone,
+        logo_url: organizerData.logo_url,
+        created_at: organizerData.created_at,
+      },
+
+      organizer_media: organizerData.organizer_media ?? [],
+
+      organizer_testimonials: organizerData.organizer_testimonials ?? [],
+
+      tournament_series: (organizerData.tournament_series ?? []).map(
+        (series: any) => ({
+          id: series.id,
+          name: series.name,
+          city: series.city,
+          area: series.area,
+          ground_name: series.ground_name,
+          ground_type: series.ground_type,
+          poster_url: series.poster_url,
+          status: series.status,
+          tournaments: (series.tournaments ?? []).filter(
+            (t: any) => t.status === "published"
+          ),
+        })
+      ),
+    };
+
+    return { data: page_data, error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
+};
+
+/**
+ * Tournament create service functions
+ */
+
+/**
+ * Fetch organizers for dropdown
+ */
+export async function getOrganizersRequest(): Promise<OrganizerOptionData[]> {
+  const { data, error } = await supabase
+    .from("organizers")
+    .select("id, name")
+    .order("name");
+
+  if (error) {
+    throw error;
+  }
+
+  return (data ?? []) as OrganizerOptionData[];
+}
+
+/**
+ * Create tournament series and multiple categories
+ */
+export async function createTournamentService(
+  seriesData: TournamentSeriesCreateData,
+  categoriesData: TournamentCategoryCreateData[]
+): Promise<string> {
+  const { data: series, error: seriesError } = await supabase
+    .from("tournament_series")
+    .insert(seriesData)
+    .select("id")
+    .single();
+
+  if (seriesError) {
+    throw seriesError;
+  }
+
+  const categoriesPayload = categoriesData.map((category) => ({
+    ...category,
+    series_id: series.id,
+    status: "published",
+  }));
+
+  const { error: categoriesError } = await supabase
+    .from("tournaments")
+    .insert(categoriesPayload);
+
+  if (categoriesError) {
+    throw categoriesError;
+  }
+
+  return series.id as string;
+}
+
+/**
+ * Create an Organizer
+ */
+export async function createOrganizerRequest(
+  organizerData: OrganizerCreateData
+): Promise<QueryResponseData<string>> {
+  try {
+    const { data, error } = await supabase
+      .from("organizers")
+      .insert([organizerData])
+      .select("id")
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    return { data: data.id as string, error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
+}
+
+/**
+ * Get all organizers for listing
+ */
+export async function getOrganizersListRequest(): Promise<
+  QueryResponseData<OrganizerListingItemData[]>
+> {
+  try {
+    const { data, error } = await supabase
+      .from("organizers")
+      .select(
+        "id, name, type, contact_name, contact_phone, logo_url, created_at"
+      )
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      throw error;
+    }
+
+    return { data: (data as any[]) ?? [], error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
+}
