@@ -1,7 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function SuggestedTournamentCard() {
+interface SuggestedTournamentCardProps {
+  name: string;
+  location: string;
+  imageUrl?: string;
+  viewLink: string;
+}
+
+export default function SuggestedTournamentCard({
+  name,
+  location,
+  imageUrl,
+  viewLink,
+}: SuggestedTournamentCardProps) {
   // Define Navigation
 
   // Define Context
@@ -19,7 +31,7 @@ export default function SuggestedTournamentCard() {
       <div className="flex items-center gap-3">
         {/* Image */}
         <Image
-          src={"/images/default/suggested-tournament-default.png"}
+          src={imageUrl || "/images/default/suggested-tournament-default.png"}
           alt=""
           width={50}
           height={50}
@@ -28,16 +40,22 @@ export default function SuggestedTournamentCard() {
 
         {/* Name and Location */}
         <div className="flex flex-col gap-0.5">
-          <p className="text-n-950 text-xl font-medium leading-tight">
-            Tournament Name
-          </p>
-          <p className="text-n-700 font-normal leading-tight">Location</p>
+          <p className="text-n-950 text-xl font-medium leading-tight">{name}</p>
+          <p className="text-n-700 font-normal leading-tight">{location}</p>
         </div>
       </div>
 
       {/* View Button */}
-      <Link href="/" className="text-lime-500 font-medium">
-        <p>View</p>
+      {/* View Button */}
+      <Link
+        href={viewLink}
+        className="group inline-flex items-center gap-1 font-medium text-lime-500 transition-colors duration-200"
+      >
+        <span className="relative">
+          View
+          {/* underline reveal */}
+          <span className="absolute left-0 -bottom-0.5 h-0.5 w-0 bg-lime-500 transition-all duration-300 group-hover:w-full" />
+        </span>
       </Link>
     </div>
   );

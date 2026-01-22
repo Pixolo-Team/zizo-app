@@ -20,6 +20,8 @@ import MailSendEmailMessage from "@/components/icons/neevo-icons/MailSendEmailMe
 import BellNotification from "@/components/icons/neevo-icons/BellNotification";
 import UserCircleSingle from "@/components/icons/neevo-icons/UserCircleSingle";
 import Bookmark from "@/components/icons/neevo-icons/Bookmark";
+import Football from "@/components/icons/neevo-icons/Football";
+import Soccer from "@/components/icons/neevo-icons/Soccer";
 
 /* GT Walsheim Font */
 const gtWalsheimFont = localFont({
@@ -82,11 +84,9 @@ const menuItems = [
     icon: <Home3 primaryColor="var(--color-n-900)" className="size-5" />,
   },
   {
-    label: "Search",
-    href: "/search",
-    icon: (
-      <MagnifyingGlass primaryColor="var(--color-n-900)" className="size-5" />
-    ),
+    label: "Tournaments",
+    href: "/football-tournaments",
+    icon: <Soccer primaryColor="var(--color-n-900)" className="size-5" />,
   },
   {
     label: "Message",
@@ -106,18 +106,10 @@ const menuItems = [
       <BellNotification primaryColor="var(--color-n-900)" className="size-5" />
     ),
   },
-
   {
     label: "Saved",
     href: "/saved",
     icon: <Bookmark primaryColor="var(--color-n-900)" className="size-5" />,
-  },
-  {
-    label: "Profile",
-    href: "/profile",
-    icon: (
-      <UserCircleSingle primaryColor="var(--color-n-900)" className="size-5" />
-    ),
   },
 ];
 
@@ -165,7 +157,7 @@ export default function RootLayout({
         <AuthProvider>
           {/* Backdrop Image */}
           <Motion as="div" variants={fadeIn} delay={0.1}>
-            <div className="fixed -top-[13px] -right-[60px]">
+            <div className="fixed -top-3.25 -right-15">
               <BrandLogo
                 variant="color-icon"
                 size={260}
@@ -179,19 +171,17 @@ export default function RootLayout({
             </div>
           </Motion>
 
-          <div className="flex flex-col lg:gap-8">
+          <div className="flex flex-col lg:gap-8 relative">
             {/* PageHeader */}
-            <div className="px-5 lg:px-9 pt-6 pb-3">
+            <div className="px-5 pt-6 pb-3 lg:hidden">
               <Motion as="div" variants={shrinkIn} delay={0.1}>
                 {/* PageHeader component */}
                 <PageHeader />
               </Motion>
             </div>
-            <div className="flex px-5 lg:px-9 lg:gap-15 2xl:gap-50">
-              <div className="hidden lg:block">
-                <Motion as="div" variants={fadeIn} delay={0.2}>
-                  <SideMenu menuItems={menuItems} />
-                </Motion>
+            <div className="flex lg:gap-15 justify-between">
+              <div className="hidden lg:block w-62.5">
+                <SideMenu menuItems={menuItems} />
               </div>
               <div className="w-full lg:flex-1">{children}</div>
             </div>

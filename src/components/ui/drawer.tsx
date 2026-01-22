@@ -44,7 +44,7 @@ function DrawerOverlay({
     <DrawerPrimitive.Overlay
       data-slot="drawer-overlay"
       className={cn(
-        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-n-800/80",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-n-800/80 ",
         className
       )}
       {...props}
@@ -75,8 +75,11 @@ function DrawerContent({
         {...props}
       >
         {/* Close Button */}
-        <DrawerClose className="absolute -top-16 lg:-top-20 left-1/2 -translate-x-1/2 shadow-[0_0_6px_0_rgba(0,0,0,0.25)] bg-n-700 hover:bg-n-700/80 size-10 lg:size-12 rounded-full text-n-50 transition-colors flex justify-center items-center">
-          <Close primaryColor={"var(--color-n-300)"} className="size-5 lg:size-6" />
+        <DrawerClose className="absolute -top-16 lg:-top-20 left-1/2 -translate-x-1/2 shadow-[0_0_6px_0_rgba(0,0,0,0.25)] bg-n-700 hover:bg-n-700/80 size-10 lg:size-12 rounded-full text-n-50  flex justify-center items-center transition-all duration-200 ease-in-out hover:scale-[1.02]">
+          <Close
+            primaryColor={"var(--color-n-300)"}
+            className="size-5 lg:size-6"
+          />
         </DrawerClose>
 
         {/* Drawer Content */}
@@ -114,7 +117,9 @@ function DrawerHeader({
 
       <Motion variants={slideInUp} delay={0.2}>
         {subTitle && (
-          <p className="text-sm text-n-600 leading-tight lg:text-base">{subTitle}</p>
+          <p className="text-sm text-n-600 leading-tight lg:text-base">
+            {subTitle}
+          </p>
         )}
       </Motion>
     </div>

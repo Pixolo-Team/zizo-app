@@ -189,182 +189,182 @@ export default function TournamentDetails() {
 
   return (
     <>
-      <div className="flex gap-15 2xl:gap-50">
-        <div className="h-full pb-20 pt-3 xl:max-w-2/3 flex-1 mx-auto relative z-4 flex flex-col gap-4 overflow-hidden">
-          {/* Tournament Basic Details */}
-          <div className="rounded-4xl bg-n-50 overflow-hidden w-full">
-            {/* THumbnail Image */}
-            <Motion variants={shrinkIn} delay={0.2}>
-              <TournamentCardImage
-                posterUrl={
-                  tournamentDetails.series?.poster_url ??
-                  "/images/default/tournament-card-thumbnail.png"
-                }
-                entryFee={tournament.entry_fee}
-              />
-            </Motion>
+      <div className="flex gap-15 px-5 lg:pt-10 ">
+        <div className="flex-1 flex justify-center">
+          <div className="h-full pb-20 pt-3 xl:max-w-190 flex-1 mx-auto relative z-4 flex flex-col gap-4 overflow-hidden">
+            {/* Tournament Basic Details */}
+            <div className="rounded-4xl bg-n-50 overflow-hidden w-full">
+              {/* THumbnail Image */}
+              <Motion variants={shrinkIn} delay={0.2}>
+                <TournamentCardImage
+                  posterUrl={
+                    tournamentDetails.series?.poster_url ??
+                    "/images/default/tournament-card-thumbnail.png"
+                  }
+                  entryFee={tournament.entry_fee}
+                />
+              </Motion>
 
-            <div className="pt-2.5 pb-6 lg:pt-8 lg:pb-12 lg:px-10 px-5 flex flex-col gap-3.5 lg:gap-7">
-              <div className="flex flex-col gap-4 lg:gap-7">
-                {/* Title + action button */}
-                <div className="flex justify-between items-start">
-                  {/* Title + location */}
-                  <div
-                    className={`flex flex-col justify-start items-start gap-1 lg:gap-2`}
-                  >
-                    {/* Title */}
-                    <p className="justify-start text-n-900 text-xl lg:text-3xl font-medium leading-tight">
-                      {tournamentDetails.series.name}
-                    </p>
-
-                    {/* Location */}
-                    <div className="flex items-center gap-1 lg:gap-2">
-                      {/* Location Icon */}
-                      <LocationPin
-                        className="size-3 lg:size-6"
-                        primaryColor="var(--color-n-400)"
-                      />
-
-                      {/* Location Text */}
-                      <p className="justify-start text-n-500 text-xs lg:text-2xl font-normal ">
-                        {tournamentDetails.series.ground_name}
-                        {","} {tournamentDetails.series.city}
+              <div className="pt-2.5 pb-6 lg:pt-8 lg:pb-12 lg:px-10 px-5 flex flex-col gap-3.5 lg:gap-7">
+                <div className="flex flex-col gap-4 lg:gap-7">
+                  {/* Title + action button */}
+                  <div className="flex justify-between items-start">
+                    {/* Title + location */}
+                    <div
+                      className={`flex flex-col justify-start items-start gap-1 lg:gap-2`}
+                    >
+                      {/* Title */}
+                      <p className="justify-start text-n-900 text-xl lg:text-3xl font-medium leading-tight">
+                        {tournamentDetails.series.name}
                       </p>
+
+                      {/* Location */}
+                      <div className="flex items-center gap-1 lg:gap-2">
+                        {/* Location Icon */}
+                        <LocationPin
+                          className="size-3 lg:size-6"
+                          primaryColor="var(--color-n-400)"
+                        />
+
+                        {/* Location Text */}
+                        <p className="justify-start text-n-500 text-xs lg:text-2xl font-normal ">
+                          {tournamentDetails.series.ground_name}
+                          {","} {tournamentDetails.series.city}
+                        </p>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Action Buttons */}
-                  <div className="flex items-center gap-4">
-                    {/* Share Button */}
-                    <Button
-                      variant={"ghost"}
-                      size="icon"
-                      className="size-5 lg:size-8"
-                      onClick={() => setIsShareDialogOpen(true)}
-                    >
-                      <UploadBox2
-                        primaryColor="var(--color-n-950)"
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-4">
+                      {/* Share Button */}
+                      <Button
+                        variant={"ghost"}
+                        size="icon"
                         className="size-5 lg:size-8"
-                      />
-                    </Button>
+                        onClick={() => setIsShareDialogOpen(true)}
+                      >
+                        <UploadBox2
+                          primaryColor="var(--color-n-950)"
+                          className="size-5 lg:size-8"
+                        />
+                      </Button>
 
-                    {/* Save Button */}
-                    <Button
-                      variant={"ghost"}
-                      size="icon"
-                      className="size-5 lg:size-8"
-                    >
-                      <Bookmark
-                        primaryColor="var(--color-n-950)"
+                      {/* Save Button */}
+                      <Button
+                        variant={"ghost"}
+                        size="icon"
                         className="size-5 lg:size-8"
-                      />
-                    </Button>
+                      >
+                        <Bookmark
+                          primaryColor="var(--color-n-950)"
+                          className="size-5 lg:size-8"
+                        />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Tabs Section */}
-          <div className="pb-7 flex flex-col gap-3 rounded-b-2xl w-full">
-            {/* Tabs */}
-            <div className="w-full overflow-x-auto scrollbar-hide px-5">
-              <div className="flex items-center gap-1.5">
-                {tournamentDetails.otherTournaments?.map((t) => {
-                  const label = `${t.age_category} ${
-                    t.gender
-                      ? t.gender.charAt(0).toUpperCase() + t.gender.slice(1)
-                      : ""
-                  }`;
+            {/* Tabs Section */}
+            <div className="pb-7 flex flex-col gap-3 rounded-b-2xl w-full">
+              {/* Tabs */}
+              <div className="w-full overflow-x-auto scrollbar-hide px-5">
+                <div className="flex items-center gap-1.5">
+                  {tournamentDetails.otherTournaments?.map((t) => {
+                    const label = `${t.age_category} ${
+                      t.gender
+                        ? t.gender.charAt(0).toUpperCase() + t.gender.slice(1)
+                        : ""
+                    }`;
 
-                  return (
-                    <div
-                      key={t.id}
-                      className={`px-4 lg:px-5 h-[38px] lg:h-[41px] py-2 text-n-800 text-sm lg:text-lg font-medium whitespace-nowrap cursor-pointer transition-all duration-200 ${
-                        t.id === activeTab
-                          ? "border-b-2 font-semibold border-n-800"
-                          : ""
-                      }`}
-                      onClick={() => setActiveTab(t.id || "")}
-                    >
-                      {label}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-1.5">
-              {/* Main Info */}
-              <div className="flex flex-col gap-5">
-                {/* Main Details */}
-                <Motion variants={fadeIn} delay={0.4}>
-                  <InfoGrid
-                    startDate={tournament.start_date}
-                    startTime={tournament.start_time}
-                    endDate={tournament.end_date}
-                    endTime={tournament.end_time}
-                    ageGroup={tournament.age_category}
-                    format={tournament.format}
-                    category={tournament.tournament_format}
-                  />
-                </Motion>
+                    return (
+                      <div
+                        key={t.id}
+                        className={`px-4 lg:px-5 h-[38px] lg:h-[41px] py-2 text-n-800 text-sm lg:text-lg font-medium whitespace-nowrap cursor-pointer
+    border-b-2 transition-colors duration-300 ease-in-out
+    ${t.id === activeTab ? "border-n-800" : "border-transparent"}
+  `}
+                        onClick={() => setActiveTab(t.id || "")}
+                      >
+                        {label}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
-              {/* Fees and Prize Pool */}
               <div className="flex flex-col gap-1.5">
-                <Motion variants={fadeIn} delay={0.5}>
-                  <FeesSection
-                    entryFee={tournament.entry_fee}
-                    advance={tournament.advance_fee}
-                  />
-                </Motion>
-
-                {tournament.cash_prize_total > 0 && (
-                  <Motion variants={fadeIn} delay={0.6}>
-                    <PrizePool
-                      totalPool={tournament.cash_prize_total || 0}
-                      prizes={
-                        tournament.winning_prizes?.map((p) =>
-                          JSON.parse(p)
-                        ) ?? [
-                          {
-                            position: "Winner",
-                            amount: 10000,
-                          },
-                          {
-                            position: "Runner Up",
-                            amount: 5000,
-                          },
-                          {
-                            position: "Third Place",
-                            amount: 2500,
-                          },
-                        ]
-                      }
+                {/* Main Info */}
+                <div className="flex flex-col gap-5">
+                  {/* Main Details */}
+                  <Motion variants={fadeIn} delay={0.4}>
+                    <InfoGrid
+                      startDate={tournament.start_date}
+                      startTime={tournament.start_time}
+                      endDate={tournament.end_date}
+                      endTime={tournament.end_time}
+                      ageGroup={tournament.age_category}
+                      format={tournament.format}
+                      category={tournament.tournament_format}
                     />
                   </Motion>
-                )}
-              </div>
+                </div>
 
-              {/* Bottom Information */}
-              <div className="flex flex-col gap-1.5">
-                {/* Awards Section */}
-                <Motion variants={fadeIn} delay={0.7}>
-                  <AwardsSection />
-                </Motion>
-
-                {tournamentDetails.sponsors.length > 0 && (
-                  // Sponsors Section
-                  <Motion variants={fadeIn} delay={0.8}>
-                    <SponsorsSection
-                      sponsors={tournamentDetails.sponsors ?? []}
+                {/* Fees and Prize Pool */}
+                <div className="flex flex-col gap-1.5">
+                  <Motion variants={fadeIn} delay={0.5}>
+                    <FeesSection
+                      entryFee={tournament.entry_fee}
+                      advance={tournament.advance_fee}
                     />
                   </Motion>
-                )}
 
-                {/* Organizer Section */}
-                {/* {tournamentDetails.organizer && (
+                  {tournament.cash_prize_total > 0 && (
+                    <Motion variants={fadeIn} delay={0.6}>
+                      <PrizePool
+                        totalPool={tournament.cash_prize_total || 0}
+                        prizes={
+                          tournament.winning_prizes?.map((p) =>
+                            JSON.parse(p)
+                          ) ?? [
+                            {
+                              position: "Winner",
+                              amount: 10000,
+                            },
+                            {
+                              position: "Runner Up",
+                              amount: 5000,
+                            },
+                            {
+                              position: "Third Place",
+                              amount: 2500,
+                            },
+                          ]
+                        }
+                      />
+                    </Motion>
+                  )}
+                </div>
+
+                {/* Bottom Information */}
+                <div className="flex flex-col gap-1.5">
+                  {/* Awards Section */}
+                  <Motion variants={fadeIn} delay={0.7}>
+                    <AwardsSection />
+                  </Motion>
+
+                  {tournamentDetails.sponsors.length > 0 && (
+                    // Sponsors Section
+                    <Motion variants={fadeIn} delay={0.8}>
+                      <SponsorsSection
+                        sponsors={tournamentDetails.sponsors ?? []}
+                      />
+                    </Motion>
+                  )}
+
+                  {/* Organizer Section */}
+                  {/* {tournamentDetails.organizer && (
                 <Motion variants={fadeIn} delay={0.9}>
                   <OrganizerSection
                     organizerId={tournamentDetails.organizer.id}
@@ -374,49 +374,43 @@ export default function TournamentDetails() {
                 </Motion>
               )} */}
 
-                {/* Details List */}
-                <Motion variants={fadeIn} delay={1}>
-                  <DetailsList
-                    matchFormat={tournament.format}
-                    tournamentFormat={
-                      TOURNAMENT_FORMAT_LABELS[
-                        tournament.tournament_format as keyof typeof TOURNAMENT_FORMAT_LABELS
-                      ]
-                    }
-                    minMatches={tournament.min_matches}
-                    fillingFast={tournament.slot_status === "filling_fast"}
-                  />
+                  {/* Details List */}
+                  <Motion variants={fadeIn} delay={1}>
+                    <DetailsList
+                      matchFormat={tournament.format}
+                      tournamentFormat={
+                        TOURNAMENT_FORMAT_LABELS[
+                          tournament.tournament_format as keyof typeof TOURNAMENT_FORMAT_LABELS
+                        ]
+                      }
+                      minMatches={tournament.min_matches}
+                      fillingFast={tournament.slot_status === "filling_fast"}
+                    />
+                  </Motion>
+                </div>
+
+                {/* Rules and Regulations */}
+                <Motion variants={fadeIn} delay={1.1}>
+                  <RulesAndRegulations />
                 </Motion>
               </div>
-
-              {/* Rules and Regulations */}
-              <Motion variants={fadeIn} delay={1.1}>
-                <RulesAndRegulations />
-              </Motion>
             </div>
-          </div>
 
-          {/* Sticky CTA */}
-          <Motion variants={shrinkIn} delay={1.1}>
-            <StickyCTA
-              isContactRevealed={isContactRevealed}
-              onRequestInterest={() => setIsInterestFormOpen(true)}
-              onContactClick={() => setIsContactDrawerOpen(true)}
-              onShareBtnClick={() => setIsShareDialogOpen(true)}
-            />
-          </Motion>
+            {/* Sticky CTA */}
+            <Motion variants={shrinkIn} delay={1.1}>
+              <StickyCTA
+                isContactRevealed={isContactRevealed}
+                onRequestInterest={() => setIsInterestFormOpen(true)}
+                onContactClick={() => setIsContactDrawerOpen(true)}
+                onShareBtnClick={() => setIsShareDialogOpen(true)}
+              />
+            </Motion>
+          </div>
         </div>
 
         {/* SuggestedTournaments */}
-        <div className="hidden xl:block xl:w-1/3 ">
-          <SuggestedTournaments
-            suggestedTournaments={
-              tournamentDetails.otherTournaments.slice(
-                0,
-                3
-              ) as TournamentListingItemData[]
-            }
-          />
+        <div className="hidden xl:block xl:w-95">
+          <SuggestedTournaments />
         </div>
       </div>
 

@@ -66,6 +66,8 @@ export default function Tournaments() {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const PAGE_SIZE = 10;
 
+  const debouncedSearchInput = useDebounce(searchInput, 500);
+
   // Helper Functions
   /** Update Filter */
   const updateFilter = (key: keyof TournamentFiltersData, value: string) => {
@@ -102,7 +104,7 @@ export default function Tournaments() {
         tournament_id: tournamentItem.tournament_id,
         tournament_name: tournamentItem.tournament_name,
         city: tournamentItem.city,
-        age_category: tournamentItem.age_category,
+        age_category: tournamentItem.age_categories.join(", "),
         gender: tournamentItem.gender,
       },
     });
@@ -115,10 +117,13 @@ export default function Tournaments() {
     const isAlreadyDefault =
       JSON.stringify(filters) === JSON.stringify(DEFAULT_FILTERS);
 
-    if (isAlreadyDefault) return;
+    if (isAlreadyDefault && searchInput === "") {
+      return;
+    }
 
     // Reset Filters
     setFilters(DEFAULT_FILTERS);
+    setSearchInput("");
     setPage(1);
     setHasMore(true);
 
@@ -136,8 +141,6 @@ export default function Tournaments() {
       setShouldRefresh((prev) => !prev);
     }
   };
-
-  const debouncedSearchInput = useDebounce(searchInput, 500);
 
   // Use Effects - Fetch Data
   useEffect(() => {
@@ -303,133 +306,143 @@ export default function Tournaments() {
     <>
       {/* Tournaments Listing Page */}
       {/* Page Container */}
-      <div className="flex gap-15 2xl:gap-50">
-        <div className="relative xl:max-w-2/3 flex-1 h-full pb-7 flex flex-col gap-5 lg:gap-12 z-4">
-          {/* Header Text */}
-          <div className=" lg:hidden">
-            <Motion variants={fadeIn} delay={0.2}>
-              <p className="text-base text-n-950 font-medium font-gtwalsheim w-3/5 leading-none lg:hidden">
-                Find local football tournaments near you.
-              </p>
-            </Motion>
-          </div>
-          <div className="flex flex-col gap-2.5 lg:gap-4">
-            {/* Search Input */}
-            <Motion as="div" variants={shrinkIn} delay={0.2}>
-              <SearchInput
-                className="rounded-3xl bg-n-50"
-                value={searchInput}
-                onChange={(value) => {
-                  setSearchInput(value);
-                  setPage(1);
-                  setHasMore(true);
-                }}
-                rightIcon
-                onRightIconClick={() => {
-                  setIsMoreFiltersDrawerOpen(true);
-                }}
-              />
-            </Motion>
+      <div className="flex gap-15 justify-between px-5 lg:pt-10">
+        <div className="flex-1 flex justify-center">
+          <div className="relative xl:max-w-185 flex-1 h-full pb-7 flex flex-col gap-5 lg:gap-12 z-4">
+            {/* Header Text */}
+            <div className=" lg:hidden">
+              <Motion variants={fadeIn} delay={0.2}>
+                <p className="text-base text-n-950 font-medium font-gtwalsheim w-3/5 leading-none lg:hidden">
+                  Find local football tournaments near you.
+                </p>
+              </Motion>
+            </div>
+            <div className="flex flex-col w-full gap-2.5 lg:gap-4">
+              {/* Search Input */}
+              <Motion as="div" variants={shrinkIn} delay={0.2}>
+                <SearchInput
+                  className="rounded-3xl bg-n-50"
+                  value={searchInput}
+                  onChange={(value) => {
+                    setSearchInput(value);
+                    setPage(1);
+                    setHasMore(true);
+                  }}
+                  rightIcon
+                  onRightIconClick={() => {
+                    setIsMoreFiltersDrawerOpen(true);
+                  }}
+                />
+              </Motion>
 
-            {/* FILTER BAR */}
-            <Motion as="div" variants={shrinkIn} delay={0.3}>
-              <PrimaryFilters
-                filters={filters}
-                updateFilter={updateFilter}
-                resetFilters={() => resetFilters(true)}
-              />
-            </Motion>
-          </div>
+              {/* FILTER BAR */}
+              <Motion as="div" variants={shrinkIn} delay={0.3}>
+                <PrimaryFilters
+                  filters={filters}
+                  updateFilter={updateFilter}
+                  resetFilters={() => resetFilters(true)}
+                />
+              </Motion>
+            </div>
 
-          {/* Tournaments Listing */}
-          <Motion as="div" variants={shrinkIn} delay={0.4}>
-            <div className="flex flex-col gap-5 lg:gap-6">
-              {isTournamentsLoading && page === 1 ? (
-                Array.from({ length: 3 }).map((skeletonItem, skeletonIndex) => (
-                  // TournamentCardSkeleton component
-                  <TournamentCardSkeleton key={`skeleton-${skeletonIndex}`} />
-                ))
-              ) : (
-                <InfiniteScroll
-                  hasMore={hasMore}
-                  isLoading={isTournamentsLoading}
-                  next={() => setPage((prev) => prev + 1)}
-                  threshold={0.5}
-                  className="flex flex-col gap-5 lg:gap-6"
-                  loadingComponent={
-                    <div className="flex flex-col gap-5 lg:gap-6">
-                      <TournamentCardSkeleton />
-                    </div>
-                  }
-                >
-                  {tournamentItems.map((tournamentItem) => (
-                    // TournamentCard component
-                    <TournamentCard
-                      key={tournamentItem.tournament_id}
-                      tournamentListingItem={tournamentItem}
-                      onShareBtnClick={(
-                        e: React.MouseEvent<HTMLButtonElement>
-                      ) => {
-                        e.stopPropagation();
-                        setIsShareDialogOpen(true);
-                        setSelectedTournamentId(tournamentItem.tournament_id);
-                      }}
-                      onRightArrowClick={() => {
-                        handleArrowClick(tournamentItem);
-                      }}
-                    />
-                  ))}
-                </InfiniteScroll>
+            {/* Tournaments Listing */}
+            <Motion as="div" variants={shrinkIn} delay={0.4}>
+              <div className="flex flex-col gap-5 lg:gap-6 w-full">
+                {isTournamentsLoading && page === 1 ? (
+                  Array.from({ length: 3 }).map(
+                    (skeletonItem, skeletonIndex) => (
+                      // TournamentCardSkeleton component
+                      <div className="w-full" key={`skeleton-${skeletonIndex}`}>
+                        <TournamentCardSkeleton />
+                      </div>
+                    )
+                  )
+                ) : (
+                  <InfiniteScroll
+                    hasMore={hasMore}
+                    isLoading={isTournamentsLoading}
+                    next={() => setPage((prev) => prev + 1)}
+                    threshold={0.5}
+                    className="flex flex-col gap-5 lg:gap-6 w-full"
+                    loadingComponent={
+                      <div className="flex flex-col gap-5 lg:gap-6 w-full">
+                        <TournamentCardSkeleton />
+                      </div>
+                    }
+                  >
+                    {tournamentItems.map((tournamentItem) => (
+                      // TournamentCard component
+                      <TournamentCard
+                        key={tournamentItem.tournament_id}
+                        tournamentListingItem={tournamentItem}
+                        onShareBtnClick={(
+                          e: React.MouseEvent<HTMLButtonElement>
+                        ) => {
+                          e.stopPropagation();
+                          setIsShareDialogOpen(true);
+                          setSelectedTournamentId(tournamentItem.tournament_id);
+                        }}
+                        onRightArrowClick={() => {
+                          handleArrowClick(tournamentItem);
+                        }}
+                      />
+                    ))}
+                  </InfiniteScroll>
+                )}
+              </div>
+              {/* Bottom Text */}
+              {!isTournamentsLoading && tournamentItems.length > 0 && (
+                <p className="text-center text-n-600 font-normal text-sm lg:text-base mt-6">
+                  We didn't think you would come this far, that is all we have.
+                </p>
               )}
-            </div>
-          </Motion>
+            </Motion>
 
-          {/* Empty State */}
-          {!isTournamentsLoading && tournamentItems.length === 0 && (
-            <div className="flex flex-col gap-3 h-full pt-16 lg:pt-0 items-center justify-center">
-              {/* Empty State Image */}
-              <div className="hidden dark-mode-block">
-                <Image
-                  src="/images/empty-state-tournament-lightmode.png"
-                  alt="No tournaments (light)"
-                  width={1200}
-                  height={120}
-                  priority
-                  className="w-full h-[173px] object-cover invert-[1] lg:h-[280px] xl:h-[350px]"
-                />
+            {/* Empty State */}
+            {!isTournamentsLoading && tournamentItems.length === 0 && (
+              <div className="flex flex-col  gap-3 h-full pt-16 lg:pt-0 items-center justify-center">
+                {/* Empty State Image */}
+                <div className="hidden dark-mode-block">
+                  <Image
+                    src="/images/no-tournament-dark.png"
+                    alt="No tournaments (light)"
+                    width={1200}
+                    height={120}
+                    priority
+                    className="w-full h-[173px] object-cover invert-[1] lg:h-[280px] xl:h-[350px]"
+                  />
+                </div>
+
+                <div className=" block dark-mode-hidden">
+                  <Image
+                    src="/images/no-tournament-light.png"
+                    alt="No tournaments (dark)"
+                    width={1200}
+                    height={120}
+                    priority
+                    className="w-full h-[173px] object-cover lg:h-[280px] xl:h-[350px]"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2 items-center">
+                  {/* Empty State Title */}
+                  <p className="text-center text-n-900 font-medium text-xl lg:text-2xl xl:text-3xl">
+                    No tournaments on the field
+                  </p>
+
+                  {/* Empty State Subtitle */}
+                  <p className="text-center text-n-600 font-normal leading-[137%] text-sm w-[78%] lg:text-lg xl:text-xl ">
+                    Try changing your filters or search a different area
+                  </p>
+                </div>
               </div>
-
-              <div className=" block dark-mode-hidden">
-                <Image
-                  src="/images/empty-state-tournament-lightmode.png"
-                  alt="No tournaments (dark)"
-                  width={1200}
-                  height={120}
-                  priority
-                  className="w-full h-[173px] object-cover lg:h-[280px] xl:h-[350px]"
-                />
-              </div>
-
-              <div className="flex flex-col gap-2 items-center">
-                {/* Empty State Title */}
-                <p className="text-center text-n-900 font-medium text-xl lg:text-2xl xl:text-3xl">
-                  No tournaments on the field
-                </p>
-
-                {/* Empty State Subtitle */}
-                <p className="text-center text-n-600 font-normal leading-[137%] text-sm w-[78%] lg:text-lg xl:text-xl ">
-                  Try changing your filters or search a different area
-                </p>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* SuggestedTournaments */}
-        <div className="hidden xl:block xl:w-1/3 ">
-          <SuggestedTournaments
-            suggestedTournaments={tournamentItems.slice(0, 3)}
-          />
+        <div className="hidden xl:block xl:w-95 ">
+          <SuggestedTournaments />
         </div>
       </div>
 

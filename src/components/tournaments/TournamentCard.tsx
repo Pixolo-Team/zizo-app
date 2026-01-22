@@ -55,7 +55,7 @@ export default function TournamentCard({
 
   return (
     <a
-      className="rounded-4xl bg-n-50 overflow-hidden w-full"
+      className="rounded-4xl bg-n-50 overflow-hidden w-full cursor-pointer"
       onClick={onRightArrowClick}
     >
       {/* Image part */}
@@ -86,9 +86,11 @@ export default function TournamentCard({
           {/* Title + action button */}
           <div className="flex justify-between items-start">
             {/* Title + location */}
-            <div className={`flex flex-col justify-start items-start gap-1 lg:gap-2`}>
+            <div
+              className={`flex flex-col justify-start items-start gap-1 lg:gap-2`}
+            >
               {/* Title */}
-              <p className="justify-start text-n-900 text-xl lg:text-3xl font-medium leading-tight">
+              <p className="justify-start text-n-900 text-xl lg:text-2xl font-medium leading-tight">
                 {tournamentListingItem.tournament_name}
               </p>
 
@@ -101,7 +103,7 @@ export default function TournamentCard({
                 />
 
                 {/* Location Text */}
-                <p className="justify-start text-n-500 text-sm lg:text-2xl font-normal ">
+                <p className="justify-start text-n-500 text-sm lg:text-xl font-normal ">
                   {tournamentListingItem.area}
                   {","} {tournamentListingItem.city}
                 </p>
@@ -124,7 +126,11 @@ export default function TournamentCard({
               </Button>
 
               {/* Save Button */}
-              <Button variant={"ghost"} size="icon" className="size-5 lg:size-8">
+              <Button
+                variant={"ghost"}
+                size="icon"
+                className="size-5 lg:size-8"
+              >
                 <Bookmark
                   primaryColor="var(--color-n-950)"
                   className="size-5 lg:size-8"
@@ -137,7 +143,7 @@ export default function TournamentCard({
           <div className="flex items-center gap-1.5 lg:gap-3 flex-wrap">
             {/* Badge component */}
             <Badge
-              className="flex items-center gap-1 lg:gap-2 px-3 py-2.5 lg:px-6 lg:py-5 text-n-900 font-normal text-xs lg:text-xl"
+              className="flex items-center gap-1 lg:gap-2 px-3 py-2.5 lg:px-6 lg:py-5 text-n-900 font-normal text-xs lg:text-lg"
               variant={"secondary"}
             >
               {/* Start Date */}
@@ -149,7 +155,7 @@ export default function TournamentCard({
             </Badge>
 
             <Badge
-              className="flex items-center gap-1 lg:gap-2 px-3 py-2.5 lg:px-6 lg:py-5 text-n-900 font-normal text-xs lg:text-xl"
+              className="flex items-center gap-1 lg:gap-2 px-3 py-2.5 lg:px-6 lg:py-5 text-n-900 font-normal text-xs lg:text-lg"
               variant={"secondary"}
             >
               {/* Format */}
@@ -160,20 +166,25 @@ export default function TournamentCard({
               {tournamentListingItem.format}
             </Badge>
 
-            <Badge
-              className="flex items-center gap-1 lg:gap-2 px-3 py-2.5 lg:px-6 lg:py-5 text-n-900 font-normal text-xs lg:text-xl"
-              variant={"secondary"}
-            >
-              {/* Age Category */}
-              <CalendarUser
-                className="size-4 lg:size-7"
-                primaryColor="var(--color-n-900)"
-              />
-              {tournamentListingItem.age_category}
-            </Badge>
+            {tournamentListingItem.age_categories &&
+              tournamentListingItem.age_categories.length > 0 &&
+              tournamentListingItem.age_categories.map((ageCat, index) => (
+                <Badge
+                  key={index}
+                  className="flex items-center gap-1 lg:gap-2 px-3 py-2.5 lg:px-6 lg:py-5 text-n-900 font-normal text-xs lg:text-lg"
+                  variant={"secondary"}
+                >
+                  {/* Age Category */}
+                  <CalendarUser
+                    className="size-4 lg:size-7"
+                    primaryColor="var(--color-n-900)"
+                  />
+                  {ageCat}
+                </Badge>
+              ))}
 
             <Badge
-              className="flex items-center gap-1 lg:gap-2 px-3 py-2.5 lg:px-6 lg:py-5 text-n-900 font-normal text-xs lg:text-xl"
+              className="flex items-center gap-1 lg:gap-2 px-3 py-2.5 lg:px-6 lg:py-5 text-n-900 font-normal text-xs lg:text-lg"
               variant={"secondary"}
             >
               {/* Slot Status */}
@@ -190,20 +201,20 @@ export default function TournamentCard({
         {/* Winning Prizes + Right Arrow Button */}
         <div className="flex justify-between items-center">
           <div className="flex flex-col justify-center items-start gap-1 lg:gap-2">
-            <p className="justify-start text-n-500 text-xs font-normal lg:text-2xl">
+            <p className="justify-start text-n-500 text-xs font-normal lg:text-xl">
               Winning Prize
             </p>
 
             <div className="flex justify-start items-end gap-0.5 lg:gap-1.5">
               {/* Total Cash Prize */}
-              <p className="text-n-900 text-xl font-bold lg:text-4xl">
+              <p className="text-n-900 text-xl font-bold lg:text-3xl">
                 {tournamentListingItem?.cash_prize_total
                   ? `₹${tournamentListingItem.cash_prize_total?.toLocaleString()}`
                   : "Trophies"}
               </p>
 
               {/* Extra text */}
-              <p className="text-n-500 text-xs font-normal lg:text-xl">
+              <p className="text-n-500 text-xs font-normal lg:text-lg">
                 and more
               </p>
             </div>

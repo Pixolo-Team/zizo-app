@@ -1,10 +1,17 @@
-import { TournamentListingItemData } from "@/types/tournament";
-import Link from "next/link";
-import SuggestedTournamentCard from "./SuggestedTournamentCard";
+// REACT //
+import { useEffect, useState } from "react";
 
-interface SuggestedTournamentsProps {
-  suggestedTournaments: TournamentListingItemData[];
-}
+// TYPES //
+import { TournamentListingItemData } from "@/types/tournament";
+
+// COMPONENTS //
+import Link from "next/link";
+
+// SERVICES //
+import { getTournamentsRequest } from "@/services/queries/tournaments.query";
+
+// OTHERS //
+import SuggestedTournamentCard from "./SuggestedTournamentCard";
 
 const tabs = [
   {
@@ -45,20 +52,39 @@ const tabs = [
   },
 ];
 
-export default function SuggestedTournaments({
-  suggestedTournaments,
-}: SuggestedTournamentsProps) {
+export default function SuggestedTournaments({}) {
   // Define Navigation
 
   // Define Context
 
   // Define States
+  const [suggestedTournaments, setSuggestedTournaments] = useState<
+    TournamentListingItemData[]
+  >([]);
 
   // Define Refs
 
   // Helper Functions
 
   // Use Effects
+  // Use Effects - Fetch Data
+  useEffect(() => {
+    const fetchTournaments = async () => {
+      // API Call to get all tournaments in next 7 days
+      const { data, error } = await getTournamentsRequest({
+        start_date: new Date().toISOString(),
+        end_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+      });
+      if (error) {
+        console.error("Error fetching tournaments:", error);
+      } else {
+        // Set only first 5 tournaments as suggested tournaments
+        setSuggestedTournaments(data?.slice(0, 5) || []);
+      }
+    };
+
+    fetchTournaments();
+  }, []);
   return (
     <div className="w-full flex flex-col gap-11 pr-5">
       <div className="flex flex-col gap-[30px]">
@@ -67,16 +93,18 @@ export default function SuggestedTournaments({
           <p className="text-n-600 text-lg font-medium">
             Suggested Tournaments
           </p>
-          {/* See All Button */}
-          <Link href="/football-tournaments" className="text-n-500 underline">
-            <p>See All</p>
-          </Link>
         </div>
 
         {/* Tournaments */}
         <div className="flex flex-col gap-7">
           {suggestedTournaments.map((tournament, tournamentIndex) => (
-            <SuggestedTournamentCard key={tournamentIndex} />
+            <SuggestedTournamentCard
+              key={tournamentIndex}
+              name={tournament.tournament_name}
+              location={tournament.city}
+              imageUrl={tournament.poster_url}
+              viewLink={`/football-tournaments/${tournament.tournament_id}`}
+            />
           ))}
         </div>
       </div>

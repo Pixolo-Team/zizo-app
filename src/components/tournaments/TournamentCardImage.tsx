@@ -51,7 +51,7 @@ export default function TournamentCardImage({
       />
 
       {entryFee > 0 && (
-        <div className="absolute top-7 right-5 lg:top-7 lg:right-9 flex justify-center items-center text-n-800 text-sm leading-[26px]  font-semibold bg-n-50 rounded-3xl py-0.5 px-2 lg:py-3.5 lg:px-5 lg:text-xl">
+        <div className="absolute top-7 right-5 lg:top-8 lg:right-8 flex justify-center items-center text-n-800 text-sm leading-[26px]  font-semibold bg-n-50 rounded-3xl py-0.5 px-2 lg:py-3.5 lg:px-5 lg:text-xl">
           {/* Price Chip */}
           {`₹${entryFee.toLocaleString()}/-`}
         </div>

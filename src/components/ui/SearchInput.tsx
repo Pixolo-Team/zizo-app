@@ -64,7 +64,7 @@ export default function SearchInput({
         }}
         placeholder={placeholder}
         aria-label={placeholder}
-        className={`pl-12 lg:pl-15 ${rightIcon ? "pr-12" : ""} h-[50px] lg:h-[68px] lg:text-xl ${className}`}
+        className={`pl-12 lg:pl-15 ${rightIcon ? "pr-12 lg:pr-16" : ""} h-[50px] lg:h-[68px] lg:text-xl ${className}`}
       />
 
       {/* Right Icon */}
@@ -74,7 +74,7 @@ export default function SearchInput({
           size="icon"
           variant="ghost"
           onClick={onRightIconClick}
-          className="absolute right-5 size-5 rounded-full hover:bg-n-100 lg:size-7"
+          className="absolute right-5 size-5 rounded-full lg:size-7"
         >
           <NewFilterSlide
             className="size-5 rotate-90 lg:size-7"

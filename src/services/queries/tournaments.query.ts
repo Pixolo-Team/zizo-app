@@ -50,6 +50,7 @@ export const getTournamentsRequest = async (
         end_date,
 
         tournament_series!inner (
+              id,
           name,
           city,
           area,
@@ -88,7 +89,10 @@ export const getTournamentsRequest = async (
 
     // Check for Tournament Format
     if (filters.tournament_format) {
-      query = query.eq("tournament_format", toSnakeCase(filters.tournament_format));
+      query = query.eq(
+        "tournament_format",
+        toSnakeCase(filters.tournament_format)
+      );
     }
 
     // Check for Format
@@ -144,32 +148,58 @@ export const getTournamentsRequest = async (
     }
 
     // Mapping Database response with the required data
-    const tournaments: TournamentListingItemData[] = (
-      tournamentItems as any[]
-    ).map((tournamentItem) => ({
-      tournament_id: tournamentItem.id,
+    const tournamentsRaw = tournamentItems as any[];
 
-      tournament_name: tournamentItem.tournament_series?.name ?? null,
-      age_category: tournamentItem.age_category,
-      format: tournamentItem.format,
-      gender: tournamentItem.gender,
-      tournament_format: tournamentItem.tournament_format,
+    const groupedBySeries = new Map<string, any>();
 
-      entry_fee: tournamentItem.entry_fee,
-      cash_prize_total: tournamentItem.cash_prize_total,
-      slot_status: tournamentItem.slot_status,
+    tournamentsRaw.forEach((t) => {
+      const series = t.tournament_series;
+      const seriesId = series?.id;
 
-      start_date: tournamentItem.start_date,
-      end_date: tournamentItem.end_date,
+      if (!seriesId) return;
 
-      city: tournamentItem.tournament_series?.city ?? null,
-      area: tournamentItem.tournament_series?.area ?? null,
-      ground_type: tournamentItem.tournament_series?.ground_type ?? null,
+      const existing = groupedBySeries.get(seriesId);
 
-      poster_url: tournamentItem.tournament_series?.poster_url ?? null,
-      organizer_name:
-        tournamentItem.tournament_series?.organizers?.name ?? null,
-    }));
+      if (!existing) {
+        groupedBySeries.set(seriesId, {
+          tournament_series_id: seriesId,
+
+          tournament_id: t.id,
+          tournament_name: series?.name ?? null,
+
+          // ✅ all age categories for this series
+          age_categories: [t.age_category],
+
+          // keep one "representative" set of fields for UI card
+          format: t.format,
+          gender: t.gender,
+          tournament_format: t.tournament_format,
+
+          entry_fee: t.entry_fee,
+          cash_prize_total: t.cash_prize_total,
+          slot_status: t.slot_status,
+
+          start_date: t.start_date,
+          end_date: t.end_date,
+
+          city: series?.city ?? null,
+          area: series?.area ?? null,
+          ground_type: series?.ground_type ?? null,
+
+          poster_url: series?.poster_url ?? null,
+          organizer_name: series?.organizers?.name ?? null,
+        });
+      } else {
+        // ✅ add unique age categories only
+        if (!existing.age_categories.includes(t.age_category)) {
+          existing.age_categories.push(t.age_category);
+        }
+      }
+    });
+
+    const tournaments: TournamentListingItemData[] = Array.from(
+      groupedBySeries.values()
+    );
 
     return { data: tournaments, error: null };
   } catch (error) {

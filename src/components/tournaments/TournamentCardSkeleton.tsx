@@ -4,10 +4,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function TournamentCardSkeleton() {
   return (
-    <div className="rounded-4xl bg-n-50 overflow-hidden w-full">
+    <div className="rounded-4xl bg-n-50 overflow-hidden w-full flex-1">
       {/* Image */}
-      <div className="relative rounded-3xl overflow-hidden">
-        <Skeleton className="bg-n-200 h-[195px] lg:h-[280px] xl:h-[340px] w-full" />
+      <div className="relative rounded-3xl overflow-hidden w-full">
+        <Skeleton className="bg-n-200 h-[195px] lg:h-[280px] xl:h-[340px] w-full object-cover" />
       </div>
 
       {/* Content */}

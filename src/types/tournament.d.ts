@@ -1,7 +1,7 @@
 export interface TournamentListingItemData {
   tournament_id: string;
   tournament_name: string;
-  age_category: string;
+  age_categories: string[];
   format: string;
   gender: string;
   tournament_format: string;

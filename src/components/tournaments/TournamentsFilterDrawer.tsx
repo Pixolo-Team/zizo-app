@@ -101,7 +101,7 @@ export default function TournamentsFilterDrawer({
   };
 
   return (
-    <Drawer open={isOpen} onOpenChange={onOpenChange} >
+    <Drawer open={isOpen} onOpenChange={onOpenChange}>
       {/* Drawer Content  */}
       <DrawerContent className="max-w-[700px] mx-auto">
         {/* Drawer Header */}
@@ -110,7 +110,7 @@ export default function TournamentsFilterDrawer({
           subTitle="Select your preferences"
         />
 
-        <div className="flex flex-col gap-7 max-h-[45vh] lg:max-h-[50vh] overflow-y-auto pb-12 lg:pb-20">
+        <div className="flex flex-col gap-7 max-h-[50vh] lg:max-h-[80vh] overflow-y-auto pb-12 lg:pb-20">
           {/* Location */}
           <Motion variants={slideInUp} delay={0.1}>
             <div className="flex flex-col gap-2 lg:gap-3">
