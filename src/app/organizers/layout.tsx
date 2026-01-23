@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Motion from "@/components/animations/Motion";
 import PageHeader from "@/components/PageHeader";
 import { shrinkIn } from "@/lib/animations";

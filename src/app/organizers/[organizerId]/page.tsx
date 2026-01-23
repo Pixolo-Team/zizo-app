@@ -28,6 +28,10 @@ import { useScroll, useMotionValueEvent } from "framer-motion";
 import { fadeIn, shrinkIn } from "@/lib/animations";
 import TestimonialSlider from "@/components/organizers/TestimonialSlider";
 import SuggestedTournaments from "@/components/tournaments/SuggestedTournaments";
+import Header from "@/components/icons/neevo-icons/Header";
+import OrganizerHeader from "@/components/organizers/OrganizerHeader";
+import OrganizerDetails from "@/components/organizers/OrganizerDetails";
+import OrganizerSocialLink from "@/components/organizers/OrganizerSocialLink";
 
 // TODO: Remove this when we have real data
 const socialLinks = {
@@ -123,48 +127,23 @@ export default function OrganizerProfile() {
           <Motion as="div" variants={shrinkIn} delay={0.2}>
             <div
               ref={contentCardRef}
-              className="relative  rounded-t-3xl bg-n-50 container mx-auto px-5 pb-6 text-n-900 flex flex-col gap-6"
+              className="relative  rounded-t-3xl mx-auto pb-6 text-n-900 flex flex-col gap-6"
             >
-              {/* Name & Location */}
-              <div className="flex flex-col gap-4 pt-14">
-                <div className="flex flex-col">
-                  <p className="text-xl font-medium text-n-950">
-                    {organizerItemDetails?.organizer.name}
-                  </p>
+              <OrganizerHeader
+                posterUrl="/images/organizer-cover.jpg"
+                name="Skorost United Football Club"
+                location="Andheri, Mumbai"
+              />
 
-                  <div className="flex items-center gap-1">
-                    <LocationPin
-                      className="size-3"
-                      primaryColor="var(--color-n-400)"
-                    />
-                    <p className="text-sm font-normal text-n-700">
-                      Andheri, Mumbai
-                    </p>
-                  </div>
-                </div>
-
-                {/* Stats */}
-                <div className="flex gap-4 px-2">
-                  <StatCard title="Tournaments Organized" number="23" />
-                  <StatCard title="Teams Hosted" number="40" />
-                </div>
-              </div>
+              {/* Stats */}
+              <OrganizerDetails tournamentsOrganized="20" teamsHosted="100" />
 
               {/* Testimonials */}
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center justify-between">
-                  <p className="font-medium text-lg text-n-950">Testimonials</p>
-                  <Button
-                    className="text-sm text-green-500"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() =>
-                      router.push(`/organizer/${organizerId}/testimonials`)
-                    }
-                  >
-                    See all
-                  </Button>
-                </div>
+
+              <div className="flex flex-col bg-n-50 gap-4 rounded-2xl border border-n-200 px-6 py-6 lg:rounded-3xl lg:p-7 lg:gap-6">
+                <p className="font-medium text-base lg:text-2xl text-n-500">
+                  Testimonials
+                </p>
 
                 <TestimonialSlider
                   testimonials={
@@ -189,12 +168,12 @@ export default function OrganizerProfile() {
               </div>
 
               {/* Photos */}
-              <div className="flex flex-col gap-3">
-                <p className="font-medium text-lg text-n-950 leading-none">
+              <div className="flex flex-col gap-3 p-5 rounded-2xl border border-n-200 bg-n-50 lg:p-7 lg:rounded-3xl">
+                <p className="font-medium text-base text-n-500 lg:text-2xl leading-none">
                   Photos From Organizer
                 </p>
 
-                <div className="flex gap-2.5 overflow-x-auto scrollbar-hide">
+                <div className="flex gap-2.5 lg:gap-3 overflow-x-auto scrollbar-hide">
                   {[
                     "/images/organizer-cover.jpg",
                     "/images/organizer-cover.jpg",
@@ -205,30 +184,14 @@ export default function OrganizerProfile() {
                       alt={`Media Post ${index + 1}`}
                       width={300}
                       height={200}
-                      className="rounded-3xl w-56 h-36 object-cover"
+                      className="rounded-3xl w-57 h-37 lg:w-70 lg:h-49 object-cover"
                     />
                   ))}
                 </div>
               </div>
 
               {/* Social Links */}
-              <div className="flex flex-col justify-center gap-1.5">
-                <p className="font-medium text-lg text-n-700">Follow us on</p>
-
-                <div className="grid grid-cols-3 gap-4">
-                  {organizerSocialIcons
-                    .filter((socialItem) => socialItem.href)
-                    .map((socialItem) => (
-                      <SocialIcon
-                        key={socialItem.key}
-                        icon={socialItem.icon}
-                        href={socialItem.href!}
-                        ariaLabel={socialItem.key}
-                      />
-                    ))}
-                </div>
-              </div>
-
+              <OrganizerSocialLink />
               {/* Footer */}
               <div className="mt-6 flex flex-col items-center gap-1.5">
                 <Image
