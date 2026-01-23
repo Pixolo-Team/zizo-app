@@ -58,7 +58,7 @@ export default function TestimonialSlider({ testimonials = [] }: Props) {
       </div>
 
       {/* Custom buttons */}
-      <div className="flex items-center gap-0.5 text-right mt-4 justify-end">
+      <div className="flex items-center gap-0.5 pr-4 text-right mt-4 justify-end">
         {slides.map((_, index) => {
           const isActive = index === activeIndex;
 
@@ -68,7 +68,7 @@ export default function TestimonialSlider({ testimonials = [] }: Props) {
               type="button"
               aria-label={`Go to testimonial ${index + 1}`}
               onClick={() => scrollTo(index)}
-              className={`h-1.5 w-0.5 rounded-sm transition-all duration-200 ${
+              className={`h-1.5 w-0.5 lg:h-2.5 lg:w-1 rounded-sm transition-all duration-200 ${
                 isActive ? "bg-n-950 scale-125" : "bg-n-500 scale-100"
               }`}
             />

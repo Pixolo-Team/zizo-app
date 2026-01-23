@@ -189,20 +189,10 @@ export default function OrganizerProfile() {
           </div>
 
           {/* Testimonials */}
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <p className="font-medium text-lg text-n-950">Testimonials</p>
-              <Button
-                className="text-sm text-green-500"
-                variant="ghost"
-                size="sm"
-                onClick={() =>
-                  router.push(`/organizer/${organizerId}/testimonials`)
-                }
-              >
-                See all
-              </Button>
-            </div>
+          <div className="flex flex-col gap-4 rounded-2xl border border-n-200 px-5 py-6 lg:rounded-3xl lg:p-7 lg:gap-6">
+            <p className="font-medium text-base lg:text-2xl text-n-500">
+              Testimonials
+            </p>
 
             <TestimonialSlider
               testimonials={
