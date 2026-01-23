@@ -97,6 +97,7 @@ export default function OrganizerProfile() {
 
     setOrganizerItemDetails(data);
   };
+  // console.log(organizerItemDetails);
 
   // UseEffects
   useEffect(() => {
@@ -134,62 +135,50 @@ export default function OrganizerProfile() {
                 name="Skorost United Football Club"
                 location="Andheri, Mumbai"
               />
-
               {/* Stats */}
               <OrganizerDetails tournamentsOrganized="20" teamsHosted="100" />
-
               {/* Testimonials */}
+              {organizerItemDetails?.organizer_testimonials &&
+                organizerItemDetails?.organizer_testimonials.length > 0 && (
+                  <div className="flex flex-col bg-n-50 gap-4 rounded-2xl border border-n-200 px-6 py-6 lg:rounded-3xl lg:p-7 lg:gap-6">
+                    <p className="font-medium text-base lg:text-2xl text-n-500">
+                      Testimonials
+                    </p>
 
-              <div className="flex flex-col bg-n-50 gap-4 rounded-2xl border border-n-200 px-6 py-6 lg:rounded-3xl lg:p-7 lg:gap-6">
-                <p className="font-medium text-base lg:text-2xl text-n-500">
-                  Testimonials
-                </p>
-
-                <TestimonialSlider
-                  testimonials={
-                    organizerItemDetails?.organizer_testimonials?.length
-                      ? organizerItemDetails.organizer_testimonials
-                      : [
-                          {
-                            author_name: "John Doe",
-                            author_role: "Coach at Skorost United",
-                            quote:
-                              "Organizing tournaments with this platform has been a game-changer for us. The seamless experience and excellent support made everything so much easier.",
-                          },
-                          {
-                            author_name: "Sarah Smith",
-                            author_role: "Manager",
-                            quote:
-                              "Super smooth experience. Great UI, great support, and everything worked perfectly.",
-                          },
-                        ]
-                  }
-                />
-              </div>
+                    <TestimonialSlider
+                      testimonials={
+                        organizerItemDetails?.organizer_testimonials?.length
+                          ? organizerItemDetails.organizer_testimonials
+                          : organizerItemDetails.organizer_testimonials
+                      }
+                    />
+                  </div>
+                )}
 
               {/* Photos */}
-              <div className="flex flex-col gap-3 p-5 rounded-2xl border border-n-200 bg-n-50 lg:p-7 lg:rounded-3xl">
-                <p className="font-medium text-base text-n-500 lg:text-2xl leading-none">
-                  Photos From Organizer
-                </p>
+              {organizerItemDetails?.organizer_media &&
+                organizerItemDetails?.organizer_media.length > 0 && (
+                  <div className="flex flex-col gap-3 p-5 rounded-2xl border border-n-200 bg-n-50 lg:p-7 lg:rounded-3xl">
+                    <p className="font-medium text-base text-n-500 lg:text-2xl leading-none">
+                      Photos From Organizer
+                    </p>
 
-                <div className="flex gap-2.5 lg:gap-3 overflow-x-auto scrollbar-hide">
-                  {[
-                    "/images/organizer-cover.jpg",
-                    "/images/organizer-cover.jpg",
-                  ].map((mediaItem, index) => (
-                    <Image
-                      key={index}
-                      src={mediaItem}
-                      alt={`Media Post ${index + 1}`}
-                      width={300}
-                      height={200}
-                      className="rounded-3xl w-57 h-37 lg:w-70 lg:h-49 object-cover"
-                    />
-                  ))}
-                </div>
-              </div>
-
+                    <div className="flex gap-2.5 lg:gap-3 overflow-x-auto scrollbar-hide">
+                      {organizerItemDetails?.organizer_media.map(
+                        (mediaItem, index) => (
+                          <Image
+                            key={index}
+                            src={mediaItem}
+                            alt={`Media Post ${index + 1}`}
+                            width={300}
+                            height={200}
+                            className="rounded-3xl w-57 h-37 lg:w-70 lg:h-49 object-cover"
+                          />
+                        )
+                      )}
+                    </div>
+                  </div>
+                )}
               {/* Social Links */}
               <OrganizerSocialLink />
               {/* Footer */}
