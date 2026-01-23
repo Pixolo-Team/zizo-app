@@ -30,6 +30,7 @@ import TestimonialSlider from "@/components/organizers/TestimonialSlider";
 import Header from "@/components/icons/neevo-icons/Header";
 import OrganizerHeader from "@/components/organizers/OrganizerHeader";
 import OrganizerDetails from "@/components/organizers/OrganizerDetails";
+import OrganizerSocialLink from "@/components/organizers/OrganizerSocialLink";
 
 // TODO: Remove this when we have real data
 const socialLinks = {
@@ -212,23 +213,7 @@ export default function OrganizerProfile() {
           </div>
 
           {/* Social Links */}
-          <div className="flex flex-col justify-center gap-1.5">
-            <p className="font-medium text-lg text-n-700">Follow us on</p>
-
-            <div className="grid grid-cols-3 gap-4">
-              {organizerSocialIcons
-                .filter((socialItem) => socialItem.href)
-                .map((socialItem) => (
-                  <SocialIcon
-                    key={socialItem.key}
-                    icon={socialItem.icon}
-                    href={socialItem.href!}
-                    ariaLabel={socialItem.key}
-                  />
-                ))}
-            </div>
-          </div>
-
+          <OrganizerSocialLink />
           {/* Footer */}
           <div className="mt-6 flex flex-col items-center gap-1.5">
             <Image
