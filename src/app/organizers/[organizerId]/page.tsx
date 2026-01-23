@@ -88,9 +88,7 @@ export default function OrganizerProfile() {
   });
 
   const getOrganizerDetails = async (organizerId: string) => {
-    const { data, error } = await getOrganizerDetailsRequest(
-      "9638deb6-2eaa-403c-a649-8d6415123c20"
-    );
+    const { data, error } = await getOrganizerDetailsRequest(organizerId);
 
     if (error) {
       return error;
