@@ -27,6 +27,7 @@ import { getOrganizerDetailsRequest } from "@/services/queries/tournaments.query
 import { useScroll, useMotionValueEvent } from "framer-motion";
 import { fadeIn, shrinkIn } from "@/lib/animations";
 import TestimonialSlider from "@/components/organizers/TestimonialSlider";
+import SuggestedTournaments from "@/components/tournaments/SuggestedTournaments";
 
 // TODO: Remove this when we have real data
 const socialLinks = {
@@ -101,186 +102,155 @@ export default function OrganizerProfile() {
   }, [organizerId]);
 
   return (
-    <section className="relative min-h-screen bg-n-100">
-      {/* Header shows when content card hits top */}
-      <header
-        className={`fixed left-0 right-0 top-0 z-40 rounded-b-lg shadow-[0_2px_2px_rgba(0,0,0,0.10)]
+    <div className="flex gap-15 px-5 lg:pt-10 ">
+      <div className="flex-1 flex justify-center">
+        {/* Header shows when content card hits top */}
+        {/* <header
+        className={`fixed lg:hidden left-0 right-0 top-0 z-40 rounded-b-lg shadow-[0_2px_2px_rgba(0,0,0,0.10)]
  bg-n-50 backdrop-blur transition-all duration-150 ${
    showHeader
      ? "translate-y-0 opacity-100"
      : "-translate-y-3 opacity-0 pointer-events-none"
  }`}
       >
-        <div className="container mx-auto flex py-3.5 h-[58px] items-center justify-center px-5">
+        <div className="container mx-auto flex py-3.5 h-14.5 items-center justify-center px-5">
           <p className="text-base font-normal leading-none text-n-950 text-center ">
             Zizo
           </p>
         </div>
-      </header>
+      </header> */}
 
-      {/* Back Button (always visible, above everything) */}
-      <Button
-        aria-label="Go back"
-        className={`fixed top-3.5 left-5 z-50 rounded-full bg-n-100 hover:bg-n-200 ${showHeader ? "border border-n-300 " : ""}`}
-        variant="secondary"
-        size="icon-sm"
-        onClick={() => router.back()}
-      >
-        <LineArrowRight1
-          primaryColor="var(--color-n-800)"
-          className="rotate-180"
-        />
-      </Button>
+        {/* Content Card */}
+        <div className="h-full pb-20 pt-3 xl:max-w-190 flex-1 mx-auto relative z-4 flex flex-col gap-4 overflow-hidden">
+          <Motion as="div" variants={shrinkIn} delay={0.2}>
+            <div
+              ref={contentCardRef}
+              className="relative  rounded-t-3xl bg-n-50 container mx-auto px-5 pb-6 text-n-900 flex flex-col gap-6"
+            >
+              {/* Name & Location */}
+              <div className="flex flex-col gap-4 pt-14">
+                <div className="flex flex-col">
+                  <p className="text-xl font-medium text-n-950">
+                    {organizerItemDetails?.organizer.name}
+                  </p>
 
-      {/* Organization Cover Image */}
-      {/* IMPORTANT: parent of fill Image MUST be relative */}
-      <div className="sticky top-0 h-56 w-full overflow-hidden">
-        <Motion variants={fadeIn} as="div" delay={0.1}>
-          <Image
-            src={"/images/organizer-cover.jpg"}
-            alt="Organizer Cover Image"
-            fill
-            className="object-cover"
-            priority
-          />
-        </Motion>
-      </div>
+                  <div className="flex items-center gap-1">
+                    <LocationPin
+                      className="size-3"
+                      primaryColor="var(--color-n-400)"
+                    />
+                    <p className="text-sm font-normal text-n-700">
+                      Andheri, Mumbai
+                    </p>
+                  </div>
+                </div>
 
-      {/* Content Card */}
-      <Motion as="div" variants={shrinkIn} delay={0.2}>
-        <div
-          ref={contentCardRef}
-          className="relative -mt-5 rounded-t-3xl bg-n-50 container mx-auto px-5 pb-6 text-n-900 flex flex-col gap-6"
-        >
-          {/* Organizer Avatar */}
-          <div className="size-24 absolute -top-12 overflow-hidden rounded-full border border-n-50">
-            <Image
-              src={"/images/organizer-profile.jpg"}
-              alt="Organizer Avatar"
-              width={80}
-              height={80}
-              className="w-full h-full object-cover"
-            />
-          </div>
+                {/* Stats */}
+                <div className="flex gap-4 px-2">
+                  <StatCard title="Tournaments Organized" number="23" />
+                  <StatCard title="Teams Hosted" number="40" />
+                </div>
+              </div>
 
-          {/* Name & Location */}
-          <div className="flex flex-col gap-4 pt-14">
-            <div className="flex flex-col">
-              <p className="text-xl font-medium text-n-950">
-                {organizerItemDetails?.organizer.name}
-              </p>
+              {/* Testimonials */}
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center justify-between">
+                  <p className="font-medium text-lg text-n-950">Testimonials</p>
+                  <Button
+                    className="text-sm text-green-500"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() =>
+                      router.push(`/organizer/${organizerId}/testimonials`)
+                    }
+                  >
+                    See all
+                  </Button>
+                </div>
 
-              <div className="flex items-center gap-1">
-                <LocationPin
-                  className="size-3"
-                  primaryColor="var(--color-n-400)"
+                <TestimonialSlider
+                  testimonials={
+                    organizerItemDetails?.organizer_testimonials?.length
+                      ? organizerItemDetails.organizer_testimonials
+                      : [
+                          {
+                            author_name: "John Doe",
+                            author_role: "Coach at Skorost United",
+                            quote:
+                              "Organizing tournaments with this platform has been a game-changer for us. The seamless experience and excellent support made everything so much easier.",
+                          },
+                          {
+                            author_name: "Sarah Smith",
+                            author_role: "Manager",
+                            quote:
+                              "Super smooth experience. Great UI, great support, and everything worked perfectly.",
+                          },
+                        ]
+                  }
                 />
-                <p className="text-sm font-normal text-n-700">
-                  Andheri, Mumbai
+              </div>
+
+              {/* Photos */}
+              <div className="flex flex-col gap-3">
+                <p className="font-medium text-lg text-n-950 leading-none">
+                  Photos From Organizer
+                </p>
+
+                <div className="flex gap-2.5 overflow-x-auto scrollbar-hide">
+                  {[
+                    "/images/organizer-cover.jpg",
+                    "/images/organizer-cover.jpg",
+                  ].map((mediaItem, index) => (
+                    <Image
+                      key={index}
+                      src={mediaItem}
+                      alt={`Media Post ${index + 1}`}
+                      width={300}
+                      height={200}
+                      className="rounded-3xl w-56 h-36 object-cover"
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Social Links */}
+              <div className="flex flex-col justify-center gap-1.5">
+                <p className="font-medium text-lg text-n-700">Follow us on</p>
+
+                <div className="grid grid-cols-3 gap-4">
+                  {organizerSocialIcons
+                    .filter((socialItem) => socialItem.href)
+                    .map((socialItem) => (
+                      <SocialIcon
+                        key={socialItem.key}
+                        icon={socialItem.icon}
+                        href={socialItem.href!}
+                        ariaLabel={socialItem.key}
+                      />
+                    ))}
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="mt-6 flex flex-col items-center gap-1.5">
+                <Image
+                  src="/brand-logo/icon-gray.svg"
+                  alt="Zizo Brand Logo"
+                  height={24}
+                  width={24}
+                />
+                <p className="font-medium text-sm text-n-400 leading-none">
+                  Powered by Zizo
                 </p>
               </div>
             </div>
-
-            {/* Stats */}
-            <div className="flex gap-4 px-2">
-              <StatCard title="Tournaments Organized" number="23" />
-              <StatCard title="Teams Hosted" number="40" />
-            </div>
-          </div>
-
-          {/* Testimonials */}
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <p className="font-medium text-lg text-n-950">Testimonials</p>
-              <Button
-                className="text-sm text-green-500"
-                variant="ghost"
-                size="sm"
-                onClick={() =>
-                  router.push(`/organizer/${organizerId}/testimonials`)
-                }
-              >
-                See all
-              </Button>
-            </div>
-
-            <TestimonialSlider
-              testimonials={
-                organizerItemDetails?.organizer_testimonials?.length
-                  ? organizerItemDetails.organizer_testimonials
-                  : [
-                      {
-                        author_name: "John Doe",
-                        author_role: "Coach at Skorost United",
-                        quote:
-                          "Organizing tournaments with this platform has been a game-changer for us. The seamless experience and excellent support made everything so much easier.",
-                      },
-                      {
-                        author_name: "Sarah Smith",
-                        author_role: "Manager",
-                        quote:
-                          "Super smooth experience. Great UI, great support, and everything worked perfectly.",
-                      },
-                    ]
-              }
-            />
-          </div>
-
-          {/* Photos */}
-          <div className="flex flex-col gap-3">
-            <p className="font-medium text-lg text-n-950 leading-none">
-              Photos From Organizer
-            </p>
-
-            <div className="flex gap-2.5 overflow-x-auto scrollbar-hide">
-              {[
-                "/images/organizer-cover.jpg",
-                "/images/organizer-cover.jpg",
-              ].map((mediaItem, index) => (
-                <Image
-                  key={index}
-                  src={mediaItem}
-                  alt={`Media Post ${index + 1}`}
-                  width={300}
-                  height={200}
-                  className="rounded-3xl w-56 h-36 object-cover"
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Social Links */}
-          <div className="flex flex-col justify-center gap-1.5">
-            <p className="font-medium text-lg text-n-700">Follow us on</p>
-
-            <div className="grid grid-cols-3 gap-4">
-              {organizerSocialIcons
-                .filter((socialItem) => socialItem.href)
-                .map((socialItem) => (
-                  <SocialIcon
-                    key={socialItem.key}
-                    icon={socialItem.icon}
-                    href={socialItem.href!}
-                    ariaLabel={socialItem.key}
-                  />
-                ))}
-            </div>
-          </div>
-
-          {/* Footer */}
-          <div className="mt-6 flex flex-col items-center gap-1.5">
-            <Image
-              src="/brand-logo/icon-gray.svg"
-              alt="Zizo Brand Logo"
-              height={24}
-              width={24}
-            />
-            <p className="font-medium text-sm text-n-400 leading-none">
-              Powered by Zizo
-            </p>
-          </div>
+          </Motion>
         </div>
-      </Motion>
-    </section>
+      </div>
+      {/* SuggestedTournaments */}
+      <div className="hidden xl:block xl:w-95">
+        <SuggestedTournaments />
+      </div>
+    </div>
   );
 }
