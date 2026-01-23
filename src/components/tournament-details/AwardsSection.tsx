@@ -49,7 +49,7 @@ export default function AwardsSection() {
     <div className="flex w-full p-5 bg-n-50 rounded-2xl flex-col gap-3 border border-n-200 lg:p-7 lg:rounded-3xl">
       {/* Heading */}
       <p className="text-n-500 font-medium lg:text-2xl">Honours & Awards</p>
-      <div className="grid grid-cols-3 gap-3 lg:gap-5">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 lg:gap-5">
         {mockAwards.map((award, index) => (
           <div
             key={index}

@@ -364,15 +364,15 @@ export default function TournamentDetails() {
                   )}
 
                   {/* Organizer Section */}
-                  {/* {tournamentDetails.organizer && (
-                <Motion variants={fadeIn} delay={0.9}>
-                  <OrganizerSection
-                    organizerId={tournamentDetails.organizer.id}
-                    name={tournamentDetails.organizer.name}
-                    imageSrc={tournamentDetails.organizer.logo_url}
-                  />
-                </Motion>
-              )} */}
+                  {tournamentDetails.organizer && (
+                    <Motion variants={fadeIn} delay={0.9}>
+                      <OrganizerSection
+                        organizerId={tournamentDetails.organizer.id}
+                        name={tournamentDetails.organizer.name}
+                        imageSrc={tournamentDetails.organizer.logo_url}
+                      />
+                    </Motion>
+                  )}
 
                   {/* Details List */}
                   <Motion variants={fadeIn} delay={1}>
