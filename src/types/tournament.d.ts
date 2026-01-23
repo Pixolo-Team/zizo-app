@@ -141,6 +141,10 @@ export interface OrganizerDetailsData {
     whatsapp_phone: string | null;
     logo_url: string | null;
     created_at: string;
+    social_platforms: {
+      platform_name: string;
+      url: string;
+    }[];
   };
 
   organizer_media: {
