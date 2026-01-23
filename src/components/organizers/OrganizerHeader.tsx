@@ -10,7 +10,7 @@ import LocationPin from "../icons/neevo-icons/LocationPin";
 interface OrganizerHeaderProps {
   posterUrl: string | undefined | null;
   name: string | undefined;
-  location: string | undefined;
+  location: string;
 }
 
 export default function OrganizerHeader({
@@ -51,16 +51,20 @@ export default function OrganizerHeader({
       {/* Bottom details */}
       <div className="flex gap-2.5 pt-3.5 px-5 pb-1.5 lg:gap-5 lg:pt-7 lg:pb-9 lg:px-7">
         <div className="flex flex-col gap-1.5">
-          <p className="text-n-900 font-medium text-xl leading-none tracking-normal lg:text-3xl">{name}</p>
-          <div className="flex gap-1.5 lg:gap-[6px]">
-            <LocationPin
-              className="size-3 lg:size-3.5"
-              primaryColor="var(--color-n-500)"
-            />
-            <p className="text-xs leading-none tracking-normal text-n-500 font-normal lg:text-xl">
-              {location}
-            </p>
-          </div>
+          <p className="text-n-900 font-medium text-xl leading-none tracking-normal lg:text-3xl">
+            {name}
+          </p>
+          {location !== "" && (
+            <div className="flex gap-1.5 lg:gap-[6px]">
+              <LocationPin
+                className="size-3 lg:size-3.5"
+                primaryColor="var(--color-n-500)"
+              />
+              <p className="text-xs leading-none tracking-normal text-n-500 font-normal lg:text-xl">
+                {location}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

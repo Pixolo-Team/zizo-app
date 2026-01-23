@@ -4,9 +4,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import TestimonialCard from "@/components/organizers/TestimonialCard";
 import Autoplay, { AutoplayType } from "embla-carousel-autoplay";
+import { OrganizerTestimonialData } from "@/types/tournament";
 
 type Props = {
-  testimonials: any[];
+  testimonials: OrganizerTestimonialData[];
 };
 
 export default function TestimonialSlider({ testimonials = [] }: Props) {

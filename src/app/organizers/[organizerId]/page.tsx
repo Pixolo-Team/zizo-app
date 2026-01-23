@@ -97,7 +97,7 @@ export default function OrganizerProfile() {
 
     setOrganizerItemDetails(data);
   };
-  // console.log(organizerItemDetails);
+  console.log(organizerItemDetails);
 
   // UseEffects
   useEffect(() => {
@@ -131,9 +131,9 @@ export default function OrganizerProfile() {
               className="relative  rounded-t-3xl mx-auto pb-6 text-n-900 flex flex-col gap-6"
             >
               <OrganizerHeader
-                posterUrl="/images/organizer-cover.jpg"
-                name="Skorost United Football Club"
-                location="Andheri, Mumbai"
+                posterUrl={organizerItemDetails?.organizer.logo_url}
+                name={organizerItemDetails?.organizer.name}
+                location={organizerItemDetails?.organizer.city ?? ""}
               />
               {/* Stats */}
               <OrganizerDetails tournamentsOrganized="20" teamsHosted="100" />
@@ -168,7 +168,7 @@ export default function OrganizerProfile() {
                         (mediaItem, index) => (
                           <Image
                             key={index}
-                            src={mediaItem}
+                            src={mediaItem.image_url}
                             alt={`Media Post ${index + 1}`}
                             width={300}
                             height={200}
