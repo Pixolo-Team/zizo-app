@@ -2,6 +2,7 @@
 
 // COMPONENTS //
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface OrganizerSectionProps {
   organizerId: string;
@@ -14,9 +15,15 @@ export default function OrganizerSection({
   name,
   imageSrc,
 }: Readonly<OrganizerSectionProps>) {
+  // Define Navigation
+  const router = useRouter();
   return (
-    <div className="flex flex-col gap-3.5">
-      <h3 className="text-lg font-medium text-n-950">About the Organizer</h3>
+    <div
+      className="flex w-full p-5 bg-n-50 rounded-2xl flex-col gap-3 border border-n-200 lg:p-7 lg:rounded-3xl"
+      onClick={() => router.push(`/organizers/${organizerId}`)}
+    >
+      {/* Heading */}
+      <p className="text-n-500 font-medium lg:text-2xl">Organizer Details</p>
       <div className="flex items-center gap-3">
         {/* Image */}
         <div className="relative h-12 w-12 rounded-full overflow-hidden border border-n-300">
