@@ -497,6 +497,7 @@ export const getOrganizerDetailsRequest = async (
     logo_url,
     created_at,
     social_platforms,
+    city,
 
     organizer_media (
       id,
@@ -548,8 +549,6 @@ export const getOrganizerDetailsRequest = async (
     // Mapping
     const organizerData = data as any;
 
-    console.log(organizerData);
-
     const page_data: OrganizerDetailsData = {
       organizer: {
         id: organizerData.id,
@@ -562,6 +561,13 @@ export const getOrganizerDetailsRequest = async (
         logo_url: organizerData.logo_url,
         created_at: organizerData.created_at,
         social_platforms: organizerData.social_platforms,
+        tournaments_organized_count:
+          organizerData.tournament_series?.reduce(
+            (count: number, series: any) =>
+              count + (series.tournaments?.length || 0),
+            0
+          ) ?? 0,
+        city: organizerData.city,
       },
 
       organizer_media: organizerData.organizer_media ?? [],
@@ -584,6 +590,8 @@ export const getOrganizerDetailsRequest = async (
         })
       ),
     };
+
+    console.log("Organizer Data:", page_data);
 
     return { data: page_data, error: null };
   } catch (error) {
