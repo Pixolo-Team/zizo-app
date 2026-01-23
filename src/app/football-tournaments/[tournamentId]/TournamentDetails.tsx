@@ -190,7 +190,7 @@ export default function TournamentDetails() {
   return (
     <>
       <div className="flex gap-15 px-5 lg:pt-10 ">
-        <div className="flex-1 flex justify-center">
+        <div className="w-full lg:flex-1 flex justify-center">
           <div className="h-full pb-20 pt-3 xl:max-w-190 flex-1 mx-auto relative z-4 flex flex-col gap-4 overflow-hidden">
             {/* Tournament Basic Details */}
             <div className="rounded-4xl bg-n-50 overflow-hidden w-full">
@@ -227,7 +227,7 @@ export default function TournamentDetails() {
                         />
 
                         {/* Location Text */}
-                        <p className="justify-start text-n-500 text-xs lg:text-2xl font-normal ">
+                        <p className="justify-start text-n-500 text-xs lg:text-2xl font-normal">
                           {tournamentDetails.series.ground_name}
                           {","} {tournamentDetails.series.city}
                         </p>
@@ -267,7 +267,7 @@ export default function TournamentDetails() {
             </div>
 
             {/* Tabs Section */}
-            <div className="pb-7 flex flex-col gap-3 rounded-b-2xl w-full">
+            <div className="pb-7 flex flex-col gap-3 rounded-b-2xl">
               {/* Tabs */}
               <div className="w-full overflow-x-auto scrollbar-hide px-5">
                 <div className="flex items-center gap-1.5">

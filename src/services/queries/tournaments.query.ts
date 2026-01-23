@@ -496,6 +496,7 @@ export const getOrganizerDetailsRequest = async (
     whatsapp_phone,
     logo_url,
     created_at,
+    social_platforms,
 
     organizer_media (
       id,
@@ -546,6 +547,9 @@ export const getOrganizerDetailsRequest = async (
 
     // Mapping
     const organizerData = data as any;
+
+    console.log(organizerData);
+
     const page_data: OrganizerDetailsData = {
       organizer: {
         id: organizerData.id,
@@ -557,6 +561,7 @@ export const getOrganizerDetailsRequest = async (
         whatsapp_phone: organizerData.whatsapp_phone,
         logo_url: organizerData.logo_url,
         created_at: organizerData.created_at,
+        social_platforms: organizerData.social_platforms,
       },
 
       organizer_media: organizerData.organizer_media ?? [],
