@@ -217,6 +217,10 @@ export default function OrganizerProfile() {
           </Motion>
         </div>
       </div>
+      {/* SuggestedTournaments */}
+      <div className="hidden xl:block xl:w-95">
+        <SuggestedTournaments />
+      </div>
     </div>
   );
 }
