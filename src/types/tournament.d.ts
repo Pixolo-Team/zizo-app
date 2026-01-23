@@ -141,6 +141,12 @@ export interface OrganizerDetailsData {
     whatsapp_phone: string | null;
     logo_url: string | null;
     created_at: string;
+    social_platforms: {
+      platform_name: string;
+      url: string;
+    }[];
+    city: string | null;
+    tournaments_organized_count: number;
   };
 
   organizer_media: {
