@@ -27,6 +27,9 @@ import { getOrganizerDetailsRequest } from "@/services/queries/tournaments.query
 import { useScroll, useMotionValueEvent } from "framer-motion";
 import { fadeIn, shrinkIn } from "@/lib/animations";
 import TestimonialSlider from "@/components/organizers/TestimonialSlider";
+import Header from "@/components/icons/neevo-icons/Header";
+import OrganizerHeader from "@/components/organizers/OrganizerHeader";
+import OrganizerDetails from "@/components/organizers/OrganizerDetails";
 
 // TODO: Remove this when we have real data
 const socialLinks = {
@@ -132,61 +135,20 @@ export default function OrganizerProfile() {
         />
       </Button>
 
-      {/* Organization Cover Image */}
-      {/* IMPORTANT: parent of fill Image MUST be relative */}
-      <div className="sticky top-0 h-56 w-full overflow-hidden">
-        <Motion variants={fadeIn} as="div" delay={0.1}>
-          <Image
-            src={"/images/organizer-cover.jpg"}
-            alt="Organizer Cover Image"
-            fill
-            className="object-cover"
-            priority
-          />
-        </Motion>
-      </div>
-
       {/* Content Card */}
       <Motion as="div" variants={shrinkIn} delay={0.2}>
         <div
           ref={contentCardRef}
           className="relative -mt-5 rounded-t-3xl bg-n-50 container mx-auto px-5 pb-6 text-n-900 flex flex-col gap-6"
         >
-          {/* Organizer Avatar */}
-          <div className="size-24 absolute -top-12 overflow-hidden rounded-full border border-n-50">
-            <Image
-              src={"/images/organizer-profile.jpg"}
-              alt="Organizer Avatar"
-              width={80}
-              height={80}
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <OrganizerHeader
+            posterUrl="/images/organizer-cover.jpg"
+            name="Skorost United Football Club"
+            location="Andheri, Mumbai"
+          />
 
-          {/* Name & Location */}
-          <div className="flex flex-col gap-4 pt-14">
-            <div className="flex flex-col">
-              <p className="text-xl font-medium text-n-950">
-                {organizerItemDetails?.organizer.name}
-              </p>
-
-              <div className="flex items-center gap-1">
-                <LocationPin
-                  className="size-3"
-                  primaryColor="var(--color-n-400)"
-                />
-                <p className="text-sm font-normal text-n-700">
-                  Andheri, Mumbai
-                </p>
-              </div>
-            </div>
-
-            {/* Stats */}
-            <div className="flex gap-4 px-2">
-              <StatCard title="Tournaments Organized" number="23" />
-              <StatCard title="Teams Hosted" number="40" />
-            </div>
-          </div>
+          {/* Stats */}
+          <OrganizerDetails tournamentsOrganized="20" teamsHosted="100" />
 
           {/* Testimonials */}
           <div className="flex flex-col gap-3">
