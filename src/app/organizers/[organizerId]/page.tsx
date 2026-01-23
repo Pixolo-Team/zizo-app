@@ -127,7 +127,7 @@ export default function OrganizerProfile() {
           <Motion as="div" variants={shrinkIn} delay={0.2}>
             <div
               ref={contentCardRef}
-              className="relative  rounded-t-3xl mx-auto px-5 pb-6 text-n-900 flex flex-col gap-6"
+              className="relative  rounded-t-3xl mx-auto pb-6 text-n-900 flex flex-col gap-6"
             >
               <OrganizerHeader
                 posterUrl="/images/organizer-cover.jpg"
@@ -168,7 +168,7 @@ export default function OrganizerProfile() {
               </div>
 
               {/* Photos */}
-              <div className="flex flex-col gap-3 p-5 rounded-2xl border border-n-200 lg:p-7 lg:rounded-3xl">
+              <div className="flex flex-col gap-3 p-5 rounded-2xl border border-n-200 bg-n-50 lg:p-7 lg:rounded-3xl">
                 <p className="font-medium text-base text-n-500 lg:text-2xl leading-none">
                   Photos From Organizer
                 </p>

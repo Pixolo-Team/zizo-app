@@ -1,10 +1,11 @@
 "use client";
 
+import React from "react";
 import Motion from "@/components/animations/Motion";
 import PageHeader from "@/components/PageHeader";
 import { shrinkIn } from "@/lib/animations";
 
-export default function FootballTournamentsLayout({
+export default function OrganizersLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -13,7 +14,7 @@ export default function FootballTournamentsLayout({
       <div className="px-5 pt-6 pb-3 lg:hidden">
         <Motion as="div" variants={shrinkIn} delay={0.1}>
           {/* PageHeader component */}
-          <PageHeader />
+          <PageHeader showBackButton showZizoLogo={false} text="Organizers" />
         </Motion>
       </div>
       {children}

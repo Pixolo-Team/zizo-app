@@ -32,7 +32,7 @@ const organizerSocialIcons = [
 
 export default function OrganizerDetails() {
   return (
-    <div className="flex flex-col rounded-2xl border border-n-200 p-5 gap-3 lg:rounded-3xl lg:p-7 lg:gap-3">
+    <div className="flex flex-col rounded-2xl border border-n-200 bg-n-50 p-5 gap-3 lg:rounded-3xl lg:p-7 lg:gap-3">
       <p className="text-base leading-none tracking-normal font-medium text-n-500 lg:text-2xl ">
         Follow us on
       </p>
