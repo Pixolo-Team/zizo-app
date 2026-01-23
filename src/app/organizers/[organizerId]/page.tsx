@@ -189,7 +189,7 @@ export default function OrganizerProfile() {
           </div>
 
           {/* Testimonials */}
-          <div className="flex flex-col gap-4 rounded-2xl border border-n-200 px-5 py-6 lg:rounded-3xl lg:p-7 lg:gap-6">
+          <div className="flex flex-col bg-n-50 gap-4 rounded-2xl border border-n-200 px-6 py-6 lg:rounded-3xl lg:p-7 lg:gap-6">
             <p className="font-medium text-base lg:text-2xl text-n-500">
               Testimonials
             </p>
@@ -217,12 +217,12 @@ export default function OrganizerProfile() {
           </div>
 
           {/* Photos */}
-          <div className="flex flex-col gap-3">
-            <p className="font-medium text-lg text-n-950 leading-none">
+          <div className="flex flex-col gap-3 p-5 rounded-2xl border border-n-200 lg:p-7 lg:rounded-3xl">
+            <p className="font-medium text-base text-n-500 lg:text-2xl leading-none">
               Photos From Organizer
             </p>
 
-            <div className="flex gap-2.5 overflow-x-auto scrollbar-hide">
+            <div className="flex gap-2.5 lg:gap-3 overflow-x-auto no-scrollbar">
               {[
                 "/images/organizer-cover.jpg",
                 "/images/organizer-cover.jpg",
@@ -233,7 +233,7 @@ export default function OrganizerProfile() {
                   alt={`Media Post ${index + 1}`}
                   width={300}
                   height={200}
-                  className="rounded-3xl w-56 h-36 object-cover"
+                  className="rounded-3xl w-57 h-37 lg:w-70 lg:h-49 object-cover"
                 />
               ))}
             </div>

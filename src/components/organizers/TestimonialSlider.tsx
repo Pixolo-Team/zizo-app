@@ -3,16 +3,30 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import TestimonialCard from "@/components/organizers/TestimonialCard";
+import Autoplay, { AutoplayType } from "embla-carousel-autoplay";
 
 type Props = {
   testimonials: any[];
 };
 
 export default function TestimonialSlider({ testimonials = [] }: Props) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: true,
-    align: "start",
-  });
+  const autoplay = useMemo<AutoplayType>(
+    () =>
+      Autoplay({
+        delay: 5000,
+        stopOnInteraction: false,
+        stopOnMouseEnter: true,
+      }),
+    []
+  );
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      align: "start",
+    },
+    [autoplay]
+  );
 
   const [activeIndex, setActiveIndex] = useState(0);
   const slides = useMemo(() => testimonials ?? [], [testimonials]);
@@ -46,12 +60,14 @@ export default function TestimonialSlider({ testimonials = [] }: Props) {
           {testimonials.map((testimonialItem, index) => (
             <div
               key={index}
-              className="min-w-0 flex-[0_0_100%] pr-3" // 100% width per slide
+              className="min-w-0 flex-[0_0_100%]" // 100% width per slide
             >
-              <TestimonialCard
-                testimonialItem={testimonialItem}
-                avatarUrl="/images/organizer-cover.jpg"
-              />
+              <div className="pr-3">
+                <TestimonialCard
+                  testimonialItem={testimonialItem}
+                  avatarUrl="/images/organizer-cover.jpg"
+                />
+              </div>
             </div>
           ))}
         </div>
