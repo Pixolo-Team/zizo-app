@@ -15,11 +15,11 @@ export default function TestimonialCard({
   avatarUrl,
 }: TestimonialCardProps) {
   return (
-    <div className="px-5 flex flex-col gap-2.5">
+    <div className="flex flex-col gap-4 lg:gap-5">
       {/* Profile Row */}
       <div className="flex items-center gap-2">
         {/* Avatar */}
-        <div className="size-10 rounded-xl overflow-hidden">
+        <div className="size-12 rounded-4xl overflow-hidden">
           <Image
             src={avatarUrl}
             alt={testimonialItem?.author_name ?? ""}
@@ -32,15 +32,17 @@ export default function TestimonialCard({
 
         {/* Name + Org */}
         <div className="flex flex-col">
-          <p className="text-sm text-n-950 leading-none">
+          <p className="text-xl lg:text-2xl font-medium text-n-950 leading-none">
             {testimonialItem?.author_name}
           </p>
-          <p className="text-xs text-n-700">{testimonialItem?.author_role}</p>
+          <p className="text-xs lg:text-sm font-bold text-n-500">
+            {testimonialItem?.author_role}
+          </p>
         </div>
       </div>
 
       {/* Testimonial Text */}
-      <p className="text-xs text-n-600 font-normal leading-snug">
+      <p className="text-sm lg:text-base text-n-600 font-normal leading-snug">
         “{testimonialItem?.quote}”
       </p>
     </div>
