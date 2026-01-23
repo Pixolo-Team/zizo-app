@@ -49,7 +49,7 @@ export default function PrimaryFilters({
   return (
     <div className="flex justify-between items-center w-full gap-3.5">
       {/* Primary Filters */}
-      <div className="flex gap-3.5 overflow-x-auto no-scrollbar">
+      <div className="flex gap-4 overflow-x-auto no-scrollbar">
         {/* City Filter */}
         <FilterDropdown
           title="City"
@@ -70,7 +70,7 @@ export default function PrimaryFilters({
       {/* Clear Button */}
       <button
         type="button"
-        className="py-2 px-2.5 lg:py-3 lg:px-4.5 bg-n-50 rounded-[20px] flex items-center justify-center text-n-950 text-xs lg:text-base cursor-pointer"
+        className="py-2 px-2.5 lg:py-3 lg:px-4.5 bg-n-50 rounded-full flex items-center justify-center text-n-950 text-xs lg:text-base cursor-pointer"
         onClick={resetFilters}
       >
         Clear

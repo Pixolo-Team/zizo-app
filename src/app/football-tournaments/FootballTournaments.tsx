@@ -317,7 +317,7 @@ export default function Tournaments() {
             {/* Search Input */}
             <Motion as="div" variants={shrinkIn} delay={0.2}>
               <SearchInput
-                className="rounded-3xl bg-n-50"
+                className="rounded-full bg-n-50"
                 value={searchInput}
                 onChange={(value) => {
                   setSearchInput(value);
