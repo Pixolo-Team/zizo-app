@@ -145,6 +145,8 @@ export interface OrganizerDetailsData {
       platform_name: string;
       url: string;
     }[];
+    city: string | null;
+    tournaments_organized_count: number;
   };
 
   organizer_media: {
