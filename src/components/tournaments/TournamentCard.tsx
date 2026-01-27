@@ -67,7 +67,6 @@ export default function TournamentCard({
     }
   }, [tournamentListingItem]);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     setIsSaved(isTournamentSavedService(tournamentListingItem.tournament_id));
   }, [tournamentListingItem.tournament_id]);

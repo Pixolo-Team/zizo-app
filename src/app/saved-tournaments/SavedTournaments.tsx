@@ -80,7 +80,6 @@ export default function SavedTournaments() {
   };
 
   // Use Effects
-  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     loadSavedTournaments();
 

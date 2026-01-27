@@ -51,10 +51,9 @@ export function toggleTournamentSaveService(
     let isSaved: boolean;
 
     if (tournamentIndex !== -1) {
-      // Tournament is already saved, remove it
-      newSavedTournaments = savedTournaments.filter(
-        (t) => t.tournament_id !== tournament.tournament_id
-      );
+      // Tournament is already saved, remove it using splice
+      newSavedTournaments = [...savedTournaments];
+      newSavedTournaments.splice(tournamentIndex, 1);
       isSaved = false;
     } else {
       // Tournament is not saved, add it
