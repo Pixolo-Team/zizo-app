@@ -33,32 +33,6 @@ import OrganizerHeader from "@/components/organizers/OrganizerHeader";
 import OrganizerDetails from "@/components/organizers/OrganizerDetails";
 import OrganizerSocialLink from "@/components/organizers/OrganizerSocialLink";
 
-// TODO: Remove this when we have real data
-const socialLinks = {
-  facebook: "https://facebook.com/skorostunited",
-  instagram: "https://instagram.com/skorostunited",
-  youtube: "https://youtube.com/@skorostunited",
-};
-
-// TODO: Remove this when we have real data
-const organizerSocialIcons = [
-  {
-    key: "facebook",
-    icon: <FacebookLogo2 primaryColor="var(--color-n-700)" />,
-    href: socialLinks.facebook,
-  },
-  {
-    key: "instagram",
-    icon: <InstagramLogo primaryColor="var(--color-n-700)" />,
-    href: socialLinks.instagram,
-  },
-  {
-    key: "youtube",
-    icon: <YoutubeLogo primaryColor="var(--color-n-700)" />,
-    href: socialLinks.youtube,
-  },
-];
-
 /** Organizer Profile Page */
 export default function OrganizerProfile() {
   // Define Navigation
@@ -154,7 +128,6 @@ export default function OrganizerProfile() {
                     />
                   </div>
                 )}
-
               {/* Photos */}
               {organizerItemDetails?.organizer_media &&
                 organizerItemDetails?.organizer_media.length > 0 && (
@@ -180,7 +153,13 @@ export default function OrganizerProfile() {
                   </div>
                 )}
               {/* Social Links */}
-              <OrganizerSocialLink />
+              {organizerItemDetails?.organizer.social_platforms && (
+                <OrganizerSocialLink
+                  socialPlatforms={
+                    organizerItemDetails?.organizer.social_platforms
+                  }
+                />
+              )}
               {/* Footer */}
               <div className="mt-6 flex flex-col items-center gap-1.5">
                 <Image
