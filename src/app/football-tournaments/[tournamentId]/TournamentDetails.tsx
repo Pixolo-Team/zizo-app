@@ -39,6 +39,13 @@ import { shrinkIn, fadeIn } from "@/lib/animations";
 // ENUMS //
 import { LocalStorageKeys } from "@/enums/app";
 import { trackEvent } from "@/utils/analytics";
+
+// SERVICES //
+import {
+  isTournamentSavedService,
+  toggleTournamentSaveService,
+} from "@/services/saved-tournaments.service";
+
 import LocationPin from "@/components/icons/neevo-icons/LocationPin";
 import { Button } from "@/components/ui/button";
 import UploadBox2 from "@/components/icons/neevo-icons/UploadBox2";
@@ -67,9 +74,54 @@ export default function TournamentDetails() {
     useState<boolean>(false);
   const [isInterestFormOpen, setIsInterestFormOpen] = useState<boolean>(false);
   const [isContactRevealed, setIsContactRevealed] = useState<boolean>(false);
+  const [isSaved, setIsSaved] = useState<boolean>(false);
 
   // Active tab should be selected tournament id
   const [activeTab, setActiveTab] = useState<string | null>(null);
+
+  // Helper Functions
+  /**
+   * Convert tournament details to listing item data for saving
+   */
+  const convertToListingItem = (
+    tournament: Partial<TournamentData>,
+    series: typeof tournamentDetails.series
+  ): TournamentListingItemData => {
+    return {
+      tournament_id: tournament.id || "",
+      tournament_name: series.name,
+      age_categories: tournament.age_category ? [tournament.age_category] : [],
+      format: tournament.format || "",
+      gender: tournament.gender || "",
+      tournament_format: tournament.tournament_format || "",
+      entry_fee: tournament.entry_fee || 0,
+      cash_prize_total: tournament.cash_prize_total || 0,
+      slot_status: tournament.slot_status || "",
+      start_date: tournament.start_date || "",
+      end_date: tournament.end_date || "",
+      city: series.city,
+      area: series.area,
+      ground_type: series.ground_type,
+      poster_url: series.poster_url,
+      organizer_name: tournamentDetails?.organizer?.name || null,
+    };
+  };
+
+  /**
+   * Handle save/unsave button click
+   */
+  const handleSaveClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!tournamentDetails || !selectedTournament) return;
+
+    const listingItem = convertToListingItem(
+      selectedTournament,
+      tournamentDetails.series
+    );
+    const newSavedState = toggleTournamentSaveService(listingItem);
+    setIsSaved(newSavedState);
+  };
 
   /** Get Tournament Details */
   const getTournamentDetails = async () => {
@@ -114,6 +166,26 @@ export default function TournamentDetails() {
 
     setSelectedTournament(selected);
   }, [activeTab, tournamentDetails]);
+
+  // Check if the current tournament is saved
+  useEffect(() => {
+    if (!selectedTournament?.id) return;
+    setIsSaved(isTournamentSavedService(selectedTournament.id));
+  }, [selectedTournament]);
+
+  // Listen for saved tournaments updates
+  useEffect(() => {
+    const handleUpdate = () => {
+      if (selectedTournament?.id) {
+        setIsSaved(isTournamentSavedService(selectedTournament.id));
+      }
+    };
+
+    window.addEventListener("savedTournamentsUpdated", handleUpdate);
+    return () => {
+      window.removeEventListener("savedTournamentsUpdated", handleUpdate);
+    };
+  }, [selectedTournament]);
 
   useEffect(() => {
     trackEvent({
@@ -254,9 +326,14 @@ export default function TournamentDetails() {
                         variant={"ghost"}
                         size="icon"
                         className="size-5 lg:size-8"
+                        onClick={handleSaveClick}
                       >
                         <Bookmark
-                          primaryColor="var(--color-n-950)"
+                          primaryColor={
+                            isSaved
+                              ? "var(--color-red-500)"
+                              : "var(--color-n-950)"
+                          }
                           className="size-5 lg:size-8"
                         />
                       </Button>
