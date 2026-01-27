@@ -7,15 +7,14 @@ import {
   TournamentData,
   TournamentDetailsData,
   TournamentListingItemData,
+  SeriesData,
 } from "@/types/tournament";
 
 // COMPONENTS //
-import TournamentHero from "@/components/tournament-details/TournamentHero";
 import InfoGrid from "@/components/tournament-details/InfoGrid";
 import FeesSection from "@/components/tournament-details/FeesSection";
 import PrizePool from "@/components/tournament-details/PrizePool";
 import SponsorsSection from "@/components/tournament-details/SponsorsSection";
-import OrganizerSection from "@/components/tournament-details/OrganizerSection";
 import DetailsList from "@/components/tournament-details/DetailsList";
 import StickyCTA from "@/components/tournament-details/StickyCTA";
 import TournamentCardImage from "@/components/tournaments/TournamentCardImage";
@@ -39,14 +38,22 @@ import { shrinkIn, fadeIn } from "@/lib/animations";
 // ENUMS //
 import { LocalStorageKeys } from "@/enums/app";
 import { trackEvent } from "@/utils/analytics";
+
+// CONTEXT //
+import { useSavedTournaments } from "@/context/SavedTournamentsContext";
+
 import LocationPin from "@/components/icons/neevo-icons/LocationPin";
 import { Button } from "@/components/ui/button";
 import UploadBox2 from "@/components/icons/neevo-icons/UploadBox2";
 import Bookmark from "@/components/icons/neevo-icons/Bookmark";
-import { id } from "date-fns/locale";
 import RulesAndRegulations from "@/components/tournament-details/RulesAndRegulations";
 import AwardsSection from "@/components/tournament-details/AwardsSection";
 import SuggestedTournaments from "@/components/tournaments/SuggestedTournaments";
+import OrganizerSection from "@/components/tournament-details/OrganizerSection";
+import Bookmark2 from "@/components/icons/neevo-icons/Bookmark2";
+import { is, se } from "date-fns/locale";
+import BookmarkBook from "@/components/icons/neevo-icons/BookmarkBook";
+import AddBookmark from "@/components/icons/neevo-icons/AddBookmark";
 
 /** Tournament Details Page */
 export default function TournamentDetails() {
@@ -55,6 +62,9 @@ export default function TournamentDetails() {
 
   // Define Tournament ID
   const tournamentId = params.tournamentId as string;
+
+  // Define Context
+  const { isTournamentSaved, toggleTournamentSave } = useSavedTournaments();
 
   // Define States
   const [tournamentDetails, setTournamentDetails] =
@@ -71,6 +81,51 @@ export default function TournamentDetails() {
   // Active tab should be selected tournament id
   const [activeTab, setActiveTab] = useState<string | null>(null);
 
+  // Helper Functions
+  /**
+   * Convert tournament details to listing item data for saving
+   */
+  const convertToListingItem = (
+    tournament: Partial<TournamentData>,
+    series: SeriesData,
+    organizerName: string | null
+  ): TournamentListingItemData => {
+    return {
+      tournament_id: tournament.id || "",
+      tournament_name: series.name,
+      age_categories: tournament.age_category ? [tournament.age_category] : [],
+      format: tournament.format || "",
+      gender: tournament.gender || "",
+      tournament_format: tournament.tournament_format || "",
+      entry_fee: tournament.entry_fee || 0,
+      cash_prize_total: tournament.cash_prize_total || 0,
+      slot_status: tournament.slot_status || "",
+      start_date: tournament.start_date || "",
+      end_date: tournament.end_date || "",
+      city: series.city,
+      area: series.area,
+      ground_type: series.ground_type,
+      poster_url: series.poster_url,
+      organizer_name: organizerName,
+    };
+  };
+
+  /**
+   * Handle save/unsave button click
+   */
+  const handleSaveClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!tournamentDetails || !selectedTournament) return;
+
+    const listingItem = convertToListingItem(
+      selectedTournament,
+      tournamentDetails.series,
+      tournamentDetails.organizer?.name || null
+    );
+    toggleTournamentSave(listingItem);
+  };
+
   /** Get Tournament Details */
   const getTournamentDetails = async () => {
     try {
@@ -79,8 +134,6 @@ export default function TournamentDetails() {
 
       // Get Tournament Details
       const { data, error } = await getTournamentDetailsRequest(tournamentId);
-
-      console.log("Tournament Details:", data);
 
       // Handle Error
       if (error) {
@@ -254,11 +307,20 @@ export default function TournamentDetails() {
                         variant={"ghost"}
                         size="icon"
                         className="size-5 lg:size-8"
+                        onClick={handleSaveClick}
                       >
-                        <Bookmark
-                          primaryColor="var(--color-n-950)"
-                          className="size-5 lg:size-8"
-                        />
+                        {selectedTournament?.id &&
+                        isTournamentSaved(selectedTournament.id) ? (
+                          <AddBookmark
+                            primaryColor="var(--color-red-500)"
+                            className="size-5 lg:size-8"
+                          />
+                        ) : (
+                          <Bookmark
+                            primaryColor={"var(--color-n-950)"}
+                            className="size-5 lg:size-8"
+                          />
+                        )}
                       </Button>
                     </div>
                   </div>

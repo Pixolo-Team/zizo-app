@@ -16,10 +16,14 @@ import { Button } from "@/components/ui/button";
 // UTILS //
 import { formatLongDate } from "@/utils/date";
 
+// CONTEXT //
+import { useSavedTournaments } from "@/context/SavedTournamentsContext";
+
 // OTHERS //
 import ChevronRight from "../icons/neevo-icons/ChevronRight";
 import Bookmark from "../icons/neevo-icons/Bookmark";
 import { useEffect, useState } from "react";
+import AddBookmark from "../icons/neevo-icons/AddBookmark";
 
 // Interface Props
 interface TournamentCardProps {
@@ -36,6 +40,7 @@ export default function TournamentCard({
   // Define Navigation
 
   // Define Context
+  const { isTournamentSaved, toggleTournamentSave } = useSavedTournaments();
 
   // Define States
   const [imageSrc, setImageSrc] = useState<string>(
@@ -45,6 +50,14 @@ export default function TournamentCard({
   // Define Refs
 
   // Helper Functions
+  /**
+   * Handle save/unsave button click
+   */
+  const handleSaveClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    toggleTournamentSave(tournamentListingItem);
+  };
 
   // Use Effects
   useEffect(() => {
@@ -130,11 +143,19 @@ export default function TournamentCard({
                 variant={"ghost"}
                 size="icon"
                 className="size-5 lg:size-8"
+                onClick={handleSaveClick}
               >
-                <Bookmark
-                  primaryColor="var(--color-n-950)"
-                  className="size-5 lg:size-8"
-                />
+                {isTournamentSaved(tournamentListingItem.tournament_id) ? (
+                  <AddBookmark
+                    primaryColor="var(--color-red-500)"
+                    className="size-5 lg:size-8"
+                  />
+                ) : (
+                  <Bookmark
+                    primaryColor={"var(--color-n-950)"}
+                    className="size-5 lg:size-8"
+                  />
+                )}
               </Button>
             </div>
           </div>
