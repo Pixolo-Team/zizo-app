@@ -80,6 +80,7 @@ export default function SavedTournaments() {
   };
 
   // Use Effects
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     loadSavedTournaments();
 
@@ -181,8 +182,8 @@ export default function SavedTournaments() {
       {/* SHARE DRAWER */}
       <ShareDrawer
         isOpen={isShareDialogOpen}
-        onClose={() => setIsShareDialogOpen(false)}
-        shareUrl={`${window.location.origin}/football-tournaments/${selectedTournamentId}`}
+        onOpenChange={setIsShareDialogOpen}
+        tournamentId={selectedTournamentId}
       />
     </>
   );

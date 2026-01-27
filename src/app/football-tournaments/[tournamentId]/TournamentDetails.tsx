@@ -7,15 +7,14 @@ import {
   TournamentData,
   TournamentDetailsData,
   TournamentListingItemData,
+  SeriesData,
 } from "@/types/tournament";
 
 // COMPONENTS //
-import TournamentHero from "@/components/tournament-details/TournamentHero";
 import InfoGrid from "@/components/tournament-details/InfoGrid";
 import FeesSection from "@/components/tournament-details/FeesSection";
 import PrizePool from "@/components/tournament-details/PrizePool";
 import SponsorsSection from "@/components/tournament-details/SponsorsSection";
-import OrganizerSection from "@/components/tournament-details/OrganizerSection";
 import DetailsList from "@/components/tournament-details/DetailsList";
 import StickyCTA from "@/components/tournament-details/StickyCTA";
 import TournamentCardImage from "@/components/tournaments/TournamentCardImage";
@@ -50,7 +49,6 @@ import LocationPin from "@/components/icons/neevo-icons/LocationPin";
 import { Button } from "@/components/ui/button";
 import UploadBox2 from "@/components/icons/neevo-icons/UploadBox2";
 import Bookmark from "@/components/icons/neevo-icons/Bookmark";
-import { id } from "date-fns/locale";
 import RulesAndRegulations from "@/components/tournament-details/RulesAndRegulations";
 import AwardsSection from "@/components/tournament-details/AwardsSection";
 import SuggestedTournaments from "@/components/tournaments/SuggestedTournaments";
@@ -85,7 +83,8 @@ export default function TournamentDetails() {
    */
   const convertToListingItem = (
     tournament: Partial<TournamentData>,
-    series: typeof tournamentDetails.series
+    series: SeriesData,
+    organizerName: string | null
   ): TournamentListingItemData => {
     return {
       tournament_id: tournament.id || "",
@@ -103,7 +102,7 @@ export default function TournamentDetails() {
       area: series.area,
       ground_type: series.ground_type,
       poster_url: series.poster_url,
-      organizer_name: tournamentDetails?.organizer?.name || null,
+      organizer_name: organizerName,
     };
   };
 
@@ -117,7 +116,8 @@ export default function TournamentDetails() {
 
     const listingItem = convertToListingItem(
       selectedTournament,
-      tournamentDetails.series
+      tournamentDetails.series,
+      tournamentDetails.organizer?.name || null
     );
     const newSavedState = toggleTournamentSaveService(listingItem);
     setIsSaved(newSavedState);
@@ -131,8 +131,6 @@ export default function TournamentDetails() {
 
       // Get Tournament Details
       const { data, error } = await getTournamentDetailsRequest(tournamentId);
-
-      console.log("Tournament Details:", data);
 
       // Handle Error
       if (error) {
