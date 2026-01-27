@@ -2,7 +2,7 @@
 import React from "react";
 
 // TYPES //
-import { IconProps } from "@/types/icon";
+import { IconComponent } from "@/types/icon";
 
 const FacebookLogo2: IconComponent = ({
   primaryColor,
