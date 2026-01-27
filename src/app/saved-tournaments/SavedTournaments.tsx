@@ -14,7 +14,10 @@ import Image from "next/image";
 import ShareDrawer from "@/components/drawers/ShareDrawer";
 
 // SERVICES //
-import { getSavedTournamentsFromLocalStorage } from "@/services/saved-tournaments.service";
+// None - using context instead
+
+// CONTEXT //
+import { useSavedTournaments } from "@/context/SavedTournamentsContext";
 
 // UTILS //
 import { trackEvent } from "@/utils/analytics";
@@ -27,22 +30,14 @@ export default function SavedTournaments() {
   // Define Navigation
   const router = useRouter();
 
+  // Define Context
+  const { savedTournaments } = useSavedTournaments();
+
   // Define States
-  const [savedTournaments, setSavedTournaments] = useState<
-    TournamentListingItemData[]
-  >([]);
   const [isShareDialogOpen, setIsShareDialogOpen] = useState<boolean>(false);
   const [selectedTournamentId, setSelectedTournamentId] = useState<string>("");
 
   // Helper Functions
-  /**
-   * Load saved tournaments from localStorage
-   */
-  const loadSavedTournaments = () => {
-    const tournaments = getSavedTournamentsFromLocalStorage();
-    setSavedTournaments(tournaments);
-  };
-
   /**
    * Handle Right arrow click
    */
@@ -80,29 +75,6 @@ export default function SavedTournaments() {
   };
 
   // Use Effects
-  useEffect(() => {
-    loadSavedTournaments();
-
-    // Listen for storage events to update when tournaments are saved/unsaved
-    const handleStorageChange = () => {
-      loadSavedTournaments();
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    
-    // Custom event for same-page updates
-    const handleCustomUpdate = () => {
-      loadSavedTournaments();
-    };
-    
-    window.addEventListener("savedTournamentsUpdated", handleCustomUpdate);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener("savedTournamentsUpdated", handleCustomUpdate);
-    };
-  }, []);
-
   useEffect(() => {
     trackEvent({
       action: "view_saved_tournaments",

@@ -39,11 +39,8 @@ import { shrinkIn, fadeIn } from "@/lib/animations";
 import { LocalStorageKeys } from "@/enums/app";
 import { trackEvent } from "@/utils/analytics";
 
-// SERVICES //
-import {
-  isTournamentSavedService,
-  toggleTournamentSaveService,
-} from "@/services/saved-tournaments.service";
+// CONTEXT //
+import { useSavedTournaments } from "@/context/SavedTournamentsContext";
 
 import LocationPin from "@/components/icons/neevo-icons/LocationPin";
 import { Button } from "@/components/ui/button";
@@ -61,6 +58,9 @@ export default function TournamentDetails() {
   // Define Tournament ID
   const tournamentId = params.tournamentId as string;
 
+  // Define Context
+  const { isTournamentSaved, toggleTournamentSave } = useSavedTournaments();
+
   // Define States
   const [tournamentDetails, setTournamentDetails] =
     useState<TournamentDetailsData | null>(null);
@@ -72,7 +72,6 @@ export default function TournamentDetails() {
     useState<boolean>(false);
   const [isInterestFormOpen, setIsInterestFormOpen] = useState<boolean>(false);
   const [isContactRevealed, setIsContactRevealed] = useState<boolean>(false);
-  const [isSaved, setIsSaved] = useState<boolean>(false);
 
   // Active tab should be selected tournament id
   const [activeTab, setActiveTab] = useState<string | null>(null);
@@ -119,8 +118,7 @@ export default function TournamentDetails() {
       tournamentDetails.series,
       tournamentDetails.organizer?.name || null
     );
-    const newSavedState = toggleTournamentSaveService(listingItem);
-    setIsSaved(newSavedState);
+    toggleTournamentSave(listingItem);
   };
 
   /** Get Tournament Details */
@@ -164,26 +162,6 @@ export default function TournamentDetails() {
 
     setSelectedTournament(selected);
   }, [activeTab, tournamentDetails]);
-
-  // Check if the current tournament is saved
-  useEffect(() => {
-    if (!selectedTournament?.id) return;
-    setIsSaved(isTournamentSavedService(selectedTournament.id));
-  }, [selectedTournament]);
-
-  // Listen for saved tournaments updates
-  useEffect(() => {
-    const handleUpdate = () => {
-      if (selectedTournament?.id) {
-        setIsSaved(isTournamentSavedService(selectedTournament.id));
-      }
-    };
-
-    window.addEventListener("savedTournamentsUpdated", handleUpdate);
-    return () => {
-      window.removeEventListener("savedTournamentsUpdated", handleUpdate);
-    };
-  }, [selectedTournament]);
 
   useEffect(() => {
     trackEvent({
@@ -328,7 +306,8 @@ export default function TournamentDetails() {
                       >
                         <Bookmark
                           primaryColor={
-                            isSaved
+                            selectedTournament?.id &&
+                            isTournamentSaved(selectedTournament.id)
                               ? "var(--color-red-500)"
                               : "var(--color-n-950)"
                           }

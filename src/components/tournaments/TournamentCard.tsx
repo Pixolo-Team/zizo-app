@@ -15,10 +15,9 @@ import { Button } from "@/components/ui/button";
 
 // UTILS //
 import { formatLongDate } from "@/utils/date";
-import {
-  isTournamentSavedService,
-  toggleTournamentSaveService,
-} from "@/services/saved-tournaments.service";
+
+// CONTEXT //
+import { useSavedTournaments } from "@/context/SavedTournamentsContext";
 
 // OTHERS //
 import ChevronRight from "../icons/neevo-icons/ChevronRight";
@@ -40,12 +39,12 @@ export default function TournamentCard({
   // Define Navigation
 
   // Define Context
+  const { isTournamentSaved, toggleTournamentSave } = useSavedTournaments();
 
   // Define States
   const [imageSrc, setImageSrc] = useState<string>(
     "/images/default/tournament-card-thumbnail.png"
   );
-  const [isSaved, setIsSaved] = useState<boolean>(false);
 
   // Define Refs
 
@@ -56,8 +55,7 @@ export default function TournamentCard({
   const handleSaveClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    const newSavedState = toggleTournamentSaveService(tournamentListingItem);
-    setIsSaved(newSavedState);
+    toggleTournamentSave(tournamentListingItem);
   };
 
   // Use Effects
@@ -66,21 +64,6 @@ export default function TournamentCard({
       setImageSrc(tournamentListingItem.poster_url);
     }
   }, [tournamentListingItem]);
-
-  useEffect(() => {
-    setIsSaved(isTournamentSavedService(tournamentListingItem.tournament_id));
-  }, [tournamentListingItem.tournament_id]);
-
-  useEffect(() => {
-    const handleUpdate = () => {
-      setIsSaved(isTournamentSavedService(tournamentListingItem.tournament_id));
-    };
-
-    window.addEventListener("savedTournamentsUpdated", handleUpdate);
-    return () => {
-      window.removeEventListener("savedTournamentsUpdated", handleUpdate);
-    };
-  }, [tournamentListingItem.tournament_id]);
 
   return (
     <a
@@ -162,7 +145,11 @@ export default function TournamentCard({
                 onClick={handleSaveClick}
               >
                 <Bookmark
-                  primaryColor={isSaved ? "var(--color-red-500)" : "var(--color-n-950)"}
+                  primaryColor={
+                    isTournamentSaved(tournamentListingItem.tournament_id)
+                      ? "var(--color-red-500)"
+                      : "var(--color-n-950)"
+                  }
                   className="size-5 lg:size-8"
                 />
               </Button>

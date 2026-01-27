@@ -6,6 +6,7 @@ import Script from "next/script";
 import localFont from "next/font/local";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/context/AuthContext";
+import { SavedTournamentsProvider } from "@/context/SavedTournamentsContext";
 
 // DATA //
 import type { Metadata } from "next";
@@ -155,38 +156,40 @@ export default function RootLayout({
       </head>
       <body className="antialiased font-sans min-h-screen bg-n-100 overflow-x-hidden">
         <AuthProvider>
-          {/* Backdrop Image */}
-          <Motion as="div" variants={fadeIn} delay={0.1}>
-            <div className="fixed -top-3.25 -right-15">
-              <BrandLogo
-                variant="color-icon"
-                size={260}
-                className="hidden dark-mode-block lg:hidden!"
-              />
-              <BrandLogo
-                variant="color-icon"
-                size={260}
-                className="block dark-mode-hidden lg:hidden!"
-              />
-            </div>
-          </Motion>
-
-          <div className="flex flex-col lg:gap-8 relative">
-            {/* PageHeader */}
-            <div className="px-5 pt-6 pb-3 lg:hidden">
-              <Motion as="div" variants={shrinkIn} delay={0.1}>
-                {/* PageHeader component */}
-                <PageHeader />
-              </Motion>
-            </div>
-            <div className="flex lg:gap-15 justify-between">
-              <div className="hidden lg:block w-62.5">
-                <SideMenu menuItems={menuItems} />
+          <SavedTournamentsProvider>
+            {/* Backdrop Image */}
+            <Motion as="div" variants={fadeIn} delay={0.1}>
+              <div className="fixed -top-3.25 -right-15">
+                <BrandLogo
+                  variant="color-icon"
+                  size={260}
+                  className="hidden dark-mode-block lg:hidden!"
+                />
+                <BrandLogo
+                  variant="color-icon"
+                  size={260}
+                  className="block dark-mode-hidden lg:hidden!"
+                />
               </div>
-              <div className="w-full lg:flex-1">{children}</div>
+            </Motion>
+
+            <div className="flex flex-col lg:gap-8 relative">
+              {/* PageHeader */}
+              <div className="px-5 pt-6 pb-3 lg:hidden">
+                <Motion as="div" variants={shrinkIn} delay={0.1}>
+                  {/* PageHeader component */}
+                  <PageHeader />
+                </Motion>
+              </div>
+              <div className="flex lg:gap-15 justify-between">
+                <div className="hidden lg:block w-62.5">
+                  <SideMenu menuItems={menuItems} />
+                </div>
+                <div className="w-full lg:flex-1">{children}</div>
+              </div>
             </div>
-          </div>
-          <Toaster duration={2000} />
+            <Toaster duration={2000} />
+          </SavedTournamentsProvider>
         </AuthProvider>
       </body>
     </html>
