@@ -49,6 +49,11 @@ import Bookmark from "@/components/icons/neevo-icons/Bookmark";
 import RulesAndRegulations from "@/components/tournament-details/RulesAndRegulations";
 import AwardsSection from "@/components/tournament-details/AwardsSection";
 import SuggestedTournaments from "@/components/tournaments/SuggestedTournaments";
+import OrganizerSection from "@/components/tournament-details/OrganizerSection";
+import Bookmark2 from "@/components/icons/neevo-icons/Bookmark2";
+import { is, se } from "date-fns/locale";
+import BookmarkBook from "@/components/icons/neevo-icons/BookmarkBook";
+import AddBookmark from "@/components/icons/neevo-icons/AddBookmark";
 
 /** Tournament Details Page */
 export default function TournamentDetails() {
@@ -238,7 +243,7 @@ export default function TournamentDetails() {
   return (
     <>
       <div className="flex gap-15 px-5 lg:pt-10 ">
-        <div className="flex-1 flex justify-center">
+        <div className="w-full lg:flex-1 flex justify-center">
           <div className="h-full pb-20 pt-3 xl:max-w-190 flex-1 mx-auto relative z-4 flex flex-col gap-4 overflow-hidden">
             {/* Tournament Basic Details */}
             <div className="rounded-4xl bg-n-50 overflow-hidden w-full">
@@ -275,7 +280,7 @@ export default function TournamentDetails() {
                         />
 
                         {/* Location Text */}
-                        <p className="justify-start text-n-500 text-xs lg:text-2xl font-normal ">
+                        <p className="justify-start text-n-500 text-xs lg:text-2xl font-normal">
                           {tournamentDetails.series.ground_name}
                           {","} {tournamentDetails.series.city}
                         </p>
@@ -304,15 +309,18 @@ export default function TournamentDetails() {
                         className="size-5 lg:size-8"
                         onClick={handleSaveClick}
                       >
-                        <Bookmark
-                          primaryColor={
-                            selectedTournament?.id &&
-                            isTournamentSaved(selectedTournament.id)
-                              ? "var(--color-red-500)"
-                              : "var(--color-n-950)"
-                          }
-                          className="size-5 lg:size-8"
-                        />
+                        {selectedTournament?.id &&
+                        isTournamentSaved(selectedTournament.id) ? (
+                          <AddBookmark
+                            primaryColor="var(--color-red-500)"
+                            className="size-5 lg:size-8"
+                          />
+                        ) : (
+                          <Bookmark
+                            primaryColor={"var(--color-n-950)"}
+                            className="size-5 lg:size-8"
+                          />
+                        )}
                       </Button>
                     </div>
                   </div>
@@ -321,7 +329,7 @@ export default function TournamentDetails() {
             </div>
 
             {/* Tabs Section */}
-            <div className="pb-7 flex flex-col gap-3 rounded-b-2xl w-full">
+            <div className="pb-7 flex flex-col gap-3 rounded-b-2xl">
               {/* Tabs */}
               <div className="w-full overflow-x-auto scrollbar-hide px-5">
                 <div className="flex items-center gap-1.5">
@@ -418,15 +426,15 @@ export default function TournamentDetails() {
                   )}
 
                   {/* Organizer Section */}
-                  {/* {tournamentDetails.organizer && (
-                <Motion variants={fadeIn} delay={0.9}>
-                  <OrganizerSection
-                    organizerId={tournamentDetails.organizer.id}
-                    name={tournamentDetails.organizer.name}
-                    imageSrc={tournamentDetails.organizer.logo_url}
-                  />
-                </Motion>
-              )} */}
+                  {tournamentDetails.organizer && (
+                    <Motion variants={fadeIn} delay={0.9}>
+                      <OrganizerSection
+                        organizerId={tournamentDetails.organizer.id}
+                        name={tournamentDetails.organizer.name}
+                        imageSrc={tournamentDetails.organizer.logo_url}
+                      />
+                    </Motion>
+                  )}
 
                   {/* Details List */}
                   <Motion variants={fadeIn} delay={1}>

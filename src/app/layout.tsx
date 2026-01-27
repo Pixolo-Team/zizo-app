@@ -109,7 +109,7 @@ const menuItems = [
   },
   {
     label: "Saved",
-    href: "/saved",
+    href: "/saved-tournaments",
     icon: <Bookmark primaryColor="var(--color-n-900)" className="size-5" />,
   },
 ];
@@ -174,13 +174,6 @@ export default function RootLayout({
             </Motion>
 
             <div className="flex flex-col lg:gap-8 relative">
-              {/* PageHeader */}
-              <div className="px-5 pt-6 pb-3 lg:hidden">
-                <Motion as="div" variants={shrinkIn} delay={0.1}>
-                  {/* PageHeader component */}
-                  <PageHeader />
-                </Motion>
-              </div>
               <div className="flex lg:gap-15 justify-between">
                 <div className="hidden lg:block w-62.5">
                   <SideMenu menuItems={menuItems} />

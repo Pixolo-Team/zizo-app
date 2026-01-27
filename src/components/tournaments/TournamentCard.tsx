@@ -23,6 +23,7 @@ import { useSavedTournaments } from "@/context/SavedTournamentsContext";
 import ChevronRight from "../icons/neevo-icons/ChevronRight";
 import Bookmark from "../icons/neevo-icons/Bookmark";
 import { useEffect, useState } from "react";
+import AddBookmark from "../icons/neevo-icons/AddBookmark";
 
 // Interface Props
 interface TournamentCardProps {
@@ -144,14 +145,17 @@ export default function TournamentCard({
                 className="size-5 lg:size-8"
                 onClick={handleSaveClick}
               >
-                <Bookmark
-                  primaryColor={
-                    isTournamentSaved(tournamentListingItem.tournament_id)
-                      ? "var(--color-red-500)"
-                      : "var(--color-n-950)"
-                  }
-                  className="size-5 lg:size-8"
-                />
+                {isTournamentSaved(tournamentListingItem.tournament_id) ? (
+                  <AddBookmark
+                    primaryColor="var(--color-red-500)"
+                    className="size-5 lg:size-8"
+                  />
+                ) : (
+                  <Bookmark
+                    primaryColor={"var(--color-n-950)"}
+                    className="size-5 lg:size-8"
+                  />
+                )}
               </Button>
             </div>
           </div>
@@ -199,19 +203,6 @@ export default function TournamentCard({
                   {ageCat}
                 </Badge>
               ))}
-
-            <Badge
-              className="flex items-center gap-1 lg:gap-2 px-3 py-2.5 lg:px-6 lg:py-5 text-n-900 font-normal text-xs lg:text-lg"
-              variant={"secondary"}
-            >
-              {/* Slot Status */}
-              <CalendarUser
-                className="size-4 lg:size-7"
-                primaryColor="var(--color-n-900)"
-              />
-              {tournamentListingItem.slot_status.charAt(0).toUpperCase() +
-                tournamentListingItem.slot_status.slice(1)}
-            </Badge>
           </div>
         </div>
 

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface SuggestedTournamentCardProps {
   name: string;
@@ -19,23 +20,35 @@ export default function SuggestedTournamentCard({
   // Define Context
 
   // Define States
+  const [imageSrc, setImageSrc] = useState<string>(
+    "/images/default/tournament-card-thumbnail.png"
+  );
 
   // Define Refs
 
   // Helper Functions
 
   // Use Effects
+  useEffect(() => {
+    console.log(imageUrl);
 
+    if (imageUrl) {
+      setImageSrc(imageUrl);
+    }
+  }, [imageUrl]);
   return (
     <div className="flex items-center gap-8 justify-between">
       <div className="flex items-center gap-3">
         {/* Image */}
         <Image
-          src={imageUrl || "/images/default/suggested-tournament-default.png"}
+          src={imageSrc}
           alt=""
           width={50}
           height={50}
-          className="rounded-full size-12"
+          className="rounded-full size-12 object-cover"
+          onError={() =>
+            setImageSrc("/images/default/tournament-card-thumbnail.png")
+          }
         />
 
         {/* Name and Location */}
