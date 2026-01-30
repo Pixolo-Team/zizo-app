@@ -497,7 +497,7 @@ export const getOrganizerDetailsRequest = async (
     logo_url,
     created_at,
     social_platforms,
-    city,
+  
 
     organizer_media (
       id,

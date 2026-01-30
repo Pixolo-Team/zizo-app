@@ -3,15 +3,43 @@ import { ReactNode } from "react";
 
 // COMPONENTS //
 import Link from "next/link";
+import FacebookLogo2 from "@/components/icons/neevo-icons/FacebookLogo2";
+import InstagramLogo from "@/components/icons/neevo-icons/InstagramLogo";
+import YoutubeLogo from "@/components/icons/neevo-icons/YoutubeLogo";
+
+// ICONS //
 
 interface SocialIconProps {
-  icon: ReactNode;
+  platformName: string;
   href: string;
   ariaLabel: string;
 }
 
+/**Returns the corresponding social media icon component based on the platform name received from API.
+ * This is a helper function that maps platform name to appropriate icon component.
+ */
+const getSocialIcon = (platformName: string): ReactNode | null => {
+  switch (platformName.toLowerCase()) {
+    case "instagram":
+      return <InstagramLogo />;
+    case "facebook":
+      return <FacebookLogo2 />;
+    case "youtube":
+      return <YoutubeLogo />;
+    default:
+      return null;
+  }
+};
+
 /** SocialIcon Component */
-export default function SocialIcon({ icon, href, ariaLabel }: SocialIconProps) {
+export default function SocialIcon({
+  platformName,
+  href,
+  ariaLabel,
+}: SocialIconProps) {
+  // Function for getting the correct social icon based on the social platform name
+  const icon = getSocialIcon(platformName);
+  if (!icon) return null;
   return (
     <Link
       href={href}

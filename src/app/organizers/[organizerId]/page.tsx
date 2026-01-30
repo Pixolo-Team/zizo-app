@@ -2,73 +2,36 @@
 
 // REACT //
 import React, { useEffect, useRef, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
 // TYPES //
 import { OrganizerDetailsData } from "@/types/tournament";
 
 // COMPONENTS //
 import Image from "next/image";
-import SocialIcon from "@/components/organizers/SocialIcon";
-import StatCard from "@/components/organizers/StatCard";
-import TestimonialCard from "@/components/organizers/TestimonialCard";
-import { Button } from "@/components/ui/button";
 import Motion from "@/components/animations/Motion";
-import LocationPin from "@/components/icons/neevo-icons/LocationPin";
-import FacebookLogo2 from "@/components/icons/neevo-icons/FacebookLogo2";
-import InstagramLogo from "@/components/icons/neevo-icons/InstagramLogo";
-import YoutubeLogo from "@/components/icons/neevo-icons/YoutubeLogo";
-import LineArrowRight1 from "@/components/icons/neevo-icons/LineArrowRight1";
+import TestimonialSlider from "@/components/organizers/TestimonialSlider";
+import SuggestedTournaments from "@/components/tournaments/SuggestedTournaments";
+import OrganizerHeader from "@/components/organizers/OrganizerHeader";
+import OrganizerDetails from "@/components/organizers/OrganizerDetails";
+import OrganizerSocialLinks from "@/components/organizers/OrganizerSocialLinks";
 
 // SERVICES //
 import { getOrganizerDetailsRequest } from "@/services/queries/tournaments.query";
 
 // OTHERS //
 import { useScroll, useMotionValueEvent } from "framer-motion";
-import { fadeIn, shrinkIn } from "@/lib/animations";
-import TestimonialSlider from "@/components/organizers/TestimonialSlider";
-import SuggestedTournaments from "@/components/tournaments/SuggestedTournaments";
-import Header from "@/components/icons/neevo-icons/Header";
-import OrganizerHeader from "@/components/organizers/OrganizerHeader";
-import OrganizerDetails from "@/components/organizers/OrganizerDetails";
-import OrganizerSocialLink from "@/components/organizers/OrganizerSocialLink";
-
-// TODO: Remove this when we have real data
-const socialLinks = {
-  facebook: "https://facebook.com/skorostunited",
-  instagram: "https://instagram.com/skorostunited",
-  youtube: "https://youtube.com/@skorostunited",
-};
-
-// TODO: Remove this when we have real data
-const organizerSocialIcons = [
-  {
-    key: "facebook",
-    icon: <FacebookLogo2 primaryColor="var(--color-n-700)" />,
-    href: socialLinks.facebook,
-  },
-  {
-    key: "instagram",
-    icon: <InstagramLogo primaryColor="var(--color-n-700)" />,
-    href: socialLinks.instagram,
-  },
-  {
-    key: "youtube",
-    icon: <YoutubeLogo primaryColor="var(--color-n-700)" />,
-    href: socialLinks.youtube,
-  },
-];
+import { shrinkIn } from "@/lib/animations";
 
 /** Organizer Profile Page */
 export default function OrganizerProfile() {
   // Define Navigation
-  const router = useRouter();
   const { organizerId } = useParams();
 
   // Define Context
 
   // Define States
-  const [showHeader, setShowHeader] = useState<boolean>(false);
+
   const [organizerItemDetails, setOrganizerItemDetails] =
     useState<OrganizerDetailsData | null>(null);
 
@@ -129,69 +92,65 @@ export default function OrganizerProfile() {
               ref={contentCardRef}
               className="relative  rounded-t-3xl mx-auto pb-6 text-n-900 flex flex-col gap-6"
             >
-              <OrganizerHeader
-                posterUrl="/images/organizer-cover.jpg"
-                name="Skorost United Football Club"
-                location="Andheri, Mumbai"
-              />
-
+              {organizerItemDetails && (
+                <OrganizerHeader
+                  posterUrl={organizerItemDetails?.organizer.logo_url ?? ""}
+                  name={organizerItemDetails?.organizer.name}
+                  location={organizerItemDetails?.organizer.city ?? ""}
+                />
+              )}
               {/* Stats */}
               <OrganizerDetails tournamentsOrganized="20" teamsHosted="100" />
-
               {/* Testimonials */}
+              {organizerItemDetails?.organizer_testimonials &&
+                organizerItemDetails?.organizer_testimonials.length > 0 && (
+                  <div className="flex flex-col bg-n-50 gap-4 rounded-2xl border border-n-200 px-6 py-6 lg:rounded-3xl lg:p-7 lg:gap-6">
+                    <p className="font-medium text-base lg:text-2xl text-n-500">
+                      Testimonials
+                    </p>
 
-              <div className="flex flex-col bg-n-50 gap-4 rounded-2xl border border-n-200 px-6 py-6 lg:rounded-3xl lg:p-7 lg:gap-6">
-                <p className="font-medium text-base lg:text-2xl text-n-500">
-                  Testimonials
-                </p>
+                    <TestimonialSlider
+                      testimonials={
+                        organizerItemDetails?.organizer_testimonials?.length
+                          ? organizerItemDetails.organizer_testimonials
+                          : []
+                      }
+                    />
+                  </div>
+                )}
+              {/* Photos */}
+              {organizerItemDetails?.organizer_media &&
+                organizerItemDetails?.organizer_media.length > 0 && (
+                  <div className="flex flex-col gap-3 p-5 rounded-2xl border border-n-200 bg-n-50 lg:p-7 lg:rounded-3xl">
+                    <p className="font-medium text-base text-n-500 lg:text-2xl leading-none">
+                      Photos From Organizer
+                    </p>
 
-                <TestimonialSlider
-                  testimonials={
-                    organizerItemDetails?.organizer_testimonials?.length
-                      ? organizerItemDetails.organizer_testimonials
-                      : [
-                          {
-                            author_name: "John Doe",
-                            author_role: "Coach at Skorost United",
-                            quote:
-                              "Organizing tournaments with this platform has been a game-changer for us. The seamless experience and excellent support made everything so much easier.",
-                          },
-                          {
-                            author_name: "Sarah Smith",
-                            author_role: "Manager",
-                            quote:
-                              "Super smooth experience. Great UI, great support, and everything worked perfectly.",
-                          },
-                        ]
+                    <div className="flex gap-2.5 lg:gap-3 overflow-x-auto scrollbar-hide">
+                      {/* Mapping media items */}
+                      {organizerItemDetails?.organizer_media.map(
+                        (mediaItem, mediaIndex) => (
+                          <Image
+                            key={mediaItem.image_url}
+                            src={mediaItem.image_url}
+                            alt={`${organizerItemDetails.organizer.name.trim().toLowerCase().replace(/\s+/g, "-")}-tournament-photo-${mediaIndex + 1}`}
+                            width={300}
+                            height={200}
+                            className="rounded-3xl w-57 h-37 lg:w-70 lg:h-49 object-cover"
+                          />
+                        )
+                      )}
+                    </div>
+                  </div>
+                )}
+              {/* Social Links */}
+              {organizerItemDetails?.organizer.social_platforms && (
+                <OrganizerSocialLinks
+                  socialPlatforms={
+                    organizerItemDetails?.organizer.social_platforms
                   }
                 />
-              </div>
-
-              {/* Photos */}
-              <div className="flex flex-col gap-3 p-5 rounded-2xl border border-n-200 bg-n-50 lg:p-7 lg:rounded-3xl">
-                <p className="font-medium text-base text-n-500 lg:text-2xl leading-none">
-                  Photos From Organizer
-                </p>
-
-                <div className="flex gap-2.5 lg:gap-3 overflow-x-auto scrollbar-hide">
-                  {[
-                    "/images/organizer-cover.jpg",
-                    "/images/organizer-cover.jpg",
-                  ].map((mediaItem, index) => (
-                    <Image
-                      key={index}
-                      src={mediaItem}
-                      alt={`Media Post ${index + 1}`}
-                      width={300}
-                      height={200}
-                      className="rounded-3xl w-57 h-37 lg:w-70 lg:h-49 object-cover"
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* Social Links */}
-              <OrganizerSocialLink />
+              )}
               {/* Footer */}
               <div className="mt-6 flex flex-col items-center gap-1.5">
                 <Image
