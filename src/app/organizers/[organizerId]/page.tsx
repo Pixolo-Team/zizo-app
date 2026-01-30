@@ -103,11 +103,13 @@ export default function OrganizerProfile() {
               ref={contentCardRef}
               className="relative  rounded-t-3xl mx-auto pb-6 text-n-900 flex flex-col gap-6"
             >
-              <OrganizerHeader
-                posterUrl={organizerItemDetails?.organizer.logo_url}
-                name={organizerItemDetails?.organizer.name}
-                location={organizerItemDetails?.organizer.city ?? ""}
-              />
+              {organizerItemDetails && (
+                <OrganizerHeader
+                  posterUrl={organizerItemDetails?.organizer.logo_url ?? ""}
+                  name={organizerItemDetails?.organizer.name}
+                  location={organizerItemDetails?.organizer.city ?? ""}
+                />
+              )}
               {/* Stats */}
               <OrganizerDetails tournamentsOrganized="20" teamsHosted="100" />
               {/* Testimonials */}

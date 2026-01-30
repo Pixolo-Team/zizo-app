@@ -8,8 +8,8 @@ import Image from "next/image";
 import LocationPin from "../icons/neevo-icons/LocationPin";
 
 interface OrganizerHeaderProps {
-  posterUrl: string | undefined | null;
-  name: string | undefined;
+  posterUrl?: string;
+  name: string;
   location: string;
 }
 
