@@ -48,7 +48,10 @@ export function SavedTournamentsProvider({
       const tournaments = JSON.parse(savedTournamentsJson);
       setSavedTournaments(tournaments);
     } catch (error) {
-      console.error("Error reading saved tournaments from localStorage:", error);
+      console.error(
+        "Error reading saved tournaments from localStorage:",
+        error
+      );
       setSavedTournaments([]);
     }
   }, []);
@@ -96,6 +99,7 @@ export function SavedTournamentsProvider({
           LocalStorageKeys.SAVED_TOURNAMENTS,
           JSON.stringify(newSavedTournaments)
         );
+        window.dispatchEvent(new Event("saved-tournaments-updated"));
       } catch (error) {
         console.error("Error toggling tournament save state:", error);
       }

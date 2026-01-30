@@ -71,11 +71,11 @@ export default function SavedTournaments() {
             showBackButton={true}
             showZizoLogo={false}
             text="Saved Tournaments"
-          />
+          ></PageHeader>
         </div>
 
         {/* Tournaments Listing */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 pb-2">
           {savedTournaments.map((tournamentItem) => (
             <TournamentCard
               key={tournamentItem.tournament_id}
