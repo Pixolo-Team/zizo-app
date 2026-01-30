@@ -19,6 +19,12 @@ import FacebookLogo2 from "@/components/icons/neevo-icons/FacebookLogo2";
 import InstagramLogo from "@/components/icons/neevo-icons/InstagramLogo";
 import YoutubeLogo from "@/components/icons/neevo-icons/YoutubeLogo";
 import LineArrowRight1 from "@/components/icons/neevo-icons/LineArrowRight1";
+import TestimonialSlider from "@/components/organizers/TestimonialSlider";
+import SuggestedTournaments from "@/components/tournaments/SuggestedTournaments";
+import Header from "@/components/icons/neevo-icons/Header";
+import OrganizerHeader from "@/components/organizers/OrganizerHeader";
+import OrganizerDetails from "@/components/organizers/OrganizerDetails";
+import OrganizerSocialLink from "@/components/organizers/OrganizerSocialLink";
 
 // SERVICES //
 import { getOrganizerDetailsRequest } from "@/services/queries/tournaments.query";
@@ -26,12 +32,6 @@ import { getOrganizerDetailsRequest } from "@/services/queries/tournaments.query
 // OTHERS //
 import { useScroll, useMotionValueEvent } from "framer-motion";
 import { fadeIn, shrinkIn } from "@/lib/animations";
-import TestimonialSlider from "@/components/organizers/TestimonialSlider";
-import SuggestedTournaments from "@/components/tournaments/SuggestedTournaments";
-import Header from "@/components/icons/neevo-icons/Header";
-import OrganizerHeader from "@/components/organizers/OrganizerHeader";
-import OrganizerDetails from "@/components/organizers/OrganizerDetails";
-import OrganizerSocialLink from "@/components/organizers/OrganizerSocialLink";
 
 /** Organizer Profile Page */
 export default function OrganizerProfile() {
@@ -140,11 +140,11 @@ export default function OrganizerProfile() {
                     <div className="flex gap-2.5 lg:gap-3 overflow-x-auto scrollbar-hide">
                       {/* Mapping media items */}
                       {organizerItemDetails?.organizer_media.map(
-                        (mediaItem, index) => (
+                        (mediaItem, mediaIndex) => (
                           <Image
-                            key={index}
+                            key={mediaItem.image_url}
                             src={mediaItem.image_url}
-                            alt={`Media Post ${index + 1}`}
+                            alt={`${organizerItemDetails.organizer.name.trim().toLowerCase().replace(/\s+/g, "-")}-tournament-photo-${mediaIndex + 1}`}
                             width={300}
                             height={200}
                             className="rounded-3xl w-57 h-37 lg:w-70 lg:h-49 object-cover"

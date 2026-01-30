@@ -567,7 +567,7 @@ export const getOrganizerDetailsRequest = async (
               count + (series.tournaments?.length || 0),
             0
           ) ?? 0,
-        city: "Mumbai",
+        city: organizerData.city,
       },
 
       organizer_media: organizerData.organizer_media ?? [],

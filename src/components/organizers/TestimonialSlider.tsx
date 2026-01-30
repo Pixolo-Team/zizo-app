@@ -1,10 +1,17 @@
 "use client";
 
+// REACT //
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import TestimonialCard from "@/components/organizers/TestimonialCard";
-import Autoplay, { AutoplayType } from "embla-carousel-autoplay";
+
+// TYPES //
 import { OrganizerTestimonialData } from "@/types/tournament";
+
+// COMPONENTS //
+import TestimonialCard from "@/components/organizers/TestimonialCard";
+
+// OTHERS //
+import Autoplay, { AutoplayType } from "embla-carousel-autoplay";
 
 type Props = {
   testimonials: OrganizerTestimonialData[];

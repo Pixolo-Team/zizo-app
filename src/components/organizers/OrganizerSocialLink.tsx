@@ -1,7 +1,5 @@
 "use client";
-import FacebookLogo2 from "@/components/icons/neevo-icons/FacebookLogo2";
-import InstagramLogo from "@/components/icons/neevo-icons/InstagramLogo";
-import YoutubeLogo from "@/components/icons/neevo-icons/YoutubeLogo";
+// COMPONENTS //
 import SocialIcon from "@/components/organizers/SocialIcon";
 
 type SocialPlatform = {
@@ -14,20 +12,6 @@ export default function OrganizerDetails({
 }: {
   socialPlatforms: SocialPlatform[];
 }) {
-  // Returns the corresponding social media icon component based on the platform name received from API.
-  const getIcon = (platformName: string) => {
-    switch (platformName.toLowerCase()) {
-      case "instagram":
-        return <InstagramLogo />;
-      case "facebook":
-        return <FacebookLogo2 />;
-      case "youtube":
-        return <YoutubeLogo />;
-      default:
-        return null; // website or unknown platform
-    }
-  };
-
   return (
     <div className="flex flex-col rounded-2xl border border-n-200 bg-n-50 p-5 gap-3 lg:rounded-3xl lg:p-7 lg:gap-3">
       <p className="text-base leading-none tracking-normal font-medium text-n-500 lg:text-2xl ">
@@ -35,14 +19,11 @@ export default function OrganizerDetails({
       </p>
       {/* Social Links */}
       <div className="grid grid-cols-3 gap-4 lg:gap-2.5 w-full">
-        {socialPlatforms.map((socialPlatformItem, index) => {
-          const icon = getIcon(socialPlatformItem.platform_name);
-          if (!icon) return null;
-
+        {socialPlatforms.map((socialPlatformItem, socialPlatformIndex) => {
           return (
             <SocialIcon
-              key={index}
-              icon={icon}
+              key={`social-media-${socialPlatformIndex + 1}`}
+              platformName={socialPlatformItem.platform_name}
               href={socialPlatformItem.url}
               ariaLabel={socialPlatformItem.platform_name}
             />
