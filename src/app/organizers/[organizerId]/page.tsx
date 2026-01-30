@@ -71,7 +71,6 @@ export default function OrganizerProfile() {
 
     setOrganizerItemDetails(data);
   };
-  console.log(organizerItemDetails);
 
   // UseEffects
   useEffect(() => {
@@ -123,7 +122,7 @@ export default function OrganizerProfile() {
                       testimonials={
                         organizerItemDetails?.organizer_testimonials?.length
                           ? organizerItemDetails.organizer_testimonials
-                          : organizerItemDetails.organizer_testimonials
+                          : []
                       }
                     />
                   </div>
@@ -137,6 +136,7 @@ export default function OrganizerProfile() {
                     </p>
 
                     <div className="flex gap-2.5 lg:gap-3 overflow-x-auto scrollbar-hide">
+                      {/* Mapping media items */}
                       {organizerItemDetails?.organizer_media.map(
                         (mediaItem, index) => (
                           <Image

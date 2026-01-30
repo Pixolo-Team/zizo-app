@@ -14,8 +14,9 @@ export default function OrganizerDetails({
 }: {
   socialPlatforms: SocialPlatform[];
 }) {
-  const getIcon = (platform: string) => {
-    switch (platform.toLowerCase()) {
+  // Returns the corresponding social media icon component based on the platform name received from API.
+  const getIcon = (platformName: string) => {
+    switch (platformName.toLowerCase()) {
       case "instagram":
         return <InstagramLogo />;
       case "facebook":
