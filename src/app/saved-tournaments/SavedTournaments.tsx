@@ -64,7 +64,7 @@ export default function SavedTournaments() {
 
   return (
     <>
-      <div className="flex flex-col justify-center gap-24 bg-n-100 px-5 lg:flex-row lg:pt-10">
+      <div className="flex flex-col justify-center gap-6 bg-n-100 px-5 lg:flex-row lg:pt-10 lg:gap-24 ">
         {/* Header */}
         <div className="lg:hidden pt-6 pb-3">
           <PageHeader
