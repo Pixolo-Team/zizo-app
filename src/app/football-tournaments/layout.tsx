@@ -54,13 +54,13 @@ export default function FootballTournamentsLayout({
           <PageHeader>
             <Button
               aria-label="Saved tournaments"
-              className="flex justify-center items-center rounded-[60px] bg-n-900 py-5 px-6 self-center"
+              className="flex justify-center items-center rounded-[60px] bg-n-50 py-5 px-6 self-center"
               variant="secondary"
               size="sm"
               onClick={() => router.push("/saved-tournaments")}
             >
-              <Bookmark className="text-n-50" />
-              <p className="text-sm leading-tight text-n-50 font-medium">
+              <Bookmark className="text-n-950" />
+              <p className="text-sm leading-tight text-n-950 font-medium">
                 Saved 
               </p>
               <p className="text-sm leading-tight font-normal text-n-700">({savedCount})</p>
