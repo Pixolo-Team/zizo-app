@@ -2,47 +2,36 @@
 
 // REACT //
 import React, { useEffect, useRef, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
 // TYPES //
 import { OrganizerDetailsData } from "@/types/tournament";
 
 // COMPONENTS //
 import Image from "next/image";
-import SocialIcon from "@/components/organizers/SocialIcon";
-import StatCard from "@/components/organizers/StatCard";
-import TestimonialCard from "@/components/organizers/TestimonialCard";
-import { Button } from "@/components/ui/button";
 import Motion from "@/components/animations/Motion";
-import LocationPin from "@/components/icons/neevo-icons/LocationPin";
-import FacebookLogo2 from "@/components/icons/neevo-icons/FacebookLogo2";
-import InstagramLogo from "@/components/icons/neevo-icons/InstagramLogo";
-import YoutubeLogo from "@/components/icons/neevo-icons/YoutubeLogo";
-import LineArrowRight1 from "@/components/icons/neevo-icons/LineArrowRight1";
 import TestimonialSlider from "@/components/organizers/TestimonialSlider";
 import SuggestedTournaments from "@/components/tournaments/SuggestedTournaments";
-import Header from "@/components/icons/neevo-icons/Header";
 import OrganizerHeader from "@/components/organizers/OrganizerHeader";
 import OrganizerDetails from "@/components/organizers/OrganizerDetails";
-import OrganizerSocialLink from "@/components/organizers/OrganizerSocialLink";
+import OrganizerSocialLinks from "@/components/organizers/OrganizerSocialLinks";
 
 // SERVICES //
 import { getOrganizerDetailsRequest } from "@/services/queries/tournaments.query";
 
 // OTHERS //
 import { useScroll, useMotionValueEvent } from "framer-motion";
-import { fadeIn, shrinkIn } from "@/lib/animations";
+import { shrinkIn } from "@/lib/animations";
 
 /** Organizer Profile Page */
 export default function OrganizerProfile() {
   // Define Navigation
-  const router = useRouter();
   const { organizerId } = useParams();
 
   // Define Context
 
   // Define States
-  const [showHeader, setShowHeader] = useState<boolean>(false);
+
   const [organizerItemDetails, setOrganizerItemDetails] =
     useState<OrganizerDetailsData | null>(null);
 
@@ -156,7 +145,7 @@ export default function OrganizerProfile() {
                 )}
               {/* Social Links */}
               {organizerItemDetails?.organizer.social_platforms && (
-                <OrganizerSocialLink
+                <OrganizerSocialLinks
                   socialPlatforms={
                     organizerItemDetails?.organizer.social_platforms
                   }

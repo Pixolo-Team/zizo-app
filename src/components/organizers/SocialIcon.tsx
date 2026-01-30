@@ -15,7 +15,9 @@ interface SocialIconProps {
   ariaLabel: string;
 }
 
-// Returns the corresponding social media icon component based on the platform name received from API.
+/**Returns the corresponding social media icon component based on the platform name received from API.
+ * This is a helper function that maps platform name to appropriate icon component.
+ */
 const getSocialIcon = (platformName: string): ReactNode | null => {
   switch (platformName.toLowerCase()) {
     case "instagram":
@@ -35,6 +37,7 @@ export default function SocialIcon({
   href,
   ariaLabel,
 }: SocialIconProps) {
+  // Function for getting the correct social icon based on the social platform name
   const icon = getSocialIcon(platformName);
   if (!icon) return null;
   return (
