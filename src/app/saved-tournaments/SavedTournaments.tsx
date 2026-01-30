@@ -132,7 +132,7 @@ export default function SavedTournaments() {
             <Button
               aria-label="Explore more"
               className={`rounded-[30px] bg-n-900 text-n-50 py-5 px-6 self-center`}
-              variant="secondary"
+              variant="primary"
               onClick={() => router.push("/football-tournaments")}
             >
               Explore tournaments
