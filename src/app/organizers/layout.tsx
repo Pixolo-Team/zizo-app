@@ -8,6 +8,7 @@ import { shrinkIn } from "@/lib/animations";
 export default function OrganizersLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  // Check check es ling
   return (
     <div className="relative">
       {/* PageHeader */}
