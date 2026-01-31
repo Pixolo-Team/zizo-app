@@ -18,6 +18,8 @@ interface SideMenuProps {
 export default function SideMenu({ menuItems }: SideMenuProps) {
   const pathname = usePathname();
 
+  
+
   const isActive = (href: string) => {
     // exact match
     if (pathname === href) return true;

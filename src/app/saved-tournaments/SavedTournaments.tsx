@@ -8,22 +8,20 @@ import { useEffect, useState } from "react";
 import { TournamentListingItemData } from "@/types/tournament";
 
 // COMPONENTS //
-import Motion from "@/components/animations/Motion";
+import ShareDrawer from "@/components/drawers/ShareDrawer";
+import SuggestedTournaments from "@/components/tournaments/SuggestedTournaments";
 import TournamentCard from "@/components/tournaments/TournamentCard";
 import Image from "next/image";
-import ShareDrawer from "@/components/drawers/ShareDrawer";
-
-// SERVICES //
-// None - using context instead
-
-// CONTEXT //
-import { useSavedTournaments } from "@/context/SavedTournamentsContext";
 
 // UTILS //
 import { trackEvent } from "@/utils/analytics";
 
 // OTHERS //
-import { fadeIn } from "@/lib/animations";
+import { useSavedTournaments } from "@/context/SavedTournamentsContext";
+import PageHeader from "@/components/PageHeader";
+import { Button } from "@/components/ui/button";
+
+// None - using context instead
 
 /** Saved Tournaments Page */
 export default function SavedTournaments() {
@@ -31,6 +29,7 @@ export default function SavedTournaments() {
   const router = useRouter();
 
   // Define Context
+  // Saved Tournaments Data
   const { savedTournaments } = useSavedTournaments();
 
   // Define States
@@ -53,27 +52,6 @@ export default function SavedTournaments() {
     router.push(`/football-tournaments/${tournamentItem.tournament_id}`);
   };
 
-  /**
-   * Handle Share button click
-   */
-  const handleShareBtnClick = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    tournamentItem: TournamentListingItemData
-  ) => {
-    event.stopPropagation();
-    setSelectedTournamentId(tournamentItem.tournament_id);
-    setIsShareDialogOpen(true);
-
-    trackEvent({
-      action: "share_tournament",
-      params: {
-        tournament_id: tournamentItem.tournament_id,
-        tournament_name: tournamentItem.tournament_name,
-        source: "saved_tournaments",
-      },
-    });
-  };
-
   // Use Effects
   useEffect(() => {
     trackEvent({
@@ -86,71 +64,94 @@ export default function SavedTournaments() {
 
   return (
     <>
-      <div className="h-full pb-20 pt-7 px-5 max-w-[450px] mx-auto relative z-4">
-        {/* Page Title */}
-        <Motion variants={fadeIn} delay={0.1}>
-          <h1 className="text-n-900 text-2xl lg:text-3xl font-semibold mb-6">
-            Saved Tournaments
-          </h1>
-        </Motion>
+      <div className="flex flex-col justify-center gap-6 bg-n-100 px-5 lg:flex-row lg:pt-10 lg:gap-24 lg:justify-between">
+        {/* Header */}
+        <div className="lg:hidden pt-6 pb-3">
+          <PageHeader
+            showBackButton={true}
+            showZizoLogo={false}
+            text="Saved Tournaments"
+          />
+        </div>
 
-        {/* Tournament Cards */}
-        <div className="flex flex-col gap-5 lg:gap-10">
-          {savedTournaments.length > 0 ? (
-            savedTournaments.map((tournamentItem, index) => (
-              <Motion key={tournamentItem.tournament_id} variants={fadeIn} delay={0.2 + index * 0.1}>
-                <TournamentCard
-                  tournamentListingItem={tournamentItem}
-                  onShareBtnClick={(event) =>
-                    handleShareBtnClick(event, tournamentItem)
-                  }
-                  onRightArrowClick={() => handleArrowClick(tournamentItem)}
-                />
-              </Motion>
-            ))
-          ) : (
-            /* Empty State */
-            <div className="flex flex-col gap-3 h-full pt-16 lg:pt-0 items-center justify-center">
-              {/* Empty State Image */}
-              <div className="hidden dark-mode-block">
-                <Image
-                  src="/images/no-tournament-dark.png"
-                  alt="No saved tournaments (dark)"
-                  width={1200}
-                  height={120}
-                  priority
-                  className="w-full h-[173px] object-cover invert-[1] lg:h-[280px] xl:h-[350px]"
-                />
+        {/* Tournaments Listing */}
+        <div className="flex gap-15 justify-between flex-1 lg:px-5 lg:pt-10">
+          <div className="flex-1 flex justify-center">
+            <div className="relative xl:max-w-185 flex-1 h-full pb-7 flex flex-col gap-5 lg:gap-12 z-4">
+              <div className="flex flex-col gap-4 pb-2">
+                {savedTournaments.map((tournamentItem) => (
+                  <TournamentCard
+                    key={tournamentItem.tournament_id}
+                    tournamentListingItem={tournamentItem}
+                    onShareBtnClick={(e) => {
+                      e.stopPropagation();
+                      setIsShareDialogOpen(true);
+                      setSelectedTournamentId(tournamentItem.tournament_id);
+                    }}
+                    onRightArrowClick={() => handleArrowClick(tournamentItem)}
+                  />
+                ))}
               </div>
 
-              <div className="block dark-mode-hidden">
-                <Image
-                  src="/images/no-tournament-light.png"
-                  alt="No saved tournaments (light)"
-                  width={1200}
-                  height={120}
-                  priority
-                  className="w-full h-[173px] object-cover lg:h-[280px] xl:h-[350px]"
-                />
-              </div>
+              {/* Empty State */}
+              {savedTournaments.length === 0 && (
+                <div className="flex flex-col w-full gap-6 lg:gap-12">
+                  <div className="flex flex-col gap-3 h-full lg:pt-0 items-center justify-center">
+                    {/* Empty State Image */}
+                    <div className="hidden dark-mode-block">
+                      <Image
+                        src="/images/no-saved-tournament-dark-mode.png"
+                        alt="No saved tournaments"
+                        width={800}
+                        height={400}
+                        priority
+                        className="w-full h-43.25 object-cover  lg:h-[280px] xl:h-[350px]"
+                      />
+                    </div>
+                    <div className=" block dark-mode-hidden">
+                      <Image
+                        src="/images/no-saved-tournament-light-mode.png"
+                        alt="No saved tournaments"
+                        width={800}
+                        height={400}
+                        priority
+                        className="w-full h-[173px] object-cover  lg:h-[280px] xl:h-[350px]"
+                      />
+                    </div>
 
-              <div className="flex flex-col gap-2 items-center">
-                {/* Empty State Title */}
-                <p className="text-center text-n-900 font-medium text-xl lg:text-2xl xl:text-3xl">
-                  No saved tournaments yet
-                </p>
+                    <div className="flex flex-col gap-2 items-center">
+                      {/* Empty State Title */}
+                      <p className="text-center text-n-900 font-medium text-xl lg:text-2xl xl:text-3xl">
+                        Nothing is saved yet
+                      </p>
 
-                {/* Empty State Subtitle */}
-                <p className="text-center text-n-600 font-normal leading-[137%] text-sm w-[78%] lg:text-lg xl:text-xl">
-                  Start saving tournaments to see them here
-                </p>
-              </div>
+                      {/* Empty State Subtitle */}
+                      <p className="text-center text-n-600 font-normal leading-[137%] text-sm w-[78%] lg:text-lg xl:text-xl ">
+                        Save tournaments you’re interested in and find them here
+                        anytime
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    aria-label="Explore more"
+                    className={`rounded-[30px] bg-n-900 text-n-50 py-5 px-6 self-center`}
+                    variant="secondary"
+                    onClick={() => router.push("/football-tournaments")}
+                  >
+                    <p className="text-base font-medium leading-tight lg:text-xl">
+                      Explore tournaments
+                    </p>
+                  </Button>
+                </div>
+              )}
             </div>
-          )}
+          </div>
+          {/* SuggestedTournaments */}
+          <div className="hidden xl:block xl:w-95 ">
+            <SuggestedTournaments />
+          </div>
         </div>
       </div>
-
-      {/* SHARE DRAWER */}
       <ShareDrawer
         isOpen={isShareDialogOpen}
         onOpenChange={setIsShareDialogOpen}
