@@ -14,7 +14,7 @@ export default function OrganizersLayout({
       <div className="px-5 pt-6 pb-3 lg:hidden">
         <Motion as="div" variants={shrinkIn} delay={0.1}>
           {/* PageHeader component */}
-          <PageHeader showBackButton showZizoLogo={false} text="Organizers" />
+          <PageHeader showBackButton showZizoLogo={false} text="Organizer" />
         </Motion>
       </div>
       {children}
