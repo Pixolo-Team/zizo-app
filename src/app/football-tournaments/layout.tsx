@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 // OTHERS //
 import { shrinkIn } from "@/lib/animations";
 import { Bookmark } from "lucide-react";
+import { useSavedTournaments } from "@/context/SavedTournamentsContext";
 
 export default function FootballTournamentsLayout({
   children,
@@ -19,33 +20,12 @@ export default function FootballTournamentsLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [savedCount, setSavedCount] = useState(0);
 
-  useEffect(() => {
-    const getSavedCount = () => {
-      try {
-        const saved = localStorage.getItem("saved_tournaments");
-        const parsed = saved ? JSON.parse(saved) : [];
-        setSavedCount(Array.isArray(parsed) ? parsed.length : 0);
-      } catch {
-        setSavedCount(0);
-      }
-    };
+  // Define Context
+  const {savedTournaments} = useSavedTournaments();
 
-    // run on mount
-    getSavedCount();
 
-    // other tabs
-    window.addEventListener("storage", getSavedCount);
-
-    //  same tab 
-    window.addEventListener("saved-tournaments-updated", getSavedCount);
-
-    return () => {
-      window.removeEventListener("storage", getSavedCount);
-      window.removeEventListener("saved-tournaments-updated", getSavedCount);
-    };
-  }, []);
+ 
 
   return (
     <div className="relative">
@@ -61,9 +41,11 @@ export default function FootballTournamentsLayout({
             >
               <Bookmark className="text-n-950" />
               <p className="text-sm leading-tight text-n-950 font-medium">
-                Saved 
+                Saved
               </p>
-              <p className="text-sm leading-tight font-normal text-n-700">({savedCount})</p>
+              <p className="text-sm leading-tight font-normal text-n-700">
+                ({savedTournaments.length})
+              </p>
             </Button>
           </PageHeader>
         </Motion>
