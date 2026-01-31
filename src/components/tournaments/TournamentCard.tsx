@@ -182,19 +182,6 @@ export default function TournamentCard({
                   {ageCat}
                 </Badge>
               ))}
-
-            <Badge
-              className="flex items-center gap-1 lg:gap-2 px-3 py-2.5 lg:px-6 lg:py-5 text-n-900 font-normal text-xs lg:text-lg"
-              variant={"secondary"}
-            >
-              {/* Slot Status */}
-              <CalendarUser
-                className="size-4 lg:size-7"
-                primaryColor="var(--color-n-900)"
-              />
-              {tournamentListingItem.slot_status.charAt(0).toUpperCase() +
-                tournamentListingItem.slot_status.slice(1)}
-            </Badge>
           </div>
         </div>
 

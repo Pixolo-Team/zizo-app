@@ -1,15 +1,24 @@
 "use client";
 
+// REACT //
 import { useEffect, useState } from "react";
+import { Plus, User, Users, Phone } from "lucide-react";
+
+// TYPES //
+import { OrganizerListingItemData } from "@/types/tournament";
+
+// COMPONENTS //
 import Link from "next/link";
 import Image from "next/image";
-import { OrganizerListingItemData } from "@/types/tournament";
-import { getOrganizersListRequest } from "@/services/queries/tournaments.query";
 import Motion from "@/components/animations/Motion";
-import { fadeIn, slideInUp } from "@/lib/animations";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Plus, User, Users, Phone } from "lucide-react";
+
+// SERVICES //
+import { getOrganizersListRequest } from "@/services/queries/tournaments.query";
+
+// OTHERS //
+import { fadeIn, slideInUp } from "@/lib/animations";
 
 export default function OrganizersListing() {
   const [organizers, setOrganizers] = useState<OrganizerListingItemData[]>([]);
