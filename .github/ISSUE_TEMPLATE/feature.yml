@@ -10,16 +10,8 @@ body:
       label: copilot instructions
       value: |
         ## ⚠️ Coding Standards (Mandatory)
-
-        Before implementing this feature:
-
-        - Follow project naming conventions
-        - Use configured import aliases (e.g., @/)
-        - Keep functions small and focused
-        - Add JSDoc to exported functions
-        - Implement proper error handling
-        - Do not leave console logs in final code
-        - Match existing project structure and patterns
+        Before implementing this feature 
+        ⚠️ You MUST follow copilot-instructions.md
     validations:
       required: false
 
@@ -78,11 +70,3 @@ body:
         - Handle API errors gracefully
     validations:
       required: true
-
-  - type: checkboxes
-    id: standards_checklist
-    attributes:
-      label: Standards Checklist (Required)
-      options:
-        - label: MUST follow copilot-instructions.md
-          required: true
