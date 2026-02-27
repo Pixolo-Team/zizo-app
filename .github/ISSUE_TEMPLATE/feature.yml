@@ -80,15 +80,5 @@ body:
     attributes:
       label: Standards Checklist (Required)
       options:
-        - label: Used project import aliases (no deep relative paths)
-          required: true
-        - label: Naming conventions followed
-          required: true
-        - label: Functions are small and focused
-          required: true
-        - label: JSDoc added to exported functions
-          required: true
-        - label: Proper error handling implemented
-          required: true
-        - label: No console logs in final code
+        - label: MUST follow copilot-instructions.md
           required: true
