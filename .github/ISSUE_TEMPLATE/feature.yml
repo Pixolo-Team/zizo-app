@@ -4,20 +4,15 @@ title: "feat: <short-description>"
 labels: ["feature"]
 
 body:
-  - type: markdown
+  - type: textarea
+    id: coding_rules
     attributes:
-      value: |
-        ## ⚠️ Coding Standards (Mandatory)
-
-        Before implementing this feature:
-
-        - Follow project naming conventions
-        - Use configured import aliases (e.g., @/)
-        - Keep functions small and focused
-        - Add JSDoc to exported functions
-        - Implement proper error handling
-        - Do not leave console logs in final code
-        - Match existing project structure and patterns
+    label: ⚠️ Coding Standards (Mandatory)
+    value: |
+      Follow project naming conventions
+      Use configured import aliases
+    validations:
+    required: true
 
   - type: input
     id: feature_name
