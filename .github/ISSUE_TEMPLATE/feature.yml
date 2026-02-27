@@ -82,3 +82,4 @@ body:
       options:
         - label: MUST follow copilot-instructions.md
           required: true
+          value: true
