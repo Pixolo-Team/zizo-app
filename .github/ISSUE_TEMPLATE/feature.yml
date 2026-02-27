@@ -7,6 +7,7 @@ body:
   - type: textarea
     id: copilot_instructions
     attributes:
+      label: copilot instructions
       value: |
         ## ⚠️ Coding Standards (Mandatory)
 
@@ -19,6 +20,8 @@ body:
         - Implement proper error handling
         - Do not leave console logs in final code
         - Match existing project structure and patterns
+    validations:
+      required: false
 
   - type: input
     id: feature_name
