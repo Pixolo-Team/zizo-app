@@ -4,7 +4,7 @@ title: "feat: <short-description>"
 labels: ["feature"]
 
 body:
-  - type: textarea
+  - type: markdown
     attributes:
       value: |
         ## ⚠️ Coding Standards (Mandatory)
