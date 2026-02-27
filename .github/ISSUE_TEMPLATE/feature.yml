@@ -1,0 +1,94 @@
+name: 🚀 Feature
+description: Create a new feature following project coding standards
+title: "feat: <short-description>"
+labels: ["feature"]
+
+body:
+  - type: textarea
+    attributes:
+      value: |
+        ## ⚠️ Coding Standards (Mandatory)
+
+        Before implementing this feature:
+
+        - Follow project naming conventions
+        - Use configured import aliases (e.g., @/)
+        - Keep functions small and focused
+        - Add JSDoc to exported functions
+        - Implement proper error handling
+        - Do not leave console logs in final code
+        - Match existing project structure and patterns
+
+  - type: input
+    id: feature_name
+    attributes:
+      label: Feature Name
+      placeholder: user dashboard page
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feature_type
+    attributes:
+      label: Feature Type
+      options:
+        - Page
+        - UI Component
+        - API Integration
+        - Service Logic
+        - Form
+        - Data Mapping
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      description: Explain WHAT needs to be built and WHY
+      placeholder: |
+        Build a dashboard page that displays user-specific metrics.
+        This helps users track their activity and performance.
+    validations:
+      required: true
+
+  - type: textarea
+    id: api_impact
+    attributes:
+      label: API / Data Impact (if applicable)
+      placeholder: |
+        - API function to call
+        - Required service functions
+        - Expected data types
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected Behavior
+      description: Include loading, error, and empty states
+      placeholder: |
+        - Show loading indicator while fetching data
+        - Display empty state if no data
+        - Handle API errors gracefully
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: standards_checklist
+    attributes:
+      label: Standards Checklist (Required)
+      options:
+        - label: Used project import aliases (no deep relative paths)
+          required: true
+        - label: Naming conventions followed
+          required: true
+        - label: Functions are small and focused
+          required: true
+        - label: JSDoc added to exported functions
+          required: true
+        - label: Proper error handling implemented
+          required: true
+        - label: No console logs in final code
+          required: true
